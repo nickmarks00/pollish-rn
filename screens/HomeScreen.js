@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
+import {DEV_IP} from 'react-native-dotenv';
 
-const BASE_URL = 'http://192.168.137.1:8000';
+const BASE_URL = `http://${DEV_IP}`;
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(false);

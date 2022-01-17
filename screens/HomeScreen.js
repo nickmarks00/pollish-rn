@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Dimensions} from 'react-native';
-import PollView from './PollView';
 
-const BASE_URL = 'http://192.168.1.140:8000';
-const dimensions = Dimensions.get("screen");
+import PollView from './PollView';
+import {BASE_IP} from '@env';
+
+const dimensions = Dimensions.get('screen');
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ const HomeScreen = () => {
   }, []);
 
   const fetchDataFromApi = async () => {
-    const url = `${BASE_URL}/polls/`;
+    const url = `http://${BASE_IP}/polls/`;
 
     setLoading(true);
 
@@ -34,29 +35,29 @@ const HomeScreen = () => {
         console.error(error);
       });
   };
+
   return (
     <ScrollView
       decelerationRate={0}
       snapToAlignment="lefts"
       snapToInterval={dimensions.height}
-      showsVerticalScrollIndicator={false}
-    >
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-      }}>
-      {posts.map((post, idx) => {
-        return <PollView 
-          key={idx} 
-          question={post.question_text}
-          choices={post.choices}
-          >
-        </PollView>;
-      })}
-    </View>
+      showsVerticalScrollIndicator={false}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+        }}>
+        {posts.map((post, idx) => {
+          return (
+            <PollView
+              key={idx}
+              question={post.question_text}
+              choices={post.choices}></PollView>
+          );
+        })}
+      </View>
     </ScrollView>
 
     // <Text key={idx}>{post.question_text}</Text>;

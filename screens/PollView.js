@@ -34,7 +34,7 @@ const PollView = props => {
         height: dimensions.height,
       }}>
       <Image
-        source={require('./lebron.jpg')}
+        source={require('../assets/lebron.jpg')}
         style={{
           width: dimensions.width,
           height: dimensions.width / 1.1,

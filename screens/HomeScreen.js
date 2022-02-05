@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Dimensions} from 'react-native';
+import {View, Text, ScrollView, Dimensions, Button} from 'react-native';
 
 import PollView from './PollView';
 import {BASE_IP} from '@env';

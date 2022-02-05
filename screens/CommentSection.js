@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableHighlight, View, Text, Dimensions, TextInput, Image, StyleSheet, Button, ScrollView, FlatList} from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import uuid from 'react-native-uuid'
 
 const dimensions = Dimensions.get("screen");
 
 const CommentSection = (props) => {
 
+    const route = useRoute();
     const [text, onChangeText] = React.useState("");
     const [comments, addComment] = React.useState([]);
 
@@ -38,7 +40,7 @@ const CommentSection = (props) => {
                 justifyContent: 'space-evenly'
             }}>
                 <TouchableHighlight><Text>hi</Text></TouchableHighlight>
-                <Text>hi</Text>
+                <Text>{route.params.name}</Text>
                 <Text>hi</Text>
             </View>
             <View style ={{

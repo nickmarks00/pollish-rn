@@ -51,7 +51,7 @@ const PollView = (props) => {
         style={styles.post_image}
       />
       </View>
-      <View style={{borderBottomWidth: 5, borderColor: '#BAEAF8'}}>
+      <View style={styles.question_box}>
         <Text style={styles.post_question}>
           {props.question}
         </Text>
@@ -98,7 +98,7 @@ const PollView = (props) => {
                 <Button
       title="Comments"
       onPress={() =>
-        navigation.navigate('Comments', { name: 'Jane' })
+        navigation.navigate('Comments', { question: props.question, options_: props.choices })
       }
     />
       </View>
@@ -108,6 +108,12 @@ const PollView = (props) => {
 
 
 const styles = StyleSheet.create({
+
+  question_box: {
+    borderBottomWidth: 5, 
+    borderColor: '#BAEAF8',
+    padding:10,
+  },
 
   option: {
     flexDirection: 'row',
@@ -143,18 +149,24 @@ const styles = StyleSheet.create({
   post_option: {
     textAlign: 'center',
     padding: 10,
-    borderWidth: 3,
+    borderWidth: 1,
     borderColor: '#CCC',
     margin: 0,
     marginHorizontal: 30,
-    borderRadius: 10,
-    backgroundColor: '#FFF'
+    borderRadius: 20,
+    backgroundColor: '#FFF',
+    padding:10,
+    elevation:10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5, 
   },
 
   circle: {
     width: 40,
     height: 40,
-    backgroundColor: '#9F00A2',
+    backgroundColor: '#338397',
     borderWidth: 0,
     borderRadius: 100,
     justifyContent: 'center'

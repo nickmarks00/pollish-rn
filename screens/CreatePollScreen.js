@@ -1,44 +1,13 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React from 'react';
 import {View, Text, Dimensions, Image, Button, TextInput, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Camera } from 'expo-camera'
 import uuid from 'react-native-uuid'
-import {
-  useFonts,
-  Roboto_100Thin,
-  Roboto_100Thin_Italic,
-  Roboto_300Light,
-  Roboto_300Light_Italic,
-  Roboto_400Regular,
-  Roboto_400Regular_Italic,
-  Roboto_500Medium,
-  Roboto_500Medium_Italic,
-  Roboto_700Bold,
-  Roboto_700Bold_Italic,
-  Roboto_900Black,
-  Roboto_900Black_Italic,
-} from '@expo-google-fonts/roboto';
 
 const BASE_URL = 'http://192.168.1.140:8000';
 
 const dimensions = Dimensions.get("screen");
 
-const CreatePollScreen = (props) => {
-
-  let [fontsLoaded] = useFonts({
-    Roboto_100Thin,
-    Roboto_100Thin_Italic,
-    Roboto_300Light,
-    Roboto_300Light_Italic,
-    Roboto_400Regular,
-    Roboto_400Regular_Italic,
-    Roboto_500Medium,
-    Roboto_500Medium_Italic,
-    Roboto_700Bold,
-    Roboto_700Bold_Italic,
-    Roboto_900Black,
-    Roboto_900Black_Italic,
-  });
+const CreatePollScreen = () => {
 
   const [selectedImage, setSelectedImage] = React.useState([]);
 
@@ -147,7 +116,7 @@ const CreatePollScreen = (props) => {
           <ScrollView style={{height: dimensions.height/2.8}}>
             <Text
                 style={{
-                    fontFamily: 'Roboto_700Bold',
+                    fontFamily: 'SFRound',
                     fontSize: 20,
                     marginVertical: 15
                 }}>   What do you want to know?</Text>

@@ -5,11 +5,12 @@ import { Text } from 'react-native';
 import HomeScreen from './HomeScreen';
 import CommentSection from './Comments/CommentSection';
 import FullScreenImage from './FullScreenImage';
-import PollView from './PollView';
+import PollViewSearch from './PollViewSearch';
+import SearchScreen from './SearchScreen';
 
 const Stack = createNativeStackNavigator();
 
-const MyStack = () => {
+const SearchStack = () => {
     return (
         <Stack.Navigator
           screenOptions={{
@@ -18,7 +19,7 @@ const MyStack = () => {
           }}
         >
           <Stack.Screen 
-            options={{headerShown: false}} name="Home" component={HomeScreen}
+            options={{headerShown: false}} name="Home" component={SearchScreen}
             screenOptions={{
               transitionSpec: {
                 open: config,
@@ -26,14 +27,12 @@ const MyStack = () => {
               }
             }}
             />
-          <Stack.Screen name="Comments" component={CommentSection} />
-          <Stack.Screen name="FullScreen" component={FullScreenImage} options={{ headerShown: false}} />
-          <Stack.Screen name="PollFromSearch" component={PollView} options={{ headerShown: false}} />
+          <Stack.Screen name="PollFromSearch" component={PollViewSearch} options={{ headerShown: false}} />
         </Stack.Navigator>
     );
   };
 
-  export default MyStack;
+  export default SearchStack;
 
 const ProfileScreen = ({ navigation, route }) => {
     return <Text>This is {route.params.name}'s profile</Text>;

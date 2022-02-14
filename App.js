@@ -5,10 +5,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeStack from './screens/HomeStack';
 import CreatePollScreen from './screens/CreatePollScreen';
-import CommentSection from './screens/CommentSection';
 import LoginScreen from './screens/LoginScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import TestingScreen from './screens/TestSpace';
+import SearchScreen from './screens/SearchScreen';
+import SearchStack from './screens/SearchStack';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,7 +29,9 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen options={{headerShown: false}} name="Feed" component={HomeStack} />
         <Tab.Screen name="Create" component={CreatePollScreen} />
+        <Tab.Screen options={{headerShown: false}} name="Search" component={SearchStack}/>
         <Tab.Screen name="Login" component={LoginScreen} />
+        <Tab.Screen name="Testing" component={TestingScreen} />
       </Tab.Navigator>
     </NavigationContainer>
     // <NavigationContainer>

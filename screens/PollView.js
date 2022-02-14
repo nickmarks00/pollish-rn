@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Dimensions, Image, TouchableOpacity, StyleSheet, Button} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {View, Text, Dimensions, Image, TouchableOpacity, StyleSheet, Button, Animated} from 'react-native';
 import {BASE_IP} from '@env';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,9 @@ const PollView = (props) => {
   const navigation = useNavigation();
   const url = `http://${BASE_IP}/polls`;
 
+  const [index, setIndex] =useState(0);
+  const [progress, setProgress] = useState(new Animated.Value(0));
+
   let [fontsLoaded] = useFonts({
     'SFRound': require('../assets/fonts/SFRoundBold.ttf'),
   });
@@ -17,9 +20,27 @@ const PollView = (props) => {
     return <Text>Hi</Text>;
   }
 
+      const handlePress=()=>{
+        Animated.timing(progress, {
+            toValue:index+1,
+            duration:400,
+            useNativeDriver:false
+        }).start()
+    }
+
+    const progressAnim=progress.interpolate({
+        inputRange:[0, 4],
+        outputRange:["20%", "100%"],
+    });
+
+    const barWidth={
+        width:progressAnim
+    }
+
 
   // Add a vote to given poll in the backend
   const handleRegisterVote = async (id, votes) => {
+    handlePress();
     const requestOptions = {
       method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
@@ -46,10 +67,16 @@ const PollView = (props) => {
         height: dimensions.height,
       }}>
         <View style={{alignItems: 'center'}}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('FullScreen')
+        }
+      >
       <Image
         source={require('../assets/lebron.jpg')}
         style={styles.post_image}
       />
+      </TouchableOpacity>
       </View>
       <View style={styles.question_box}>
         <Text style={styles.post_question}>
@@ -65,11 +92,19 @@ const PollView = (props) => {
         }}>
         {props.choices.map((choice, index) => {
           return (
+            //handleRegisterVote(choice.id, choice.votes)
             <TouchableOpacity
               style={styles.post_option}
               key={index}
               onPress={() => handleRegisterVote(choice.id, choice.votes)}
             >
+              <Animated.View style={[{
+                position: 'absolute', 
+                backgroundColor: '#90C7FC', 
+                height: '100%', 
+                padding: 30, 
+                borderRadius: 17}, barWidth]}>
+              </Animated.View>
               <View style={styles.option}>
                 <View style={{width: dimensions.width/7}}>
                   <View style={styles.circle}><Text style={styles.inner_circle}>{String.fromCharCode(index+65)}</Text></View>
@@ -108,6 +143,15 @@ const PollView = (props) => {
 
 
 const styles = StyleSheet.create({
+
+  bar:{
+    backgroundColor:"#fc5c56",
+    height:100,
+    borderRadius:50,
+    position:"absolute",
+    top:100,
+    //left:-50,
+},
 
   question_box: {
     borderBottomWidth: 5, 
@@ -160,7 +204,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,
-    shadowRadius: 5, 
+    shadowRadius: 5,
   },
 
   circle: {

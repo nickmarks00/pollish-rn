@@ -15,6 +15,7 @@ const PollView = (props) => {
 
   let [fontsLoaded] = useFonts({
     'SFRound': require('../assets/fonts/SFRoundBold.ttf'),
+    'SFReg': require('../assets/fonts/SFRound.ttf'),
   });
   if (!fontsLoaded) {
     return <Text>Hi</Text>;

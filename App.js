@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeStack from './screens/HomeStack';
-import CreatePollScreen from './screens/CreatePollScreen';
+import CreateStack from './screens/CreatePoll/CreateStack';
 import LoginScreen from './screens/LoginScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -28,7 +28,7 @@ export default function App() {
     <NavigationContainer theme={MyTheme}>
       <Tab.Navigator>
         <Tab.Screen options={{headerShown: false}} name="Feed" component={HomeStack} />
-        <Tab.Screen name="Create" component={CreatePollScreen} />
+        <Tab.Screen name="Create" component={CreateStack} options={{headerShown: false}} />
         <Tab.Screen options={{headerShown: false}} name="Search" component={SearchStack}/>
         <Tab.Screen name="Login" component={LoginScreen} />
         <Tab.Screen name="Testing" component={TestingScreen} />

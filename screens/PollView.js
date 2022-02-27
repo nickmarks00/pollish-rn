@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, Dimensions, Image, TouchableOpacity, StyleSheet, Button, Animated} from 'react-native';
+import {View, Text, Dimensions, Image, TouchableOpacity, StyleSheet, Button, Animated, ScrollView} from 'react-native';
 import {BASE_IP} from '@env';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
@@ -60,44 +60,12 @@ const PollView = (props) => {
       }
     });
   };
-
-  return (
-    <View
-      style={{
-        width: dimensions.width,
-        height: dimensions.height,
-      }}>
-        <View style={{alignItems: 'center'}}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('FullScreen')
-        }
-      >
-      <Image
-        source={require('../assets/lebron.jpg')}
-        style={styles.post_image}
-      />
-      </TouchableOpacity>
-      </View>
-      <View style={styles.question_box}>
-        <Text style={styles.post_question}>
-          {props.question}
-        </Text>
-      </View>
-      <View
-        style={{
-          height: dimensions.width/1.5,
-          marginVertical: 5,
-          flexDirection: 'column',
-          justifyContent: 'space-evenly'
-        }}>
-        {props.choices.map((choice, index) => {
-          return (
-            //handleRegisterVote(choice.id, choice.votes)
-            <TouchableOpacity
-              style={styles.post_option}
-              key={index}
-              onPress={() => handleRegisterVote(choice.id, choice.votes)}
+  
+  const VoteButton = (props) => {
+    return(
+    <TouchableOpacity
+              style={props.choice.length > 3 ? styles.post_option : styles.post_option}
+              onPress={() => handleRegisterVote(props.choice.id, props.choice.votes)}
             >
               <Animated.View style={[{
                 position: 'absolute', 
@@ -112,14 +80,64 @@ const PollView = (props) => {
                 </View>
                 <View style={{width: dimensions.width/10}}/>
                 <View>
-                <Text style={styles.choice_text}>
-                  {choice.choice_text}
+                <Text style={styles.choice_text} adjustsFontSizeToFit={true} numberOfLines={2}>
+                  {props.choice.choice_text}
                 </Text>
                 </View>
                 <View style={{width: dimensions.width/10}}/>
                 <View style={{width: dimensions.width/7}}/>
               </View>
             </TouchableOpacity>
+    );
+  }
+
+  return (
+    <View
+      style={{
+        width: dimensions.width,
+        height: dimensions.height,
+      }}>
+        <View style={{alignItems: 'center'}}>
+          <ScrollView 
+          horizontal={true}
+          decelerationRate={0}
+          snapToAlignment="lefts"
+          snapToInterval={dimensions.width}
+          showsVerticalScrollIndicator={false}>
+            <View  style={{flexDirection: 'row'}}>
+            {props.images.map((choice, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('FullScreen')
+                  }
+                >
+                <Image
+                  source={{uri: "https://" + choice.image_src.slice(34)}}
+                  style={styles.post_image}
+                />
+                </TouchableOpacity>
+              )
+            })}
+            </View>
+          </ScrollView>
+      </View>
+      <View style={styles.question_box}>
+        <Text style={styles.post_question} adjustsFontSizeToFit={true} numberOfLines={2}>
+          {props.question}
+        </Text>
+      </View>
+      <View
+        style={{
+          height: dimensions.width/1.5,
+          marginVertical: 5,
+          flexDirection: 'column',
+          justifyContent: 'space-evenly'
+        }}>
+        {props.choices.map((choice, index) => {
+          return (
+            <VoteButton key={index} choice={choice}/>
           );
         })}
       </View>
@@ -186,8 +204,8 @@ const styles = StyleSheet.create({
 
   choice_text: {
     fontFamily: 'SFRound',
-    fontSize: 18,
     textAlign: 'center',
+    fontSize: 15,
     width: dimensions.width/3
   },
 
@@ -206,6 +224,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
+    height: dimensions.height/14
   },
 
   circle: {

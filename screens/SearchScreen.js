@@ -4,6 +4,7 @@ import {BASE_IP} from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { clickProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 import { useNavigation } from '@react-navigation/native';
+import SearchPollView from './SearchPollView';
 
 const dimensions = Dimensions.get('screen');
 
@@ -85,22 +86,8 @@ const SearchScreen = () => {
             <View>
                 {filteredData.map((post, idx) => {
                     return (
-                        <TouchableOpacity
-                                key={idx}
-                                onPress={() => 
-                                    navigation.navigate('PollFromSearch', {question: post.question_text, choices: post.choices})
-                                }
-                            >
-                        <View style={styles.post_container}>
-                            <Image
-                                source={require('../assets/lebron.jpg')}
-                                style={styles.post_image}
-                            />
-                            
-                                <Text style={styles.text}>{post.question_text}</Text>
-                            
-                        </View>
-                        </TouchableOpacity>
+                        <SearchPollView/>
+                        
                     )
                 })}
             </View>

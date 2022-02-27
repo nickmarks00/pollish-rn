@@ -16,7 +16,7 @@ const HomeScreen = () => {
   }, []);
 
   const fetchDataFromApi = async () => {
-    const url = `http://${BASE_IP}/polls/`;
+    const url = `http://${BASE_IP}/pollish/polls/`;
 
     setLoading(true);
 
@@ -49,18 +49,17 @@ const HomeScreen = () => {
           justifyContent: 'center',
           flexDirection: 'column',
         }}>
-        {posts.map((post, idx) => {
+        {posts.results?.map((post, idx) => {
           return (
             <PollView
               key={idx}
               question={post.question_text}
-              choices={post.choices}></PollView>
+              choices={post.choices}
+              images={post.images}></PollView>
           );
-        })}
+        }) || []}
       </View>
     </ScrollView>
-
-    // <Text key={idx}>{post.question_text}</Text>;
   );
 };
 

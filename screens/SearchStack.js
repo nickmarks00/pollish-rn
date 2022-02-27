@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 import HomeScreen from './HomeScreen';
-import CommentSection from './Comments/CommentSection';
+import CommentSection from './CommentScreens/CommentSection';
 import FullScreenImage from './FullScreenImage';
 import PollViewSearch from './PollViewSearch';
 import SearchScreen from './SearchScreen';

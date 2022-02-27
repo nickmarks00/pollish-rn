@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View, Text, StyleSheet, TextInput, Dimensions, Button, TouchableOpacity } from "react-native";
+import { useState } from 'react';
 
 const dimensions = Dimensions.get('screen');
 
@@ -14,13 +15,14 @@ const Category = (props) => {
 
 const QuestionPage = () => {
     const navigation = useNavigation();
+    const [text, setText] = useState('');
 
     return (
         <View style={styles.MainStyle}>
             <View/>
             <Text style={[{fontSize: 25}, styles.text]}>Create a Poll, Find out what others think!</Text>
             <Text style={[{fontSize: 20, textAlign: 'center'}, styles.text]}>What do you want to know?</Text>
-            <TextInput style={styles.input}>hi</TextInput>
+            <TextInput onChangeText={newText => setText(newText)} style={styles.input}>hi</TextInput>
             
             <Text style={[{fontSize: 20, textAlign: 'center'}, styles.text]}>Select up to 3 categories</Text>
             <View style={{flexDirection: 'row'}}>
@@ -29,7 +31,7 @@ const QuestionPage = () => {
             </View>
             <View/>
             <TouchableOpacity
-                onPress={() => navigation.navigate('2')}
+                onPress={() => navigation.navigate('2', {question: text})}
                 style={{borderRadius: 15, backgroundColor: '#83EFB1', paddingHorizontal: 40, paddingVertical: 10}}
             >
                 <Text style={{fontSize: 20, fontFamily: 'SFRound', color: '#FFF'}}>Next</Text>

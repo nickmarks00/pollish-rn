@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Dimensions, Button} from 'react-native';
 
-import PollView from './PollView';
+import PollView from './PollScreens/PollView';
 import {BASE_IP} from '@env';
 
 const dimensions = Dimensions.get('screen');
@@ -36,6 +36,27 @@ const HomeScreen = () => {
       });
   };
 
+  const fetchDataFromApi2 = (props) => {
+    const url = props.url;
+
+    setLoading(true);
+
+    const res = fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   return (
     <ScrollView
       decelerationRate={0}
@@ -50,12 +71,16 @@ const HomeScreen = () => {
           flexDirection: 'column',
         }}>
         {posts.results?.map((post, idx) => {
+          if(posts.length - 2 === idx)
+            fetchDataFromApi2(posts.next)
+
           return (
             <PollView
               key={idx}
               question={post.question_text}
               choices={post.choices}
-              images={post.images}></PollView>
+              images={post.images}
+              post={post}></PollView>
           );
         }) || []}
       </View>

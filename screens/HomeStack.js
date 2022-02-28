@@ -2,8 +2,8 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import CommentSection from './CommentScreens/CommentSection';
-import FullScreenImage from './FullScreenImage';
-import PollView from './PollView';
+import FullScreenImage from './PollScreens/FullScreenImage';
+import PollView from './PollScreens/PollView';
 
 const Stack = createNativeStackNavigator();
 

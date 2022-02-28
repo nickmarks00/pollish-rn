@@ -5,26 +5,26 @@ const dimensions = Dimensions.get("screen")
 
 const SearchPollView = () => {
   return (
-    <View style={{height: dimensions.width/4, flexDirection: 'row', justifyContent: 'center'}}>
+    <View style={{height: dimensions.width/8, flexDirection: 'row', justifyContent: 'center'}}>
       <Image
         source={{uri: 'https://i.guim.co.uk/img/media/1ba7f8d5f1b4109acab48e0540983a8495fdf9d7/0_357_5521_3313/master/5521.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9f499df3073d1872dba937e1272aa062'
         }}
         style={{
-          width: dimensions.width/4,
-          height: dimensions.width/4,
-          borderRadius: dimensions.width/16
+          width: dimensions.width/8,
+          height: dimensions.width/8,
+          borderRadius: dimensions.width/32
         }}
       />
       <View style={{
-          padding: dimensions.width/48, width: dimensions.width*(2/3), alignItems: 'left', flexWrap: 'wrap',           alignContent: 'left', justifyContent: 'center'
+          padding: dimensions.width/96, width: dimensions.width*(2/3), alignItems: 'left', flexWrap: 'wrap',           alignContent: 'left', justifyContent: 'center'
       }}>
         <Text style={{
-            fontWeight: 'bold', fontSize: dimensions.width/30, marginBottom: dimensions.width/40, color: '#2134DB'
+            fontWeight: 'bold', fontSize: dimensions.width/40, marginBottom: dimensions.width/80, color: '#2134DB'
         }}>
             Sports
         </Text>
         <Text style={styles.paragraph}>
-              Who is the greatest nba player dww dwdw dw dw
+              Who is the greatest nba player
         </Text>
       </View>
     </View>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   paragraph: {
-    fontSize: dimensions.width/28,
+    fontSize: dimensions.width/35,
     fontWeight: 'bold',
   },
 });

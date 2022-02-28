@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, Dimensions, Image, TouchableOpacity, StyleSheet, Button, Animated, ScrollView} from 'react-native';
+import {View, Text, Dimensions, Image, TouchableOpacity, StyleSheet, Button, Animated} from 'react-native';
 import {BASE_IP} from '@env';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import PollImage from './PollImage';
+import PollQuestion from './PollQuestion';
+import { Options_Container, More_Options } from 'style/Poll_Style'
 
 const dimensions = Dimensions.get('screen');
 
@@ -14,8 +17,8 @@ const PollView = (props) => {
   const [progress, setProgress] = useState(new Animated.Value(0));
 
   let [fontsLoaded] = useFonts({
-    'SFRound': require('../assets/fonts/SFRoundBold.ttf'),
-    'SFReg': require('../assets/fonts/SFRound.ttf'),
+    'SFRound': require('../../assets/fonts/SFRoundBold.ttf'),
+    'SFReg': require('../../assets/fonts/SFRound.ttf'),
   });
   if (!fontsLoaded) {
     return <Text>Hi</Text>;
@@ -92,69 +95,25 @@ const PollView = (props) => {
   }
 
   return (
-    <View
-      style={{
-        width: dimensions.width,
-        height: dimensions.height,
-      }}>
-        <View style={{alignItems: 'center'}}>
-          <ScrollView 
-          horizontal={true}
-          decelerationRate={0}
-          snapToAlignment="lefts"
-          snapToInterval={dimensions.width}
-          showsVerticalScrollIndicator={false}>
-            <View  style={{flexDirection: 'row'}}>
-            {props.images.map((choice, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate('FullScreen')
-                  }
-                >
-                <Image
-                  source={{uri: "https://" + choice.image_src.slice(34)}}
-                  style={styles.post_image}
-                />
-                </TouchableOpacity>
-              )
-            })}
-            </View>
-          </ScrollView>
-      </View>
-      <View style={styles.question_box}>
-        <Text style={styles.post_question} adjustsFontSizeToFit={true} numberOfLines={2}>
-          {props.question}
-        </Text>
-      </View>
-      <View
-        style={{
-          height: dimensions.width/1.5,
-          marginVertical: 5,
-          flexDirection: 'column',
-          justifyContent: 'space-evenly'
-        }}>
+    <View style={{ width: dimensions.width, height: dimensions.height }}>
+      <PollImage images={props.images}/>
+      <PollQuestion question={props.question}/>
+      <View style={Options_Container}>
         {props.choices.map((choice, index) => {
           return (
             <VoteButton key={index} choice={choice}/>
           );
         })}
       </View>
-      <View style={{
-                height: dimensions.height*0.1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-evenly'
-            }}>
+      <View style={More_Options}>
                 <Text>More Stats</Text>
                 <Text>Report</Text>
                 <Button
-      title="Comments"
-      onPress={() =>
-        navigation.navigate('Comments', { question: props.question, options_: props.choices })
-      }
-    />
+                  title="Comments"
+                  onPress={() =>
+                    navigation.navigate('Comments', { img: props.images[0].image_src, question: props.question, options_: props.choices, uid: props.post.user.id, pid: props.post.id})
+                  }
+                  />
       </View>
     </View>
   );
@@ -169,14 +128,7 @@ const styles = StyleSheet.create({
     borderRadius:50,
     position:"absolute",
     top:100,
-    //left:-50,
 },
-
-  question_box: {
-    borderBottomWidth: 5, 
-    borderColor: '#BAEAF8',
-    padding:10,
-  },
 
   option: {
     flexDirection: 'row',
@@ -191,15 +143,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 0,
     marginTop: 0,
-  },
-
-  post_question: {
-    fontFamily: 'SFRound',
-    textAlign: 'center',
-    fontSize: 20,
-    marginTop: 0,
-    borderBottomWidth: 3,
-    borderBottomColor: '#EBD494',
   },
 
   choice_text: {

@@ -5,12 +5,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeStack from './screens/HomeStack';
 import CreateStack from './screens/CreatePollScreens/CreateStack';
-import LoginScreen from './screens/LoginScreen';
-import WelcomeScreen from './screens/WelcomeScreen';
-import RegisterScreen from './screens/RegisterScreen';
+import LoginScreen from './screens/AuthScreens/LoginScreen';
+import WelcomeScreen from './screens/AuthScreens/WelcomeScreen';
+import RegisterScreen from './screens/AuthScreens/RegisterScreen';
 import TestingScreen from './screens/TestSpace';
-import SearchScreen from './screens/SearchScreen';
-import SearchStack from './screens/SearchStack';
+import SearchScreen from './screens/SearchScreens/SearchScreen';
+import SearchStack from './screens/SearchScreens/SearchStack';
 import ProfilePage from './screens/ProfilePage';
 
 const Stack = createNativeStackNavigator();

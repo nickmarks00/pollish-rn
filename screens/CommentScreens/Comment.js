@@ -7,9 +7,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 const Comment = ({ item }) => (
-    <View style={{
-        flexDirection: 'row'
-    }}>
+    <View style={{ flexDirection: 'row' }}>
         <View style={{width: 20}}></View>
         <View style={{
             borderWidth: 2,

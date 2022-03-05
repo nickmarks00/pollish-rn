@@ -54,7 +54,7 @@ function LoginScreen({navigation, ...props}) {
     <AppScreen style={styles.container}>
       <Image
         style={styles.logo}
-        source={require('../assets/pollish-logo-black.png')}
+        source={require('../../assets/pollish-logo-black.png')}
       />
 
       <AppForm

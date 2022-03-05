@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Dimensions} from 'react-native';
 
-import PollView from './PollView';
-import {BASE_URL} from '@env';
+import PollView from './PollScreens/PollView';
+import {BASE_IP} from '@env';
 
 const dimensions = Dimensions.get('screen');
 
@@ -16,7 +16,28 @@ const HomeScreen = () => {
   }, []);
 
   const fetchDataFromApi = async () => {
-    const url = `http://${BASE_URL}/pollish/polls/`;
+    const url = `http://${BASE_IP}/pollish/polls/`;
+
+    setLoading(true);
+
+    const res = fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  const fetchDataFromApi2 = props => {
+    const url = props.url;
 
     setLoading(true);
 
@@ -49,18 +70,20 @@ const HomeScreen = () => {
           justifyContent: 'center',
           flexDirection: 'column',
         }}>
-        {posts.map((post, idx) => {
+        {posts.results?.map((post, idx) => {
+          if (posts.length - 2 === idx) fetchDataFromApi2(posts.next);
+
           return (
             <PollView
               key={idx}
               question={post.question_text}
-              choices={post.choices}></PollView>
+              choices={post.choices}
+              images={post.images}
+              post={post}></PollView>
           );
-        })}
+        }) || []}
       </View>
     </ScrollView>
-
-    // <Text key={idx}>{post.question_text}</Text>;
   );
 };
 

@@ -12,7 +12,7 @@ const FullScreenImage = (props) => {
     return (
         <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '100%', backgroundColor: 'black'}}>
             <ImageBackground 
-                source={require('../assets/lebron.jpg')}
+                source={require('../../assets/lebron.jpg')}
                 style={{width: deviceWidth/2,
                     height: deviceWidth/2,
                     resizeMode: "contain",

@@ -3,9 +3,8 @@
 */}
 
 import React from 'react'
-import {View, TextInput, StyleSheet, Button, Dimensions} from 'react-native';
-
-const dimensions = Dimensions.get('screen');
+import {View, TextInput, Button} from 'react-native';
+import { Comment_Input } from 'style/Comments_Style';
 
 const CreateComment = () => {
 
@@ -20,7 +19,7 @@ const CreateComment = () => {
     return (
         <View style ={{ justifyContent: 'flex-end', padding: 10, flexDirection: 'row', alignItems: 'center'}}>
             <TextInput
-            style={styles.comment_input}
+            style={Comment_Input}
             onChangeText={onChangeText}
             value={text}
             placeholder="What do you want to know?"
@@ -36,16 +35,3 @@ const CreateComment = () => {
 }
 
 export default CreateComment;
-
-
-const styles = StyleSheet.create({
-    comment_input: {
-        height: 40,
-        width: dimensions.width/1.3,
-        margin: 12,
-        borderWidth: 1,
-        borderRadius: 15,
-        borderColor: '#BBB',
-        padding: 10,
-      },
-})

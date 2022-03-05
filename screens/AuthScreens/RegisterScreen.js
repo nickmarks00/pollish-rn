@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {BASE_URL} from '@env';
 
-import Screen from './AppScreen';
+import Screen from '../AppScreen';
 import {
   AppForm as Form,
   AppFormField as FormField,

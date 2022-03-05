@@ -9,6 +9,7 @@ const ChoicesPage = () => {
             alignItems: 'center',
         }}>
         <Text>hi</Text>
+        <Text></Text>
         </View>
     )
 }

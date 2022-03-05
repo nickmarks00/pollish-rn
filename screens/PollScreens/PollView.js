@@ -3,6 +3,9 @@ import {View, Text, Dimensions, Image, TouchableOpacity, StyleSheet, Button, Ani
 import {BASE_IP} from '@env';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import PollImage from './PollImage';
+import PollQuestion from './PollQuestion';
+import { Options_Container, More_Options } from 'style/Poll_Style'
 
 const dimensions = Dimensions.get('screen');
 
@@ -14,8 +17,8 @@ const PollView = (props) => {
   const [progress, setProgress] = useState(new Animated.Value(0));
 
   let [fontsLoaded] = useFonts({
-    'SFRound': require('../assets/fonts/SFRoundBold.ttf'),
-    'SFReg': require('../assets/fonts/SFRound.ttf'),
+    'SFRound': require('../../assets/fonts/SFRoundBold.ttf'),
+    'SFReg': require('../../assets/fonts/SFRound.ttf'),
   });
   if (!fontsLoaded) {
     return <Text>Hi</Text>;
@@ -60,44 +63,12 @@ const PollView = (props) => {
       }
     });
   };
-
-  return (
-    <View
-      style={{
-        width: dimensions.width,
-        height: dimensions.height,
-      }}>
-        <View style={{alignItems: 'center'}}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('FullScreen')
-        }
-      >
-      <Image
-        source={require('../assets/lebron.jpg')}
-        style={styles.post_image}
-      />
-      </TouchableOpacity>
-      </View>
-      <View style={styles.question_box}>
-        <Text style={styles.post_question}>
-          {props.question}
-        </Text>
-      </View>
-      <View
-        style={{
-          height: dimensions.width/1.5,
-          marginVertical: 5,
-          flexDirection: 'column',
-          justifyContent: 'space-evenly'
-        }}>
-        {props.choices.map((choice, index) => {
-          return (
-            //handleRegisterVote(choice.id, choice.votes)
-            <TouchableOpacity
-              style={styles.post_option}
-              key={index}
-              onPress={() => handleRegisterVote(choice.id, choice.votes)}
+  
+  const VoteButton = (props) => {
+    return(
+    <TouchableOpacity
+              style={props.choice.length > 3 ? styles.post_option : styles.post_option}
+              onPress={() => handleRegisterVote(props.choice.id, props.choice.votes)}
             >
               <Animated.View style={[{
                 position: 'absolute', 
@@ -112,31 +83,37 @@ const PollView = (props) => {
                 </View>
                 <View style={{width: dimensions.width/10}}/>
                 <View>
-                <Text style={styles.choice_text}>
-                  {choice.choice_text}
+                <Text style={styles.choice_text} adjustsFontSizeToFit={true} numberOfLines={2}>
+                  {props.choice.choice_text}
                 </Text>
                 </View>
                 <View style={{width: dimensions.width/10}}/>
                 <View style={{width: dimensions.width/7}}/>
               </View>
             </TouchableOpacity>
+    );
+  }
+
+  return (
+    <View style={{ width: dimensions.width, height: dimensions.height }}>
+      <PollImage images={props.images}/>
+      <PollQuestion question={props.question}/>
+      <View style={Options_Container}>
+        {props.choices.map((choice, index) => {
+          return (
+            <VoteButton key={index} choice={choice}/>
           );
         })}
       </View>
-      <View style={{
-                height: dimensions.height*0.1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-evenly'
-            }}>
+      <View style={More_Options}>
                 <Text>More Stats</Text>
                 <Text>Report</Text>
                 <Button
-      title="Comments"
-      onPress={() =>
-        navigation.navigate('Comments', { question: props.question, options_: props.choices })
-      }
-    />
+                  title="Comments"
+                  onPress={() =>
+                    navigation.navigate('Comments', { img: props.images[0].image_src, question: props.question, options_: props.choices, uid: props.post.user.id, pid: props.post.id})
+                  }
+                  />
       </View>
     </View>
   );
@@ -151,14 +128,7 @@ const styles = StyleSheet.create({
     borderRadius:50,
     position:"absolute",
     top:100,
-    //left:-50,
 },
-
-  question_box: {
-    borderBottomWidth: 5, 
-    borderColor: '#BAEAF8',
-    padding:10,
-  },
 
   option: {
     flexDirection: 'row',
@@ -175,19 +145,10 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
 
-  post_question: {
-    fontFamily: 'SFRound',
-    textAlign: 'center',
-    fontSize: 20,
-    marginTop: 0,
-    borderBottomWidth: 3,
-    borderBottomColor: '#EBD494',
-  },
-
   choice_text: {
     fontFamily: 'SFRound',
-    fontSize: 18,
     textAlign: 'center',
+    fontSize: 15,
     width: dimensions.width/3
   },
 
@@ -206,6 +167,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
+    height: dimensions.height/14
   },
 
   circle: {

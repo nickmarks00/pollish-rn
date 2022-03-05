@@ -1,18 +1,18 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, View, Image, Text} from 'react-native';
 
-import AppButton from '../components/AppButton';
+import AppButton from '../../components/AppButton';
 
 function WelcomeScreen({navigation}) {
   return (
     <ImageBackground
       blurRadius={10}
       style={styles.background}
-      source={require('../assets/background.jpg')}>
+      source={require('../../assets/background.jpg')}>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
-          source={require('../assets/pollish-logo.png')}
+          source={require('../../assets/pollish-logo.png')}
         />
       </View>
       <View style={styles.buttonsContainer}>

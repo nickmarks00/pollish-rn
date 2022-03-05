@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
-import PollView from './PollView';
+import PollView from '../PollScreens/PollView';
 
 const dimensions = Dimensions.get('screen');
 

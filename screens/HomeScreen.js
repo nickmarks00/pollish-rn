@@ -3,13 +3,15 @@ import {View, Text, ScrollView, Dimensions, Button} from 'react-native';
 
 import PollView from './PollScreens/PollView';
 import {BASE_IP} from '@env';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
-const dimensions = Dimensions.get('screen');
+const dimensions = Dimensions.get('window');
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
+  const tabBarHeight = useBottomTabBarHeight();
 
   useEffect(() => {
     fetchDataFromApi();
@@ -61,7 +63,7 @@ const HomeScreen = () => {
     <ScrollView
       decelerationRate={0}
       snapToAlignment="lefts"
-      snapToInterval={dimensions.height}
+      snapToInterval={dimensions.height  - tabBarHeight}
       showsVerticalScrollIndicator={false}>
       <View
         style={{

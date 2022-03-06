@@ -13,6 +13,64 @@ const Category = (props) => {
     );
 }
 
+// Function for adding new comment
+const Post_Comment = () => {
+
+    fetch("http://192.168.1.140:8000/pollish/polls/", {
+            method: "POST",
+            headers: { Accept: "application/json", 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question_text: "hi",
+            })
+            }).then(() => {
+                console.log(JSON.stringify({
+                    question_text: "hi",
+                    choices: [
+                        {
+                            "choice_text": "vivamus tortor duis mattis egestas metus aenean",
+                            "id": 408,
+                            "users": [],
+                            "votes": 41
+                        },
+                        {
+                            "choice_text": "est quam pharetra magna",
+                            "id": 636,
+                            "users": [],
+                            "votes": 66
+                        },
+                        {
+                            "choice_text": "arcu adipiscing molestie hendrerit at vulputate",
+                            "id": 894,
+                            "users": [],
+                            "votes": 7
+                        }
+                    ],
+                    images: [
+                        {
+                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/142x177.png/ff4444/ffffff",
+                            "choice_id": null,
+                            "poll_id": 1
+                        },
+                        {
+                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/117x245.png/ff4444/ffffff",
+                            "choice_id": 225,
+                            "poll_id": 1
+                        },
+                        {
+                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/155x123.png/cc0000/ffffff",
+                            "choice_id": 573,
+                            "poll_id": 1
+                        },
+                        {
+                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/129x211.png/cc0000/ffffff",
+                            "choice_id": 808,
+                            "poll_id": 1
+                        }
+                    ],
+                }))
+            })
+}
+
 const QuestionPage = () => {
     const navigation = useNavigation();
     const [text, setText] = useState('');

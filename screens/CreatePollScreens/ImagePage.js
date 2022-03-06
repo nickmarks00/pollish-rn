@@ -250,7 +250,7 @@ const ImagePage = () => {
             </View>   
             <View/>
             <TouchableOpacity
-                onPress={Post_Comment} //() => navigation.navigate('3')}
+                onPress={() => navigation.navigate('3')}
                 style={{borderRadius: 15, backgroundColor: '#83EFB1', paddingHorizontal: 40, paddingVertical: 20}}
             >
                 <Text style={{fontSize: 20, fontFamily: 'SFRound', color: '#FFF'}}>Next</Text>

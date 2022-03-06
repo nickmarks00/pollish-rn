@@ -34,10 +34,28 @@ const Options_Container = {
 
 // Container for storing additional options at base of poll (stats, report, comment)
 const More_Options = {
+    paddingVertical: '3%',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly'
 }
 
-export {Post_Image, Question_Box, Post_Question, Options_Container, More_Options} 
+// Circle colour on post option
+const Circle_Option = {
+    backgroundColor: '#338397',
+    borderRadius: dimensions.width/20,
+    justifyContent: 'center',
+    flex: 1
+}
+
+// Letter for post options
+const Option_Letter = {
+    textAlign: 'center',
+    color: 'white',
+    fontFamily: 'System',
+    fontWeight: 'bold',
+    fontSize: 20
+}
+
+export {Post_Image, Question_Box, Post_Question, Options_Container, More_Options, Circle_Option, Option_Letter} 

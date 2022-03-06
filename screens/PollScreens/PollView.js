@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, Text, Dimensions, Button, Modal} from 'react-native';
-import {BASE_IP} from '@env';
 import { useFonts } from 'expo-font';
 import {PollImage, PollQuestion, MoreOptions, OptionsContainer} from '.'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -8,7 +7,6 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 const dimensions = Dimensions.get('window');
 
 const PollView = (props) => {
-  const url = `http://${BASE_IP}/polls`;
 
   const [open, setOpen] = useState(false)
   const tabBarHeight = useBottomTabBarHeight();
@@ -18,31 +16,8 @@ const PollView = (props) => {
     'SFReg': require('../../assets/fonts/SFRound.ttf'),
   });
   if (!fontsLoaded) {
-    return <Text>Hi</Text>;
+    return <Text>Loading Fonts</Text>;
   }
-
-
-  // Add a vote to given poll in the backend
-  const handleRegisterVote = async (id, votes) => {
-    handlePress();
-    const requestOptions = {
-      method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        id: id,
-        votes: votes,
-        choice_text: 'test',
-      }),
-    };
-
-    fetch(`${url}/test`, requestOptions).then(res => {
-      if (res.ok) {
-        console.log('vote registered success');
-      } else {
-        console.error('vote register fail');
-      }
-    });
-  };
 
   return (
     <View style={{ width: dimensions.width, height: dimensions.height - tabBarHeight}}>

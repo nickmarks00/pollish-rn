@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, Text, StyleSheet, Dimensions, Button, TouchableOpacity, Image} from 'react-native';
+import {View, TextInput, StyleSheet, Dimensions, Button, ScrollView} from 'react-native';
 import {BASE_IP} from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { clickProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
@@ -25,7 +25,7 @@ const SearchScreen = () => {
       }, []);
 
       const fetchDataFromApi = async () => {
-        const url = `http://${BASE_IP}/polls/`;
+        const url = `http://${BASE_IP}/pollish/polls/`;
     
         setLoading(true);
     
@@ -37,8 +37,8 @@ const SearchScreen = () => {
         })
           .then(res => res.json())
           .then(data => {
-            setPosts(data);
-            setfilteredData(data);
+            setPosts(data.results);
+            setfilteredData(data.results);
             setLoading(false);
           })
           .catch(error => {
@@ -82,15 +82,17 @@ const SearchScreen = () => {
                 accessibilityLabel="Learn more about this purple button"
                 />
             </View>
-
-            <View>
-                {filteredData.map((post, idx) => {
-                    return (
-                        <SearchPollView/>
-                        
-                    )
-                })}
-            </View>
+            
+            <ScrollView>
+                <View>
+                    {filteredData.map((post, idx) => {
+                        return (
+                            <SearchPollView key={idx} question={post.question_text} img={post.images[0].image_src}/>
+                            
+                        )
+                    })}
+                </View>
+            </ScrollView>
         </View>
     )
 }

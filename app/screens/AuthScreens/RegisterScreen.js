@@ -1,18 +1,19 @@
-import React, {useContext} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import * as Yup from 'yup';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {BASE_URL} from '@env';
+
+import usersApi from '../../api/users';
+import authApi from '../../api/authApi';
+import useAuth from '../../auth/useAuth';
 
 import Screen from '../AppScreen';
 import {
   AppForm as Form,
   AppFormField as FormField,
   SubmitButton,
-} from '../components/forms';
-import {AuthUserContext} from '../lib/context';
-import {useAuthData} from '../lib/hooks';
+} from '../../components/forms';
 
 // TODO Change uniqueness validation to only run after keyboard debounced
 // TODO Uniqueness test for username runs when changes to email field and vice-versa
@@ -73,58 +74,28 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen({navigation}) {
-  const handleUserRegister = async values => {
-    const url = `http://${BASE_URL}/auth/users/`;
+  const auth = useAuth();
+  const [registerFailed, setRegisterFailed] = useState(false);
 
+  const handleUserRegister = async values => {
     // matching field names of UserCreateSerializer
     values['first_name'] = values['firstName'];
     delete values['firstName'];
     values['last_name'] = values['lastName'];
     delete values['lastName'];
 
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
+    const registerApi = await usersApi.register(values);
+    console.log(registerApi);
+    const loginApi = await authApi.login(values.username, values.password);
 
-    const request = await fetch(url, options);
-    const response = await request.json();
-
-    // TODO - consolidate logic here and in login screen into a hook because it's fairly identical
-    const loginUrl = `http://${BASE_URL}/auth/jwt/create`;
-
-    const loginOptions = {
-      method: 'POST',
-      body: JSON.stringify({
-        username: values.username,
-        password: values.password,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    try {
-      const loginRequest = await fetch(loginUrl, loginOptions);
-      if (loginRequest.status === 200) {
-        const loginResponse = await loginRequest.json();
-        await AsyncStorage.setItem(
-          'pollish_user_Token',
-          JSON.stringify(loginResponse),
-        );
-
-        const user = useContext(AuthUserContext);
-
-        if (!user) {
-          user = useAuthData();
-        }
-
-        navigation.navigate('Profile');
-      }
-    } catch (e) {
-      console.error(e);
+    if (loginApi.status === 200) {
+      // access token exists and still valid
+      setRegisterFailed(false);
+      const tokens = await loginApi.json();
+      // console.log(tokens);
+      auth.logIn(tokens);
+    } else {
+      setRegisterFailed(true);
     }
   };
 

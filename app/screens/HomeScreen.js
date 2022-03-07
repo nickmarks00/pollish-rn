@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Dimensions} from 'react-native';
 
 import PollView from './PollScreens/PollView';
-import {BASE_IP} from '@env';
+import {BASE_URL} from '@env';
 
 const dimensions = Dimensions.get('screen');
 
@@ -16,7 +16,7 @@ const HomeScreen = () => {
   }, []);
 
   const fetchDataFromApi = async () => {
-    const url = `http://${BASE_IP}/pollish/polls/`;
+    const url = `http://${BASE_URL}/pollish/polls/`;
 
     setLoading(true);
 
@@ -36,26 +36,26 @@ const HomeScreen = () => {
       });
   };
 
-  const fetchDataFromApi2 = props => {
-    const url = props.url;
+  // const fetchDataFromApi2 = async props => {
+  //   const url = props.url;
 
-    setLoading(true);
+  //   setLoading(true);
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (response.status >= 200 && response.status <= 299) {
-      const jsonResponse = await response.json();
-      setPosts(jsonResponse['results']);
-      setLoading(false);
-    } else {
-      console.error(response.status, response.statusText);
-      setError(true);
-    }
-  };
+  //   const response = await fetch(url, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
+  //   if (response.status >= 200 && response.status <= 299) {
+  //     const jsonResponse = await response.json();
+  //     setPosts(jsonResponse['results']);
+  //     setLoading(false);
+  //   } else {
+  //     console.error(response.status, response.statusText);
+  //     setError(true);
+  //   }
+  // };
 
   return (
     <ScrollView

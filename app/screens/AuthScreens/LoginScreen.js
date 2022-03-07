@@ -1,15 +1,13 @@
-import React, {useContext} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Image} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import * as Yup from 'yup';
 
-import {AuthUserContext} from '../lib/context';
+import authApi from '../../api/authApi';
+import useAuth from '../../auth/useAuth';
 
-import {BASE_URL} from '@env';
-
-import AppScreen from './AppScreen';
-import {AppForm, AppFormField, SubmitButton} from '../components/forms';
-import {useAuthData} from '../lib/hooks';
+import AppScreen from '../AppScreen';
+import {AppForm, AppFormField, SubmitButton} from '../../components/forms';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required().label('Username'),
@@ -17,36 +15,21 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({navigation, ...props}) {
-  const handleUserLogin = async values => {
-    const url = `http://${BASE_URL}/auth/jwt/create`;
+  // const {user, setUser} = useContext(AuthContext);
+  const [loginFailed, setLoginFailed] = useState(false);
 
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    try {
-      const request = await fetch(url, options);
-      if (request.status === 200) {
-        const response = await request.json();
-        await AsyncStorage.setItem(
-          '@pollish_user_Token',
-          JSON.stringify(response),
-        );
-        console.log(response);
+  const auth = useAuth();
 
-        const user = useContext(AuthUserContext);
-
-        if (!user) {
-          user = useAuthData();
-        }
-
-        navigation.navigate('Profile');
-      }
-    } catch (e) {
-      console.error(e);
+  const handleUserLogin = async ({username, password}) => {
+    const response = await authApi.login(username, password);
+    if (response.status === 200) {
+      // access token exists and still valid
+      setLoginFailed(false);
+      const tokens = await response.json();
+      // console.log(tokens);
+      auth.logIn(tokens);
+    } else {
+      setLoginFailed(true);
     }
   };
 
@@ -59,7 +42,7 @@ function LoginScreen({navigation, ...props}) {
 
       <AppForm
         initialValues={{username: '', password: ''}}
-        onSubmit={values => handleUserLogin(values)}
+        onSubmit={handleUserLogin}
         validationSchema={validationSchema}>
         <AppFormField
           autoCapitalize="none"

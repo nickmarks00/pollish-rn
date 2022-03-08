@@ -1,46 +1,45 @@
-import * as React from 'react';
-import {NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useState} from 'react';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import AppLoading from 'expo-app-loading';
 
-import HomeStack from './screens/HomeStack';
-import CreateStack from './screens/CreatePollScreens/CreateStack';
-import LoginScreen from './screens/AuthScreens/LoginScreen';
-import WelcomeScreen from './screens/AuthScreens/WelcomeScreen';
-import RegisterScreen from './screens/AuthScreens/RegisterScreen';
-import TestingScreen from './screens/TestSpace';
-import SearchScreen from './screens/SearchScreens/SearchScreen';
-import SearchStack from './screens/SearchScreens/SearchStack';
-import ProfilePage from './screens/ProfilePage';
+import {AuthContext} from './app/auth/context';
+import authStorage from './app/auth/storage';
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+import AuthNavigator from './app/navigation/AuthNavigator';
+import AppNavigator from './app/navigation/AppNavigator';
 
 const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'white'
+    background: 'white',
   },
 };
 
 export default function App() {
+  const [user, setUser] = useState();
+  const [isReady, setIsReady] = useState(false);
+
+  const restoreUser = async () => {
+    const user = await authStorage.getUser();
+    if (user) setUser(user);
+  };
+
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={restoreUser}
+        onFinish={() => setIsReady(true)}
+        onError={console.warn}
+      />
+    );
+  }
+
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Tab.Navigator>
-        <Tab.Screen options={{headerShown: false}} name="Feed" component={HomeStack} />
-        <Tab.Screen name="Create" component={CreateStack} options={{headerShown: false}} />
-        <Tab.Screen options={{headerShown: false}} name="Search" component={SearchStack}/>
-        <Tab.Screen name="Login" component={LoginScreen} />
-        <Tab.Screen options={{headerShown: false}} name="Profile" component={ProfilePage} />
-      </Tab.Navigator>
-    </NavigationContainer>
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen name="Welcome" component={WelcomeScreen} />
-    //     <Stack.Screen name="Login" component={LoginScreen} />
-    //     <Stack.Screen name="Register" component={RegisterScreen} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+    <AuthContext.Provider value={{user, setUser}}>
+      <NavigationContainer theme={MyTheme}>
+        {user ? <AppNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }

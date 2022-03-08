@@ -5,7 +5,7 @@ import { Question_Box, Post_Question } from 'style/Poll_Style'
 const PollQuestion = (props) => {
     return (
         <View style={Question_Box}>
-          <Text style={Post_Question} adjustsFontSizeToFit={true} numberOfLines={2}>
+          <Text adjustsFontSizeToFit numberOfLines={2} style={Post_Question}>
             {props.question}
           </Text>
         </View>

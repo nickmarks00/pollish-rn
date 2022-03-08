@@ -6,7 +6,7 @@ const dimensions = Dimensions.get('screen');
 
 const PollImage = (props) => {
     return(
-        <View style={{alignItems: 'center'}}>
+        <View style={{alignItems: 'center', flex: 1}}>
                 <ScrollView 
                 horizontal={true}
                 decelerationRate={0}

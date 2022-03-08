@@ -3,7 +3,7 @@
 */}
 
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList, KeyboardAvoidingView} from 'react-native';
+import {View, Text, FlatList, KeyboardAvoidingView, ScrollView} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import Comment from './Comment';
@@ -42,7 +42,7 @@ const CommentSection = (props) => {
             .catch(error => {
             console.error(error);
             });
-        };
+    };
 
 
     // Load fonts
@@ -61,7 +61,7 @@ const CommentSection = (props) => {
         <View style ={{flex: 1}}>
 
             {/* Top Section (Contains details about post) */}
-            <View style={{ borderBottomWidth: 2 }}>
+            <View style={{ borderBottomWidth: 1 }}>
 
                 {/* Container with post image and question */}
                 <PostInformation/>
@@ -77,11 +77,13 @@ const CommentSection = (props) => {
             >
                 {/* Section where comments are rendered */}
                 <View style ={{ flex: 1 }}>
-                    {comments_.map((comment, index) => {
-                        return (
-                            <Text key={index}>{comment.comment_text}</Text>
-                        )
-                    })}
+                    <ScrollView>
+                        {comments_.map((comment, index) => {
+                            return (
+                                <Text style={{textAlign: 'left', padding: 10}} key={index}>{comment.comment_text}</Text>
+                            )
+                        })}
+                    </ScrollView>
                 </View>
 
                 {/* Section to type and post comments*/}

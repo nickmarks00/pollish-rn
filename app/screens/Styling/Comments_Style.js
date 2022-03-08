@@ -62,7 +62,8 @@ const Option_Text = {
 }
 
 const Choice_Buttons = {
-    width: dimensions.width/4,
+    flex: 1,
+    marginHorizontal: '2%',
     height: dimensions.width/12,
     borderRadius: dimensions.width/20,
     backgroundColor: '#90C7FC',

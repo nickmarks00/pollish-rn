@@ -6,12 +6,113 @@ import {StyleSheet, Text, View, TouchableOpacity, Image, Dimensions} from 'react
 const dimensions = Dimensions.get("screen");
 
 const ImagePage = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
     const [selectedImage, setSelectedImage] = React.useState('');
     const [selectedImage2, setSelectedImage2] = React.useState('');
     const [selectedImage3, setSelectedImage3] = React.useState('');
     const [selectedImage4, setSelectedImage4] = React.useState('');
+
+  const Post_Comment = () => {
+
+    fetch("http://192.168.1.140:8000/pollish/polls/", {
+            method: "POST",
+            headers: { Accept: "application/json", 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                question_text: "hi",
+                choices: [
+                  {
+                      "choice_text": "vivamus tortor duis mattis egestas metus aenean",
+                      "id": 408,
+                      "users": [],
+                      "votes": 41
+                  },
+                  {
+                      "choice_text": "est quam pharetra magna",
+                      "id": 636,
+                      "users": [],
+                      "votes": 66
+                  },
+                  {
+                      "choice_text": "arcu adipiscing molestie hendrerit at vulputate",
+                      "id": 894,
+                      "users": [],
+                      "votes": 7
+                  }
+              ],
+              images: [
+                  {
+                      "image_src": selectedImage,
+                      "choice_id": null,
+                      "poll_id": 1
+                  },
+                  {
+                      "image_src": selectedImage,
+                      "choice_id": 225,
+                      "poll_id": 1
+                  },
+                  {
+                      "image_src": selectedImage,
+                      "choice_id": 573,
+                      "poll_id": 1
+                  },
+                  {
+                      "image_src": selectedImage,
+                      "choice_id": 808,
+                      "poll_id": 1
+                  }
+              ],
+            })
+            }).then(() => {
+                console.log(JSON.stringify({
+                    question_text: "hi",
+                    choices: [
+                        {
+                            "choice_text": "vivamus tortor duis mattis egestas metus aenean",
+                            "id": 408,
+                            "users": [],
+                            "votes": 41
+                        },
+                        {
+                            "choice_text": "est quam pharetra magna",
+                            "id": 636,
+                            "users": [],
+                            "votes": 66
+                        },
+                        {
+                            "choice_text": "arcu adipiscing molestie hendrerit at vulputate",
+                            "id": 894,
+                            "users": [],
+                            "votes": 7
+                        }
+                    ],
+                    images: [
+                        {
+                            "image_src": selectedImage,
+                            "choice_id": null,
+                            "poll_id": 1
+                        },
+                        {
+                            "image_src": selectedImage,
+                            "choice_id": 225,
+                            "poll_id": 1
+                        },
+                        {
+                            "image_src": selectedImage,
+                            "choice_id": 573,
+                            "poll_id": 1
+                        },
+                        {
+                            "image_src": selectedImage,
+                            "choice_id": 808,
+                            "poll_id": 1
+                        }
+                    ],
+                }))
+            })
+}
+
+    
 
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();

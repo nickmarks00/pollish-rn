@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import {BASE_URL} from '@env';
+import { computeWindowedRenderLimits } from 'react-native/Libraries/Lists/VirtualizeUtils';
 
 // TODO Change to a .env secret
 const key = 'pollish_User';
@@ -26,6 +27,7 @@ const getUser = async () => {
   if (!tokens) return null;
 
   const url = `http://${BASE_URL}/auth/users/me`;
+  console.log(tokens);
 
   const options = {
     method: 'GET',

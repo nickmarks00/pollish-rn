@@ -34,11 +34,11 @@ const PollView = (props) => {
       {/* End Modal Popup */}
 
       {/* Main Poll View */}
-      <View style={{flex: 5}}><PollImage images={props.images}/></View>
-      <View style={{flex: 1}}><PollQuestion question={props.question}/></View>
-      <View style={{ height: 5, backgroundColor: '#BAEAF8' }}/>
-      <View style={{flex: 6}}><OptionsContainer choices={props.choices}/></View>
-      <View style={{flex: 1}}><MoreOptions post={props.post}/></View>
+      <View style={{flex: 8}}><PollImage images={props.images}/></View>
+      <View style={{flex: 0.3, backgroundColor: '#1F71EB'}}/>
+      <View style={{flex: 3}}><PollQuestion question={props.question}/></View>
+      <View style={{flex: 6}}><OptionsContainer choices={props.choices} votes={props.post.votes}/></View>
+      <View style={{flex: 2}}><MoreOptions post={props.post}/></View>
       {/* End Main Poll View */}
 
     </View>

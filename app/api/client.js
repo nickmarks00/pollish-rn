@@ -1,3 +1,5 @@
+import {BASE_URL} from '@env';
+
 const url = `http://${BASE_URL}/auth/jwt/create`;
 
 const options = {

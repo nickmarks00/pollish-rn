@@ -31,6 +31,7 @@ function LoginScreen({navigation, ...props}) {
     } else {
       setLoginFailed(true);
     }
+    console.log(loginFailed);
   };
 
   return (
@@ -71,8 +72,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logo: {
-    height: 250,
-    width: 250,
+    height: 200,
+    width: 200,
     alignSelf: 'center',
     marginTop: 50,
     marginBottom: 20,

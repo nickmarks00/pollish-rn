@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import {Circle_Option, Option_Letter} from 'style/Poll_Style';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import {Circle_Option, Option_Letter, Inner_Option_Container, Option_Text, Post_Option} from 'style/Poll_Style';
 
 const dimensions = Dimensions.get("screen");
 
@@ -36,15 +36,17 @@ const VoteButton = (props) => {
 
   return(
       <TouchableOpacity
-          style={styles.post_option}
+          style={[Post_Option, { borderRadius: dimensions.width/(8*props.count)} ]}
           onPress={() => handleRegisterVote(props.choice.id, props.choice.votes)}
       >
-          <View style={styles.option}>
+          <View style={Inner_Option_Container}>
             <View style={{flex: 1 }}>
-                <View style={Circle_Option}><Text style={Option_Letter}>{String.fromCharCode(index+65)}</Text></View>
+                <View style={[Circle_Option, {backgroundColor: props.colorO, borderRadius: dimensions.width/(15*props.count)}]}>
+                  <Text style={[Option_Letter, {color: props.color}]}>{String.fromCharCode(index+65+props.idx)}</Text>
+                </View>
             </View>
             <View style={{width: dimensions.width/10}}/>
-            <Text style={styles.choice_text} adjustsFontSizeToFit numberOfLines={2}>
+            <Text style={Option_Text} adjustsFontSizeToFit numberOfLines={2}>
                 {props.choice.choice_text}
             </Text>
             <View style={{width: dimensions.width/4}}/>
@@ -52,42 +54,6 @@ const VoteButton = (props) => {
       </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    flex: 1,
-  },
-
-  choice_text: {
-    fontFamily: 'SFRound',
-    textAlign: 'center',
-    fontSize: 15,
-    width: dimensions.width/3
-  },
-
-  post_option: {
-    borderWidth: 1,
-    borderColor: '#CCC',
-    marginHorizontal: dimensions.width/14,
-    borderRadius: dimensions.width/20,
-    backgroundColor: '#FFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    elevation:10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    flex: 1,
-    marginVertical: 4,
-  },
-
-})
 
 export default VoteButton;
 

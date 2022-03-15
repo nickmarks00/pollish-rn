@@ -5,6 +5,7 @@ const login = async (username, password) => {
 
   const values = {username, password};
   console.log(values);
+  console.log(url);
 
   const options = {
     method: 'POST',
@@ -15,7 +16,7 @@ const login = async (username, password) => {
   };
 
   const response = await fetch(url, options);
-
+  console.log("reached");
   return response;
 };
 

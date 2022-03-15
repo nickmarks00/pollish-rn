@@ -5,7 +5,7 @@ const dimensions = Dimensions.get("screen")
 
 const SearchPollView = (props) => {
   return (
-    <View style={{height: dimensions.width/6, flexDirection: 'row', justifyContent: 'center', width: dimensions.width, marginVertical: '3%'}}>
+    <View style={{alignContent: 'center', height: dimensions.width/6, flexDirection: 'row', justifyContent: 'center', width: dimensions.width, marginVertical: '3%'}}>
       <Image
         source={{uri: 'https://' + props.img.slice(34)
         }}

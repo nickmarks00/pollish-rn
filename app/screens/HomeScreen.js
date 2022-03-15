@@ -3,7 +3,7 @@ import {View, Text, ScrollView, Dimensions} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 import PollView from './PollScreens/PollView';
-import {BASE_IP} from '@env';
+import {BASE_URL} from '@env';
 
 const dimensions = Dimensions.get('window');
 

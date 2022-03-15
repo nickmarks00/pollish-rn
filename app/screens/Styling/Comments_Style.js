@@ -73,12 +73,22 @@ const Choice_Buttons = {
 
 const Comment_Input = {
     height: 40,
-    width: dimensions.width/1.3,
-    margin: 12,
+    width: dimensions.width/1.2,
+    marginRight: 12,
     borderWidth: 1,
     borderRadius: 15,
     borderColor: '#BBB',
     padding: 10,
 }
 
-export {Question_Container, Question_Box, Question_Text, Post_Image, Options_Container, Option_Text, Choice_Buttons, Comment_Input}
+const Filter_Button = {
+    marginLeft: 10,
+    paddingHorizontal: 10,
+    height: dimensions.width/16, 
+    borderRadius: dimensions.width/60,
+    justifyContent: 'center',
+    alignItems: 'center',
+}
+
+export {Question_Container, Question_Box, Question_Text, Post_Image, Options_Container, Option_Text, 
+        Choice_Buttons, Comment_Input, Filter_Button}

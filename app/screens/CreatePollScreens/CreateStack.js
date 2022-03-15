@@ -1,5 +1,5 @@
 import React from 'react';
-import QuestionPage from './QuestionPage';
+import QuestionPage from './CreatePoll';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ImagePage from './ImagePage';
 import ChoicesPage from './ChoicesPage';

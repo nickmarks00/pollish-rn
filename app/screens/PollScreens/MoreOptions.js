@@ -1,7 +1,10 @@
 import React from 'react';
 import { More_Options } from 'style/Poll_Style';
-import { Button, View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import arrow from './arrow.png';
+
+const dimensions = Dimensions.get('window');
 
 const MoreOptions = (props) => {
 
@@ -22,14 +25,25 @@ const MoreOptions = (props) => {
     const navigation = useNavigation();
     return(
     <View style={More_Options}>
-                <Button title="More Stats" onPress={Post_Comment}/>        
-                <Text>Report</Text>
-                <Button
-                  title="Comments"
-                  onPress={() =>
+                <TouchableOpacity onPress={Post_Comment} style={{position: 'absolute', flexDirection: 'row', left: dimensions.width*0.08}}>
+                  <Image source={arrow} style={{
+                    transform: [{rotate: '180deg'}],
+                    width: dimensions.width/30,
+                    height: null,
+                    resizeMode: 'contain'
+                  }}/>
+                  <Text style={{paddingLeft: '2%', fontWeight: 'bold', color: '#1F71EB', fontSize: 12}}>MORE INFO</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() =>
                     navigation.navigate('Comments', { img: props.post.images[0].image_src, question: props.post.question_text, options_: props.post.choices, uid: props.post.user.id, pid: props.post.id})
-                  }
-                  />
+                  } style={{position: 'absolute', flexDirection: 'row', right: dimensions.width*0.08}}>
+                  <Text style={{paddingRight: '2%', fontWeight: 'bold', color: '#1F71EB', fontSize: 12}}>COMMENTS</Text>
+                  <Image source={arrow} style={{ 
+                    width: dimensions.width/30,
+                    height: null,
+                    resizeMode: 'contain',
+                  }}/>
+                </TouchableOpacity>    
     </View>
     );
 }

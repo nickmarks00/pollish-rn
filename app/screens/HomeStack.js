@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import CommentSection from './CommentScreens/CommentSection';
-import FullScreenImage from './PollScreens/FullScreenImage';
 import PollView from './PollScreens/PollView';
 
 const Stack = createNativeStackNavigator();
@@ -24,8 +23,7 @@ const MyStack = () => {
               }
             }}
             />
-          <Stack.Screen name="Comments" component={CommentSection} />
-          <Stack.Screen name="FullScreen" component={FullScreenImage} options={{ headerShown: false}} />
+          <Stack.Screen name="Comments" component={CommentSection} options={{headerShown: false}} />
           <Stack.Screen name="PollFromSearch" component={PollView} options={{ headerShown: false}} />
         </Stack.Navigator>
     );

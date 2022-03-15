@@ -3,15 +3,39 @@
 */}
 
 import React from 'react'
-import {View, TextInput, Button} from 'react-native';
+import {View, TextInput, TouchableOpacity, Text} from 'react-native';
 import { Comment_Input } from 'style/Comments_Style';
+import authStorage from '../../auth/storage'
 
 const CreateComment = (props) => {
 
     const [text, onChangeText] = React.useState("");
 
     // Function for adding new comment
-    const Post_Comment = () => {
+    const Post_Comment = async () => {
+
+        const url = `http://192.168.1.140:8000/core/users/1/polls/1/comments/`;
+        const tokens = await authStorage.getTokens();
+        const access = JSON.parse(tokens).access;
+        
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `JWT ${access}`,
+            },
+            body: JSON.stringify({
+                comment_text: "hi"
+            })
+        }
+
+        const response = await fetch(url, options);
+
+    };
+
+
+
+
 
         // fetch("http://192.168.1.140:8000/core/users/1/polls/1/comments/", {
         //         method: "POST",
@@ -35,22 +59,19 @@ const CreateComment = (props) => {
         //         })
 
         console.log(text);
-    }
 
     return (
-        <View style ={{ justifyContent: 'flex-end', padding: 10, flexDirection: 'row', alignItems: 'center'}}>
+        <View style ={{ justifyContent: 'center', padding: 10, flexDirection: 'row', alignItems: 'center'}}>
             <TextInput
             style={Comment_Input}
             onChangeText={onChangeText}
             value={text}
             placeholder="What do you want to know?"
             />
-            <Button
-            onPress={Post_Comment}
-            title="Post"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-            />
+            <TouchableOpacity
+            onPress={Post_Comment}>
+                <Text style={{color: '#841584'}}>Post</Text>
+            </TouchableOpacity>
         </View>
     )
 }

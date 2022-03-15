@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, ScrollView, Image, Dimensions } from 'react-native';
 import { Post_Image } from 'style/Poll_Style';
 
-const dimensions = Dimensions.get('screen');
+{/*
+    This Component renders the image seen at the head of a poll view
+*/}
 
 const PollImage = (props) => {
     return(
@@ -11,22 +13,16 @@ const PollImage = (props) => {
                 horizontal={true}
                 decelerationRate={0}
                 snapToAlignment="lefts"
-                snapToInterval={dimensions.width}
+                snapToInterval={Dimensions.get('screen').width}
                 showsVerticalScrollIndicator={false}>
-                    <View  style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row'}}>
                         {props.images.map((choice, index) => {
                             return (
-                                <TouchableOpacity
-                                key={index}
-                                onPress={() =>
-                                    navigation.navigate('FullScreen')
-                                }
-                                >
                                     <Image
-                                    source={{uri: "https://" + choice.image_src.slice(34)}}
+                                    key={index}
+                                    source={{uri: "https://www.gannett-cdn.com/presto/2020/07/21/USAT/86dfdd2f-db14-4a9f-8137-24536a574d3c-AP_Election_2020_Kanye_West.jpg?crop=4159,2339,x0,y0&width=3200&height=1800&format=pjpg&auto=webp"}}
                                     style={Post_Image}
                                     />
-                                </TouchableOpacity>
                             )
                         })}
                     </View>

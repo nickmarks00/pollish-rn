@@ -3,7 +3,7 @@
 */}
 
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList, KeyboardAvoidingView, ScrollView, Dimensions} from 'react-native';
+import {View, Text, TouchableOpacity, KeyboardAvoidingView, ScrollView, Dimensions, Modal, StyleSheet, Pressable} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import Comment from './Comment';
@@ -14,6 +14,7 @@ import PollQuestion from './../PollScreens/PollQuestion'
 import {BASE_IP} from '@env';
 import { Question_Box, Post_Question } from 'style/Poll_Style'
 import { Filter_Button } from '../Styling/Comments_Style';
+import DropDownPicker from 'react-native-custom-dropdown';
 
 const dimensions = Dimensions.get('screen');
 
@@ -26,6 +27,8 @@ const CommentSection = (props) => {
     const [comments, addComment] = React.useState([]);
     const [loading, setLoading] = useState(false);
     const [comments_, setComments] = useState([]);
+    const [selected, setSelected] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         fetchDataFromApi();
@@ -67,6 +70,30 @@ const CommentSection = (props) => {
 
     return (
         <View style ={{flex: 1}}>
+            <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={{color: '#AAA', fontWeight: 'bold', marginBottom: '5%'}}>Choose Filter</Text>
+            {route.params.options_.map((option_, idx) => {
+                return (
+                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                        <View style={[Filter_Button, {backgroundColor: 'white', borderColor: colors[idx], borderWidth: 1, marginVertical: '2%'}]}>
+                            <Text style={{fontWeight: 'bold', color: colors[idx]}}>{option_.choice_text}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    );
+                })}
+          </View>
+        </View>
+      </Modal>
             <View style={{height: dimensions.height/40}}/>
             <View style={{width: dimensions.width, height: dimensions.height/6}}>
                 <View style={Question_Box}>
@@ -76,12 +103,16 @@ const CommentSection = (props) => {
                     </Text>
                 </View>
             </View>
-            <View style={{marginBottom: dimensions.height/30, flexDirection: 'row', width: dimensions.width*0.95, alignItems: 'center', justifyContent: 'center'}}>
-                <View style={{position: 'absolute', height: '70%', width: dimensions.width*2, backgroundColor: 'rgba(204,204,204,0.3)'}}/>
+            <View style={{marginBottom: dimensions.height/30, flexDirection: 'row', width: dimensions.width, alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{position: 'absolute', height: '70%', width: dimensions.width*1, backgroundColor: 'rgba(204,204,204,0.3)'}}/>
                 <Text style={{color: '#AAA', fontWeight: 'bold'}}>Filtering:</Text>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+
                 <View style={[Filter_Button, {backgroundColor: 'white', borderColor: '#EBAC1F', borderWidth: 1}]}>
                             <Text style={{fontWeight: 'bold', color: '#EBAC1F'}}>Lebron James</Text>
+                            
                         </View>
+                        </TouchableOpacity>
                 {/* <ScrollView horizontal={true}>
                 {route.params.options_.map((option_, idx) => {
                     return (
@@ -117,3 +148,47 @@ const CommentSection = (props) => {
 }
 
 export default CommentSection;
+
+const styles = StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: "white",
+      borderRadius: 20,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2
+    },
+    buttonOpen: {
+      backgroundColor: "#F194FF",
+    },
+    buttonClose: {
+      backgroundColor: "#2196F3",
+    },
+    textStyle: {
+      color: "white",
+      fontWeight: "bold",
+      textAlign: "center"
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center"
+    }
+  });

@@ -21,6 +21,8 @@ function LoginScreen({navigation, ...props}) {
   const auth = useAuth();
 
   const handleUserLogin = async ({username, password}) => {
+    console.log("rr")
+
     const response = await authApi.login(username, password);
     if (response.status === 200) {
       // access token exists and still valid
@@ -31,6 +33,7 @@ function LoginScreen({navigation, ...props}) {
     } else {
       setLoginFailed(true);
     }
+    console.log("redr")
     console.log(loginFailed);
   };
 

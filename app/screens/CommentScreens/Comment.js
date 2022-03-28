@@ -15,7 +15,7 @@ const Comment = (props) => (
         <View style={{paddingHorizontal: 8}}>
             <View style={{flexDirection: 'row', marginBottom: 3}}>
                 
-                <Text style={{fontSize: 12, marginLeft: dimension.width/50, fontWeight: 'bold'}}>nmarks00</Text>
+                <Text style={{fontSize: 12, marginLeft: dimension.width/50, fontWeight: 'bold'}}>{props.user.username}</Text>
             </View>
             <Text style={{textAlign: 'left', fontSize: 12, marginLeft: dimension.width/50}}>{props.comment_text}</Text>
         </View>

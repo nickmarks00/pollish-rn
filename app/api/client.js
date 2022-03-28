@@ -1,6 +1,7 @@
 import {BASE_URL} from '@env';
 
-const url = `http://${BASE_URL}/auth/jwt/create`;
+const base = BASE_URL
+const url = `http://${base}/auth/jwt/create`;
 
 const options = {
   method: 'POST',

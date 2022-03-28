@@ -18,6 +18,8 @@ import {
 // TODO Change uniqueness validation to only run after keyboard debounced
 // TODO Uniqueness test for username runs when changes to email field and vice-versa
 
+const url = BASE_URL;
+
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label('First name'),
   lastName: Yup.string().required().label('Last name'),
@@ -29,7 +31,7 @@ const validationSchema = Yup.object().shape({
       'An account with that username already exists',
       value => {
         if (value) {
-          fetch(`http://${BASE_URL}/core/users/?username=${value}`, {
+          fetch(`http://${url}/core/users/?username=${value}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ const validationSchema = Yup.object().shape({
       'An account with that email already exists',
       value => {
         if (value) {
-          fetch(`http://${BASE_URL}/core/users/?email=${value}`, {
+          fetch(`http://${url}/core/users/?email=${value}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

@@ -11,12 +11,13 @@ import PostInformation from './PostInformation';
 import PostOptions from './PostOptions';
 import CreateComment from './CreateComment';
 import PollQuestion from './../PollScreens/PollQuestion'
-import {BASE_IP} from '@env';
+import {BASE_URL} from '@env';
 import { Question_Box, Post_Question } from 'style/Poll_Style'
 import { Filter_Button } from '../Styling/Comments_Style';
 import DropDownPicker from 'react-native-custom-dropdown';
 
 const dimensions = Dimensions.get('screen');
+const base = BASE_URL;
 
 const colorsO = ['rgba(237, 48, 48, 0.2)', 'rgba(235, 172, 31, 0.2)', 'rgba(48, 158, 237, 0.2)']
 const colors = ['#ED3030','#EBAC1F','#309EED']
@@ -27,7 +28,7 @@ const CommentSection = (props) => {
     const [comments, addComment] = React.useState([]);
     const [loading, setLoading] = useState(false);
     const [comments_, setComments] = useState([]);
-    const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState({txt: "No Filter", idx: 0});
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -35,7 +36,7 @@ const CommentSection = (props) => {
       }, []);
 
       const fetchDataFromApi = async () => {
-        const url = `http://${BASE_IP}/core/users/${route.params.uid}/polls/${route.params.pid}/comments`;
+        const url = `http://${base}/core/users/${route.params.uid}/polls/${route.params.pid}/comments`;
     
         setLoading(true);
     
@@ -64,6 +65,12 @@ const CommentSection = (props) => {
         return <Text>Loading...</Text>;
     }
 
+    const SetFilter = (props) => {
+        
+        setSelected({txt: props.txt, idx: props.idx});
+        setModalVisible(!modalVisible);
+    }
+
     
 
     
@@ -84,7 +91,7 @@ const CommentSection = (props) => {
             <Text style={{color: '#AAA', fontWeight: 'bold', marginBottom: '5%'}}>Choose Filter</Text>
             {route.params.options_.map((option_, idx) => {
                 return (
-                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                    <TouchableOpacity key={idx} onPress={() => SetFilter({idx: idx, txt: option_.choice_text})}>
                         <View style={[Filter_Button, {backgroundColor: 'white', borderColor: colors[idx], borderWidth: 1, marginVertical: '2%'}]}>
                             <Text style={{fontWeight: 'bold', color: colors[idx]}}>{option_.choice_text}</Text>
                         </View>
@@ -108,8 +115,8 @@ const CommentSection = (props) => {
                 <Text style={{color: '#AAA', fontWeight: 'bold'}}>Filtering:</Text>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
 
-                <View style={[Filter_Button, {backgroundColor: 'white', borderColor: '#EBAC1F', borderWidth: 1}]}>
-                            <Text style={{fontWeight: 'bold', color: '#EBAC1F'}}>Lebron James</Text>
+                <View style={[Filter_Button, {backgroundColor: 'white', borderColor: colors[selected.idx], borderWidth: 1}]}>
+                            <Text style={{fontWeight: 'bold', color: colors[selected.idx]}}>{selected.txt}</Text>
                             
                         </View>
                         </TouchableOpacity>
@@ -133,7 +140,7 @@ const CommentSection = (props) => {
                     <ScrollView>
                         {comments_.map((comment, index) => {
                             return (
-                                <Comment key={index} comment_text={comment.comment_text}/>
+                                <Comment key={index} comment_text={comment.comment_text} user={comment.user}/>
                             )
                         })}
                     </ScrollView>
@@ -171,24 +178,4 @@ const styles = StyleSheet.create({
       shadowRadius: 4,
       elevation: 5
     },
-    button: {
-      borderRadius: 20,
-      padding: 10,
-      elevation: 2
-    },
-    buttonOpen: {
-      backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-      backgroundColor: "#2196F3",
-    },
-    textStyle: {
-      color: "white",
-      fontWeight: "bold",
-      textAlign: "center"
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: "center"
-    }
   });

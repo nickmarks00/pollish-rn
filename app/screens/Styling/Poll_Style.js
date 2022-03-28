@@ -14,7 +14,8 @@ const Question_Box = {
     textAlign: 'center',
     alignItems: 'center',
     flex: 1,
-    paddingVertical: '5%'
+    paddingVertical: '5%',
+    paddingHorizontal: '2%'
 }
 
 // Question text styling for a post
@@ -53,7 +54,6 @@ const Option_Letter = {
     textAlign: 'center',
     fontFamily: 'System',
     fontWeight: 'bold',
-    fontSize: 20
 }
 
 // Question label above Poll question text

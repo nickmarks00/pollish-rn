@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, Image, Dimensions } from 'react-native';
+import { View, ScrollView, Image, Dimensions, Text } from 'react-native';
 import { Post_Image } from 'style/Poll_Style';
 
 {/*
@@ -20,7 +20,7 @@ const PollImage = (props) => {
                             return (
                                     <Image
                                     key={index}
-                                    source={{uri: "https://www.gannett-cdn.com/presto/2020/07/21/USAT/86dfdd2f-db14-4a9f-8137-24536a574d3c-AP_Election_2020_Kanye_West.jpg?crop=4159,2339,x0,y0&width=3200&height=1800&format=pjpg&auto=webp"}}
+                                    source={{uri: "https://" + choice.image.slice(34)}}
                                     style={Post_Image}
                                     />
                             )

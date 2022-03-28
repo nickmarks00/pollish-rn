@@ -4,6 +4,7 @@ import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 import PollView from './PollScreens/PollView';
 import {BASE_URL} from '@env';
+const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
 
@@ -18,7 +19,7 @@ const HomeScreen = () => {
   }, []);
 
   const fetchDataFromApi = async () => {
-    const url = `http://${BASE_URL}/pollish/polls/`;
+    const url = `http://${base}/pollish/polls/`;
 
     setLoading(true);
 

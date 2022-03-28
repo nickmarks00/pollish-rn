@@ -8,8 +8,10 @@ export default useAuth = () => {
 
   const logIn = async authTokens => {
     console.log("hsa9i");
-    const user = await authStorage.getUser();
-    setUser(user);
+    const users = await authStorage.getUser();
+    console.log(users);
+    setUser(users);
+    console.log(user);
     console.log("look");
     authStorage.storeTokens(JSON.stringify(authTokens));
     console.log("h9i");

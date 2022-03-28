@@ -1,8 +1,10 @@
 import {BASE_URL} from '@env';
 
 const login = async (username, password) => {
-  const url = `http://${BASE_URL}/auth/jwt/create`;
-
+  const base = BASE_URL;
+  
+  const url = `http://${base}/auth/jwt/create`;
+  console.log(url);
   const values = {username, password};
   console.log(values);
   console.log(url);
@@ -16,7 +18,6 @@ const login = async (username, password) => {
   };
 
   const response = await fetch(url, options);
-  console.log("reached");
   return response;
 };
 

@@ -1,7 +1,8 @@
 import {BASE_URL} from '@env';
 
 const register = async values => {
-  const url = `http://${BASE_URL}/auth/users/`;
+  const base = BASE_URL;
+  const url = `http://${base}/auth/users/`;
 
   const options = {
     method: 'POST',

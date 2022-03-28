@@ -4,6 +4,7 @@ import { computeWindowedRenderLimits } from 'react-native/Libraries/Lists/Virtua
 
 // TODO Change to a .env secret
 const key = 'pollish_User';
+const base = BASE_URL;
 
 const storeTokens = async authTokens => {
   try {
@@ -26,24 +27,23 @@ const getUser = async () => {
   const tokens = JSON.parse(res);
   if (!tokens) return null;
 
-  const url = `http://${BASE_URL}/auth/users/me`;
-  console.log(tokens);
+  const url = `http://${base}/auth/users/me/`;
+  console.log(tokens.access);
 
   const options = {
+    payload: {},
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `JWT ${tokens.access}`,
     },
   };
-
+  console.log(url);
   const response = await fetch(url, options);
   if (response.status === 200) {
     // access token exists and still valid
     return await response.json();
   }
-
-  console.log('Error fetching current user');
 };
 
 const removeTokens = async () => {

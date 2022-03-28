@@ -1,89 +1,82 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, Dimensions, Image, TouchableOpacity, StatusBar } from "react-native";
+import { View, Text, StyleSheet, TextInput, Dimensions, Image, TouchableOpacity, StatusBar, ScrollView } from "react-native";
 import { useState } from 'react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+
+import authStorage from '../../auth/storage';
 
 import arrowR from './../PollScreens/arrow.png'
 import arrowL from './../PollScreens/arrowR.png'
 import CreateBar from './CreateBar';
 import {NavButtonL, NavButtonR} from './NavButton';
+import ImagePage from './ImagePage'
+import Question from './CreateQuestion';
+import Choices from './CreateChoices';
+import Media from './CreateMedia';
 
 const dimensions = Dimensions.get('window');
 
-const Category = (props) => {
-    return (
-        <View style={{borderRadius: 15, backgroundColor: '#90C7FC', marginHorizontal: 5}}>
-            <Text style={{marginHorizontal: 5, fontSize: 15, padding: 5, fontFamily: 'SFRound', color: '#FFF'}}>{props.option}</Text>
-        </View>
-    );
-}
-
 const STATUS_BAR = StatusBar.statusBarHeight || 34; 
-
-// Function for adding new comment
-const Post_Comment = () => {
-
-    fetch("http://192.168.1.140:8000/pollish/polls/", {
-            method: "POST",
-            headers: { Accept: "application/json", 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                question_text: "hi",
-            })
-            }).then(() => {
-                console.log(JSON.stringify({
-                    question_text: "hi",
-                    choices: [
-                        {
-                            "choice_text": "vivamus tortor duis mattis egestas metus aenean",
-                            "id": 408,
-                            "users": [],
-                            "votes": 41
-                        },
-                        {
-                            "choice_text": "est quam pharetra magna",
-                            "id": 636,
-                            "users": [],
-                            "votes": 66
-                        },
-                        {
-                            "choice_text": "arcu adipiscing molestie hendrerit at vulputate",
-                            "id": 894,
-                            "users": [],
-                            "votes": 7
-                        }
-                    ],
-                    images: [
-                        {
-                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/142x177.png/ff4444/ffffff",
-                            "choice_id": null,
-                            "poll_id": 1
-                        },
-                        {
-                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/117x245.png/ff4444/ffffff",
-                            "choice_id": 225,
-                            "poll_id": 1
-                        },
-                        {
-                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/155x123.png/cc0000/ffffff",
-                            "choice_id": 573,
-                            "poll_id": 1
-                        },
-                        {
-                            "image_src": "http://192.168.1.140:8000/http%3A/dummyimage.com/129x211.png/cc0000/ffffff",
-                            "choice_id": 808,
-                            "poll_id": 1
-                        }
-                    ],
-                }))
-            })
-}
 
 const CreatePoll = () => {
     const navigation = useNavigation();
-    const [text, setText] = useState('');
+    const [questionText, setQuestionText] = useState('');
+    const [canPost, setCanPost] = useState(false);
+    const [optionsText, setOptionsText] = useState({o1: '', o2: '', o3: '', o4: ''})
     const tabBarHeight = useBottomTabBarHeight();
     const screenHeight = dimensions.height-tabBarHeight-STATUS_BAR;
+    const [section, setSection] = useState(0);
+    const [backColor, setColor] = useState({color: '#1F71EB', back: '#FFF'});
+
+    const setColors = (newText) => {
+        if(newText == '') setColor({color: '#1F71EB', back: '#FFF'});
+        else{ 
+            setColor({color: '#FFF', back: '#1F71EB'})
+        }
+        setQuestionText(newText);
+        if (optionsText.o1 && optionsText.o2 && questionText) setCanPost(true);
+    }
+
+    const setOptions = (newText, opNum) => {
+        if (opNum == 1) setOptionsText({o1: newText, o2: optionsText.o2, o3: optionsText.o3, o4: optionsText.o4})
+        else if (opNum == 2) setOptionsText({o1: optionsText.o1, o2: newText, o3: optionsText.o3, o4: optionsText.o4})
+        else if (opNum == 3) setOptionsText({o1: optionsText.o1, o2: optionsText.o2, o3: newText, o4: optionsText.o4})
+        else if (opNum == 4) setOptionsText({o1: optionsText.o1, o2: optionsText.o2, o3: optionsText.o3, o4: newText})
+
+        if (optionsText.o1 && optionsText.o2 && questionText) setCanPost(true);
+    }
+
+    const Post_Poll = async () => {
+        const tokens = await authStorage.getTokens();
+        const access = JSON.parse(tokens).access;
+        console.log(access);
+
+        var ch = []
+        if (optionsText.o1) ch = [...ch, {"choice_text": optionsText.o1}]
+        if (optionsText.o2) ch = [...ch, {"choice_text": optionsText.o2}]
+        if (optionsText.o3) ch = [...ch, {"choice_text": optionsText.o3}]
+        if (optionsText.o4) ch = [...ch, {"choice_text": optionsText.o4}]
+
+        var raw = JSON.stringify({
+            "question_text": questionText,
+            "choices": ch
+          });
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `JWT ${access}`,
+            },
+            body: raw
+        }
+
+        const response = await fetch('http://192.168.1.140:8000/pollish/polls/me/', options);
+
+        console.log(options);
+
+    }
 
     return (
         <View style={[styles.MainStyle, {marginTop: STATUS_BAR, height: screenHeight}]}>
@@ -93,21 +86,25 @@ const CreatePoll = () => {
             <View style={{alignItems: 'center', width: dimensions.width, height: dimensions.height/5, justifyContent: 'space-evenly'}}>
                 <View/>
             <Text style={[{fontSize: 25, color: 'black'}, styles.text]}>Create a poll, find out what others think!</Text>
-            <CreateBar/>
+            <CreateBar color={backColor.color} background={backColor.back}/>
             </View>
-            <View style={{height: screenHeight*(0.6), justifyContent: 'center', borderBottomWidth: dimensions.height/60, width: dimensions.width, borderColor: '#1F71EB'}}>
-            <Text style={[styles.text, {fontSize: 20, textAlign: 'left', color: '#AAA'}]}>Question</Text>
-            <TextInput onChangeText={newText => setText(newText)} style={styles.input}>hi</TextInput>
+            <View style={{height: screenHeight*(0.6), borderBottomWidth: dimensions.height/60, width: dimensions.width, borderColor: '#1F71EB'}}>
+                {section == 0 ? <Question setColors={setColors} question={questionText}/> : 
+                section == 1 ? <Choices setOptions={setOptions} optionsText={optionsText}/> :
+                section == 2 ?  <Media/>:
+                <View/>}
+                {/* <Question/> */}
             </View>
             <View style={{marginTop: dimensions.height/70, flexDirection: 'row', justifyContent: 'space-between', width: dimensions.width*0.6}}>
-                <NavButtonL arrow={arrowL} number={0}/>
-                <NavButtonR arrow={arrowR} number={1}/>
+                {section > 0 ? <TouchableOpacity onPress={() => setSection(section-1)}><NavButtonL arrow={arrowL} number={0}/></TouchableOpacity> : <View/>}
+                {section < 3 ? <TouchableOpacity onPress={() => setSection(section+1)}><NavButtonR arrow={arrowR} number={1}/></TouchableOpacity> : <View/>}
             </View>
             <TouchableOpacity
-                onPress={() => navigation.navigate('2', {question: text})}
+                disabled={!canPost}
+                onPress={Post_Poll}
                 style={{flex: 1, justifyContent: 'center'}}
             >
-                <Text style={{fontSize: 20, fontFamily: 'SFRound', color: '#CCC'}}>POST</Text>
+                <Text style={{fontSize: 20, fontFamily: 'SFRound', color: `rgba(131,239,177,${canPost ? 1 : 0.3})`}}>POST</Text>
             </TouchableOpacity>
             <View/>
         </View>
@@ -127,12 +124,27 @@ const styles = StyleSheet.create({
         height: dimensions.height/20,
         paddingHorizontal: 20,
         borderColor: '#DDD',
-        borderRadius: 15
+        borderRadius: 15,
+    },
+
+    input2: {
+        borderWidth: 1,
+        width: dimensions.width/1.2,
+        height: dimensions.height/25,
+        paddingHorizontal: 20,
+        borderColor: '#DDD',
+        borderRadius: 10,
     },
 
     text: {
         fontFamily: 'SFRound',
         width: dimensions.width/1.2,
         textAlign: 'center'
+    },
+
+    choiceText: {
+        marginBottom: '2%', 
+        fontWeight: 'bold', 
+        fontSize: 12
     }
 })

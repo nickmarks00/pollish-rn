@@ -41,8 +41,8 @@ const VoteButton = (props) => {
       >
           <View style={Inner_Option_Container}>
             <View style={{flex: 1 }}>
-                <View style={[Circle_Option, {backgroundColor: props.colorO, borderRadius: dimensions.width/(15*props.count)}]}>
-                  <Text style={[Option_Letter, {color: props.color}]}>{String.fromCharCode(index+65+props.idx)}</Text>
+                <View style={[Circle_Option, {backgroundColor: props.colorO, borderRadius: dimensions.width/(13*props.count)}]}>
+                  <Text style={[Option_Letter, {color: props.color, fontSize: dimensions.width/(8*props.count)}]}>{String.fromCharCode(index+65+props.idx)}</Text>
                 </View>
             </View>
             <View style={{width: dimensions.width/10}}/>

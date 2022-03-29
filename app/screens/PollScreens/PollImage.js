@@ -19,8 +19,9 @@ const PollImage = (props) => {
                         {props.images.map((choice, index) => {
                             return (
                                     <Image
+                                    resizeMode='cover'
                                     key={index}
-                                    source={{uri: "https://" + choice.image.slice(34)}}
+                                    source={{uri: choice.image}}
                                     style={Post_Image}
                                     />
                             )

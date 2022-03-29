@@ -28,6 +28,7 @@ const CreatePoll = () => {
     const screenHeight = dimensions.height-tabBarHeight-STATUS_BAR;
     const [section, setSection] = useState(0);
     const [backColor, setColor] = useState({color: '#1F71EB', back: '#FFF'});
+    const [media, setMedia] = useState({m1: null, m2: null, m3: null, m4: null})
 
     const setColors = (newText) => {
         if(newText == '') setColor({color: '#1F71EB', back: '#FFF'});
@@ -71,11 +72,58 @@ const CreatePoll = () => {
             },
             body: raw
         }
+        var id = -1
+        const response = await fetch('http://192.168.1.140:8000/pollish/polls/me/', options)
+        .then(response => response.json())
+        .then(response => {
+            id = response.id
+        })
 
-        const response = await fetch('http://192.168.1.140:8000/pollish/polls/me/', options);
+        if(id !== -1){
+            if (media.m1) Post_Image({m: media.m1, id: id, access: access})
+            if (media.m2) Post_Image({m: media.m2, id: id, access: access})
+            if (media.m3) Post_Image({m: media.m3, id: id, access: access})
+            if (media.m4) Post_Image({m: media.m4, id: id, access: access})
+        }
 
-        console.log(options);
+        setQuestionText('');
+        setOptionsText({o1: '', o2: '', o3: '', o4: ''});
+        setMedia({m1: null, m2: null, m3: null, m4: null});
 
+        // const data = new FormData();
+        // data.append("image", {uri: media.m1, name: 'image.jpg', type: 'image/jpg'});
+        
+        //   const options2 = {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'multipart/form-data; ',
+        //         Authorization: `JWT ${access}`,
+        //     },
+        //     body: data
+        //     }
+        // if(id !== -1) {
+        //     const response2 = await fetch(`http://192.168.1.140:8000/pollish/polls/${id}/images/`, options2)
+        //     .then(response => response.text())
+        //     .then(result => console.log(result))
+        //     .catch(error => console.log('error', error));
+        // }
+
+    }
+
+    const Post_Image = async ({m, id, access}) =>{
+        const data = new FormData();
+        data.append("image", {uri: m, name: 'image.jpg', type: 'image/jpg'});
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data; ',
+                Authorization: `JWT ${access}`,
+            },
+            body: data
+        }
+
+        const response = await fetch(`http://192.168.1.140:8000/pollish/polls/${id}/images/`, options)
     }
 
     return (
@@ -86,12 +134,12 @@ const CreatePoll = () => {
             <View style={{alignItems: 'center', width: dimensions.width, height: dimensions.height/5, justifyContent: 'space-evenly'}}>
                 <View/>
             <Text style={[{fontSize: 25, color: 'black'}, styles.text]}>Create a poll, find out what others think!</Text>
-            <CreateBar color={backColor.color} background={backColor.back}/>
+            <CreateBar setSection={setSection} color={backColor.color} background={backColor.back}/>
             </View>
             <View style={{height: screenHeight*(0.6), borderBottomWidth: dimensions.height/60, width: dimensions.width, borderColor: '#1F71EB'}}>
                 {section == 0 ? <Question setColors={setColors} question={questionText}/> : 
                 section == 1 ? <Choices setOptions={setOptions} optionsText={optionsText}/> :
-                section == 2 ?  <Media/>:
+                section == 2 ?  <Media setMedia={setMedia} media={media}/>:
                 <View/>}
                 {/* <Question/> */}
             </View>

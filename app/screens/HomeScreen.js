@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Dimensions} from 'react-native';
+import {View, Text, ScrollView, Dimensions, RefreshControl} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 import PollView from './PollScreens/PollView';
@@ -13,10 +13,23 @@ const HomeScreen = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const tabBarHeight = useBottomTabBarHeight();
+  const [refreshing, setRefreshing] = useState(false);
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchDataFromApi();
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     fetchDataFromApi();
   }, []);
+
+  
+
 
   const fetchDataFromApi = async () => {
     const url = `http://${base}/pollish/polls/`;
@@ -65,7 +78,15 @@ const HomeScreen = () => {
       decelerationRate={0}
       snapToAlignment="lefts"
       snapToInterval={dimensions.height - tabBarHeight}
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            style={{backgroundColor: 'transparent'}}
+          />
+      }
+      >
       <View
         style={{
           flex: 1,

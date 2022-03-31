@@ -3,7 +3,7 @@
 */}
 
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, KeyboardAvoidingView, ScrollView, Dimensions, Modal, StyleSheet, Pressable} from 'react-native';
+import {View, Text, TouchableOpacity, KeyboardAvoidingView, ScrollView, Dimensions, Modal, StyleSheet} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import Comment from './Comment';
@@ -36,6 +36,7 @@ const CommentSection = (props) => {
       }, []);
 
       const fetchDataFromApi = async () => {
+          console.log("c")
         const url = `http://${base}/core/users/${route.params.uid}/polls/${route.params.pid}/comments`;
     
         setLoading(true);
@@ -140,14 +141,14 @@ const CommentSection = (props) => {
                     <ScrollView>
                         {comments_.map((comment, index) => {
                             return (
-                                <Comment key={index} comment_text={comment.comment_text} user={comment.user}/>
+                                <Comment key={index} comment_text={comment.comment_text} user={comment.user_id}/>
                             )
                         })}
                     </ScrollView>
                 </View>
 
                 {/* Section to type and post comments*/}
-                <CreateComment/>
+                <CreateComment reload={fetchDataFromApi}/>
 
             </KeyboardAvoidingView>
         </View>

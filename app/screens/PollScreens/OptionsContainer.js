@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Options_Container, Choices_Header } from 'style/Poll_Style';
 import { View, Text, Dimensions } from 'react-native';
 import VoteButton from './VoteButton';
@@ -9,6 +10,9 @@ const dimensions = Dimensions.get("window");
 
 
 const OptionsContainer = (props) => {
+
+    const [hasVoted, setVoted] = useState({voted: false, choice: -1});
+
     return(
         <View style={{flex: 1}}>
             <View style={{flexDirection: 'row'}}>
@@ -18,7 +22,7 @@ const OptionsContainer = (props) => {
         <View style={Options_Container}>
             {props.choices.map((choice, index) => {
                 return (
-                    <VoteButton key={index} count={props.choices.length} idx={index} choice={choice} colorO={colorsO[index]} color={colors[index]}/>
+                    <VoteButton key={index} count={props.choices.length} idx={index} choice={choice} colorO={colorsO[index]} color={colors[index]} pollID={props.pollID} hasVoted={hasVoted}/>
                 );
             })}
         </View>

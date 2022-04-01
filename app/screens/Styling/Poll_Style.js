@@ -92,7 +92,6 @@ const Option_Text = {
 // Container for an individual post option
 const Post_Option = {
     borderWidth: 2,
-    borderColor: '#DDD',
     marginHorizontal: dimensions.width/14,
     borderRadius: dimensions.width/24,
     backgroundColor: '#FFF',

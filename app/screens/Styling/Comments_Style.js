@@ -5,15 +5,6 @@
 import { Dimensions } from "react-native"
 const dimensions = Dimensions.get("screen");
 
-
-// Container displayed at the top of comments section with post image and text
-const Question_Container = {
-    padding: 20, 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    alignContent: 'center'
-}
-
 // Container displaying question text inside of Question_Container
 const Question_Box = {
     height: dimensions.width/5,
@@ -88,7 +79,98 @@ const Filter_Button = {
     borderRadius: dimensions.width/60,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
+    borderWidth: 1, 
+    marginVertical: '2%'
 }
 
+const Comment_ColorBar = {
+    marginHorizontal: dimensions.width/50, 
+    width: dimensions.width/90, 
+    borderRadius: dimensions.width/30, 
+    backgroundColor: '#ED3030'
+}
+
+const Comment_Text = {
+    textAlign: 'left', 
+    fontSize: 12, 
+    marginLeft: dimensions.width/50
+}
+
+const Username_Text = {
+    marginBottom: 3, 
+    fontSize: 12, 
+    marginLeft: dimensions.width/50, 
+    fontWeight: 'bold'
+}
+
+const Comment_TypeBar = {
+    justifyContent: 'center', 
+    padding: 10, 
+    flexDirection: 'row', 
+    alignItems: 'center'
+}
+
+const Filter_Text = {
+    color: '#AAA', 
+    fontWeight: 'bold', 
+    marginBottom: '5%'
+}
+
+const Modal_Container = {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+    width: 0,
+    height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+}
+
+const Modal_Position = {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+}
+
+const Question_Container = {
+    marginTop: dimensions.height/40, 
+    width: dimensions.width, 
+    height: dimensions.height/6
+}
+
+const Comments_DisplayArea = {
+    flex: 1, 
+    borderTopWidth: 10, 
+    paddingTop:20, 
+    borderColor: '#1F71EB'
+}
+
+const Filter_Container = {
+    marginBottom: dimensions.height/30, 
+    flexDirection: 'row', 
+    width: dimensions.width, 
+    alignItems: 'center', 
+    justifyContent: 'center'
+}
+
+const Filter_Background = {
+    position: 'absolute', 
+    height: '70%', 
+    width: dimensions.width*1, 
+    backgroundColor: 'rgba(204,204,204,0.3)'
+}
+
+
+
 export {Question_Container, Question_Box, Question_Text, Post_Image, Options_Container, Option_Text, 
-        Choice_Buttons, Comment_Input, Filter_Button}
+        Choice_Buttons, Comment_Input, Filter_Button, Comment_ColorBar, Comment_Text, Username_Text,
+        Comment_TypeBar, Filter_Text, Modal_Container, Modal_Position, Comments_DisplayArea, Filter_Container,
+        Filter_Background }

@@ -37,7 +37,7 @@ const PollView = (props) => {
       <View style={{flex: 8}}><PollImage images={props.images}/></View>
       <View style={{flex: 0.3, backgroundColor: '#1F71EB'}}/>
       <View style={{flex: 3}}><PollQuestion question={props.question}/></View>
-      <View style={{flex: 6}}><OptionsContainer choices={props.choices} votes={props.post.votes}/></View>
+      <View style={{flex: 6}}><OptionsContainer choices={props.choices} votes={props.post.votes} pollID={props.post.id}/></View>
       <View style={{flex: 2}}><MoreOptions post={props.post}/></View>
       {/* End Main Poll View */}
 

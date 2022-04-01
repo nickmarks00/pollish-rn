@@ -6,26 +6,25 @@ import React from 'react'
 import {View, TextInput, TouchableOpacity, Text, Keyboard} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Comment_Input } from 'style/Comments_Style';
-import authStorage from '../../auth/storage'
 import {CommentAPI} from '../../api/post';
+import { Comment_TypeBar } from 'style/Comments_Style';
 
 const CreateComment = ({reload}) => {
 
     const route = useRoute();
+    const post = route.params.post;
     const [text, onChangeText] = React.useState("");
 
     // Function for adding new comment
     const Post_Comment = async () => {
-
-        await CommentAPI({uid: route.params.uid, pid: route.params.pid, text: text});
+        await CommentAPI({uid: post.user_id, pid: post.id, text: text});
         onChangeText("");
         Keyboard.dismiss();
         reload();
-
     };
 
     return (
-        <View style ={{ justifyContent: 'center', padding: 10, flexDirection: 'row', alignItems: 'center'}}>
+        <View style ={Comment_TypeBar}>
             <TextInput
             style={Comment_Input}
             onChangeText={onChangeText}

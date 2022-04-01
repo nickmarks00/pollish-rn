@@ -35,7 +35,7 @@ const MoreOptions = (props) => {
                   <Text style={{paddingLeft: '2%', fontWeight: 'bold', color: '#1F71EB', fontSize: 12}}>MORE INFO</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() =>
-                    navigation.navigate('Comments', { question: props.post.question_text, options_: props.post.choices, uid: props.post.user_id, pid: props.post.id})
+                    navigation.navigate('Comments', { post: props.post})
                   } style={{position: 'absolute', flexDirection: 'row', right: dimensions.width*0.08}}>
                   <Text style={{paddingRight: '2%', fontWeight: 'bold', color: '#1F71EB', fontSize: 12}}>COMMENTS</Text>
                   <Image source={arrow} style={{ 

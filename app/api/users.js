@@ -15,6 +15,7 @@ const register = async values => {
   try {
     const response = await fetch(url, options);
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (e) {
     console.log('Something went wrong registering...', e);

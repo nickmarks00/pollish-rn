@@ -4,3 +4,4 @@ export {default as HomeStack} from './HomeStack';
 export {default as ProfilePage} from './ProfilePage';
 export {default as TestingScreen} from './TestSpace';
 export {default as UserProfileScreen} from './UserProfileScreen';
+export {default as SettingsScreen} from './SettingsScreen';

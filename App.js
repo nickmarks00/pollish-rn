@@ -18,17 +18,20 @@ const MyTheme = {
 
 export default function App() {
   const [user, setUser] = useState();
+  const [profile, setProfile] = useState();
   const [isReady, setIsReady] = useState(false);
 
-  const restoreUser = async () => {
+  const restoreUserProfile = async () => {
     const user = await authStorage.getUser();
+    const profile = await authStorage.getProfile();
     if (user) setUser(user);
+    if (profile) setProfile(profile);
   };
 
   if (!isReady) {
     return (
       <AppLoading
-        startAsync={restoreUser}
+        startAsync={restoreUserProfile}
         onFinish={() => setIsReady(true)}
         onError={console.warn}
       />
@@ -36,9 +39,8 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={{user, setUser}}>
+    <AuthContext.Provider value={{user, setUser, profile, setProfile}}>
       <NavigationContainer theme={MyTheme}>
-        {/* <AppNavigator /> */}
         {user ? <AppNavigator /> : <AuthNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>

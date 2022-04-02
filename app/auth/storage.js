@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import {BASE_URL} from '@env';
-import { computeWindowedRenderLimits } from 'react-native/Libraries/Lists/VirtualizeUtils';
+import {computeWindowedRenderLimits} from 'react-native/Libraries/Lists/VirtualizeUtils';
 
 // TODO Change to a .env secret
 const key = 'pollish_User';
@@ -27,10 +27,9 @@ const getUser = async () => {
   const tokens = JSON.parse(res);
   if (!tokens) return null;
 
-  const url = `http://${base}/auth/users/me/`;
-  console.log(tokens.access);
+  const userUrl = `http://${base}/auth/users/me/`;
 
-  const options = {
+  const userOptions = {
     payload: {},
     method: 'GET',
     headers: {
@@ -38,8 +37,29 @@ const getUser = async () => {
       Authorization: `JWT ${tokens.access}`,
     },
   };
-  console.log(url);
-  const response = await fetch(url, options);
+  const response = await fetch(userUrl, userOptions);
+  if (response.status === 200) {
+    // access token exists and still valid
+    return await response.json();
+  }
+};
+
+const getProfile = async () => {
+  const res = await getTokens();
+  const tokens = JSON.parse(res);
+  if (!tokens) return null;
+
+  const profileUrl = `http://${base}/pollish/profiles/me/`;
+
+  const profileOptions = {
+    payload: {},
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `JWT ${tokens.access}`,
+    },
+  };
+  const response = await fetch(profileUrl, profileOptions);
   if (response.status === 200) {
     // access token exists and still valid
     return await response.json();
@@ -54,4 +74,4 @@ const removeTokens = async () => {
   }
 };
 
-export default {getTokens, getUser, removeTokens, storeTokens};
+export default {getTokens, getUser, getProfile, removeTokens, storeTokens};

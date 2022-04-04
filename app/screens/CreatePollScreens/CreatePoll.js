@@ -1,10 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, StatusBar } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity, StatusBar } from "react-native";
 import { useState } from 'react';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
-import authStorage from '../../auth/storage';
 import { PostPoll } from '../../api/post';
 
 import arrowR from './../PollScreens/arrow.png'

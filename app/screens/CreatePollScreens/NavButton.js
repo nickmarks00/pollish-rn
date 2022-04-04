@@ -1,18 +1,13 @@
 import React from 'react';
-import { View, Image, Text, Dimensions, TouchableOpacity } from 'react-native';
-
-const dimensions = Dimensions.get("window");
+import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { NavBar_Image, NavBar_Text } from 'style/Create_Style';
 
 const NavButton = (props) => {
     return(
         <TouchableOpacity onPress={() => props.setSection(props.section+props.number)}>
             <View style={{flexDirection: props.order}}>
-                <Image source={props.arrow} style={{
-                    width: dimensions.width/30,
-                    height: null,
-                    resizeMode: 'contain',
-                    }}/>
-                <Text style={{fontWeight: 'bold', fontSize: 12, color: '#1F71EB', marginHorizontal: 8}}>{props.text}</Text>
+                <Image source={props.arrow} style={ NavBar_Image }/>
+                <Text style={NavBar_Text}>{props.text}</Text>
             </View>
         </TouchableOpacity>
     );

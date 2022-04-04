@@ -23,12 +23,25 @@ const CommentSection = () => {
 
     const [loading, setLoading] = useState(false);
     const [comments, setComments] = useState([]);
-    const [selected, setSelected] = useState({txt: "No Filter", idx: 0});
+    const [selected, setSelected] = useState({txt: "No Filter", idx: 4, cid: 0});
     const [modalVisible, setModalVisible] = useState(false);
+    const [colors, setColors] = useState({red: 0, yellow: 0, blue: 0, black: 0})
 
     useEffect(() => {
         fetchDataFromApi();
+        assignColors();
       }, []);
+
+      const assignColors = () => {
+          post.choices.map((option, idx) => {
+              if(idx == 0) setColors(prevState => ({ ...prevState, red: option.id}))
+              if(idx == 1) setColors(prevState => ({ ...prevState, yellow: option.id}))
+              if(idx == 2) setColors(prevState => ({ ...prevState, blue: option.id}))
+              if(idx == 3) setColors(prevState => ({ ...prevState, black: option.id}))
+          })
+
+          console.log(colors);
+      }
 
       const fetchDataFromApi = async () => {
           console.log("c")
@@ -63,7 +76,7 @@ const CommentSection = () => {
 
     const SetFilter = (props) => {
         
-        setSelected({txt: props.txt, idx: props.idx});
+        setSelected({txt: props.txt, idx: props.idx, cid: props.cid});
         setModalVisible(!modalVisible);
     }
 
@@ -93,9 +106,10 @@ const CommentSection = () => {
                 <View style ={Comments_DisplayArea}>
                     <ScrollView>
                         {comments.map((comment, index) => {
-                            return (
-                                <Comment key={index} comment_text={comment.comment_text} user={comment.user_id}/>
-                            )
+                            if (selected.cid == comment.choice_id || selected.cid == 0)
+                                return (
+                                <Comment colors={colors} key={index} comment_text={comment.comment_text} user={comment.user_id} cid={comment.choice_id}/>
+                                )
                         })}
                     </ScrollView>
                 </View>

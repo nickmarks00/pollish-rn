@@ -88,7 +88,6 @@ const Comment_ColorBar = {
     marginHorizontal: dimensions.width/50, 
     width: dimensions.width/90, 
     borderRadius: dimensions.width/30, 
-    backgroundColor: '#ED3030'
 }
 
 const Comment_Text = {

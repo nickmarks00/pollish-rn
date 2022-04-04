@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity } from 'react-native';
 import { Filter_Button, Filter_Container, Filter_Background } from 'style/Comments_Style';
 
-const colors = ['#ED3030','#EBAC1F','#309EED']
+const colors = ['#ED3030','#EBAC1F','#309EED','#000','#CCC']
 
 const FilterBar = ({setModalVisible, selected}) => {
     return(

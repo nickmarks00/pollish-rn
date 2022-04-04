@@ -1,10 +1,13 @@
 import React from 'react';
 import { View, ScrollView, Image, Dimensions, Text } from 'react-native';
 import { Post_Image } from 'style/Poll_Style';
+import {BASE_URL} from '@env';
 
 {/*
     This Component renders the image seen at the head of a poll view
 */}
+
+const url = BASE_URL;
 
 const PollImage = (props) => {
     return(
@@ -21,7 +24,7 @@ const PollImage = (props) => {
                                     <Image
                                     resizeMode='cover'
                                     key={index}
-                                    source={{uri: choice.image}}
+                                    source={{uri: `http://${url}${choice.image}`}}
                                     style={Post_Image}
                                     />
                             )

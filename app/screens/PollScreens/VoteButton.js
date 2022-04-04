@@ -15,24 +15,6 @@ const VoteButton = (props) => {
   const [index, setIndex] =useState(0);
   const [border, setBorder] = useState('#DDD');
 
-  useEffect(() => {
-    checkVote();
-  }, []);
-
-  const checkVote = async () => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }
-
-    const response = await fetch(`http://${base}/pollish/polls/${props.pollID}/choices/${props.choice.id}/`, options)
-    .then(response => response.json())
-        .then(response => {
-            // console.log(response);
-        })
-  }
 
 
   // Add a vote to given poll in the backend
@@ -57,12 +39,13 @@ const VoteButton = (props) => {
     setBorder(props.color)
 
     const response = await fetch(`http://${base}/pollish/polls/${props.pollID}/choices/${id}/me/`, requestOptions);
+    props.checkVote();
   };
 
 
   return(
       <TouchableOpacity
-          style={[Post_Option, { borderColor: (props.hasVoted.voted && props.choice.id == props.hasVoted.choice ? props.color : '#DDD'), borderRadius: dimensions.width/(8*props.count)} ]}
+          style={[Post_Option, { borderColor: props.chosen == 2 ? props.color :  '#CCC', borderRadius: dimensions.width/(8*props.count)} ]}
           onPress={() => handleRegisterVote(props.choice.id, props.choice.votes, props.pollID)}
       >
           <View style={Inner_Option_Container}>
@@ -72,7 +55,7 @@ const VoteButton = (props) => {
                 </View>
             </View>
             <View style={{width: dimensions.width/10}}/>
-            <Text style={[Option_Text, {color: '#CCC'}]} adjustsFontSizeToFit numberOfLines={2}>
+            <Text style={[Option_Text, {color: props.chosen == 2 ? props.color : props.chosen == 1 ? '#CCC' : '#000'}]} adjustsFontSizeToFit numberOfLines={2}>
                 {props.choice.choice_text}
             </Text>
             <View style={{width: dimensions.width/4}}/>

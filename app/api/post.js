@@ -1,16 +1,40 @@
 import authStorage from '../auth/storage'
 
+const CheckVote = async ({pid}) => {
+    const res = await authStorage.getTokens();
+    const access = JSON.parse(res).access;
+    const url = `http://192.168.1.140:8000/pollish/polls/${pid}/`;
+    var id = 0;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `JWT ${access}`,
+        },
+    }
+
+    const response = await fetch(url, options)
+    .then(d => d.json())
+    .then(data => {
+        console.log('uvote ' + data.user_vote);
+        id = data.user_vote;
+    })
+
+    return id;
+}
+
 const CommentAPI = async ({uid, pid, text}) => {
 
     const url = `http://192.168.1.140:8000/core/users/${uid}/polls/${pid}/comments/`;
     const user = await authStorage.getUser();
+    const voteId = await CheckVote({pid: pid})
     const options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            choice_id: 1,
+            choice_id: voteId ? voteId : 1,
             comment_text: text,
             user_id: user.id,
         })

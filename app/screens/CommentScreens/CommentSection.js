@@ -91,7 +91,7 @@ const CommentSection = () => {
 
             {/* Top Section containing Question information */}
             <View style={Question_Container}>
-                <PollQuestion question={post.question_text}/>
+                <PollQuestion question={post.question_text} size={20}/>
             </View>
 
             {/* FilterBar the currently selected filter */}

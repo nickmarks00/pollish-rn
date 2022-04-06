@@ -15,14 +15,15 @@ const Question_Box = {
     alignItems: 'center',
     flex: 1,
     paddingVertical: '5%',
-    paddingHorizontal: '2%'
+    paddingHorizontal: '2%',
+    backgroundColor: '#FAFAFA'
 }
 
 // Question text styling for a post
 const Post_Question = {
     fontFamily: 'SFRound',
     textAlign: 'center',
-    fontSize: 20,
+    paddingHorizontal: 10,
     color: 'black',
 }
 
@@ -31,7 +32,7 @@ const Options_Container = {
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     flex: 1,
-    paddingVertical: '4%'
+    paddingVertical: '0%'
 }
 
 // Container for storing additional options at base of poll (stats, report, comment)
@@ -45,7 +46,7 @@ const Circle_Option = {
     borderRadius: dimensions.height/60,
     left: dimensions.width*0.02,
     justifyContent: 'center',
-    height: '80%',
+    height: '50%',
     aspectRatio: 1
 }
 
@@ -61,7 +62,8 @@ const Question_Header = {
     color: '#AAA',
     fontSize: 10, 
     textAlign: 'center', 
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 10,
 }
 
 // Choices labels above Options (Choices / Votes)
@@ -70,7 +72,8 @@ const Choices_Header = {
     position: 'absolute', 
     left: dimensions.width*0.08, 
     fontSize: 10, 
-    color: '#AAA'
+    color: '#000',
+    fontWeight: '600'
 }
 
 // Interior elements of an option button (Letter, Text, etc)
@@ -86,19 +89,15 @@ const Option_Text = {
     fontFamily: 'SFRound',
     textAlign: 'center',
     fontSize: 15,
-    width: dimensions.width/3
+    width: dimensions.width/2
 }
 
 // Container for an individual post option
 const Post_Option = {
-    borderWidth: 2,
-    marginHorizontal: dimensions.width/14,
-    borderRadius: dimensions.width/24,
-    backgroundColor: '#FFF',
+    borderVerticalWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    marginVertical: '2%',
 }
 
 export {Post_Image, Question_Box, Post_Question, Options_Container, More_Options, 

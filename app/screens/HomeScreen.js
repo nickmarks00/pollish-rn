@@ -74,10 +74,12 @@ const HomeScreen = () => {
   // };
 
   return (
+    <View>
+      <View style={{height: 50, borderBottomWidth: 2, borderColor: '#00A6A6', backgroundColor: 'rgba(0,166,166,0)'}}/>
     <ScrollView
       decelerationRate={0}
       snapToAlignment="lefts"
-      snapToInterval={dimensions.height - tabBarHeight}
+      snapToInterval={dimensions.height - tabBarHeight - 50}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
@@ -108,6 +110,7 @@ const HomeScreen = () => {
         }) || []}
       </View>
     </ScrollView>
+    </View>
   );
 };
 

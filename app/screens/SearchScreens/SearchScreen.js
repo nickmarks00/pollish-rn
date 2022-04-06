@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, StyleSheet, Dimensions, Button, ScrollView} from 'react-native';
+import {View, TextInput, StyleSheet, Dimensions, Button, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {BASE_IP} from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import { clickProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 import { useNavigation } from '@react-navigation/native';
 import SearchPollView from './SearchPollView';
+import { SearchBar } from 'react-native-paper';
+import { PollQuestion } from '../PollScreens';
 
 const dimensions = Dimensions.get('screen');
 
@@ -14,6 +16,7 @@ const SearchScreen = () => {
 
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [images, setImages] = useState([]);
 
     const [filteredData, setfilteredData] = useState([]);
     const [masterData, setmasterData] = useState([]);
@@ -29,7 +32,7 @@ const SearchScreen = () => {
     
         setLoading(true);
     
-        const res = fetch(url, {
+        const res = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -38,12 +41,19 @@ const SearchScreen = () => {
           .then(res => res.json())
           .then(data => {
             setPosts(data.results);
+            console.log(data.results);
+            setImages(data.results.images);
             setfilteredData(data.results);
             setLoading(false);
           })
           .catch(error => {
             console.error(error);
           });
+
+          console.log(res)
+          console.log("hi")
+
+          
       };
 
     const searchFilter = (text) => {
@@ -68,7 +78,7 @@ const SearchScreen = () => {
 
     return (
         <View>
-            <View style ={{ justifyContent: 'flex-end', marginTop: 50,padding: 0, flexDirection: 'row', alignItems: 'center'}}>
+            <View style ={{ justifyContent: 'flex-end', marginTop: 50, marginBottom: 10, padding: 0, flexDirection: 'row', alignItems: 'center'}}>
                 <TextInput
                 style={styles.comment_input}
                 onChangeText={(text) => searchFilter(text)}
@@ -82,16 +92,39 @@ const SearchScreen = () => {
                 accessibilityLabel="Learn more about this purple button"
                 />
             </View>
+
+            <View style={{width: dimensions.width, height: dimensions.height/70, backgroundColor: '#00A6A6'}}/>
+
+
             
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
+
                 <View>
-                    {filteredData.map((post, idx) => {
+                    
+                    {posts.map((post, idx) => {
+                        // console.log("hi")
+                        var item = ""
+                        // console.log(images)
                         return (
-                            <SearchPollView key={idx} question={post.question_text} img={post.images[0].image_src}/>
-                            
+                            <TouchableOpacity key={idx} onPress={() => navigation.navigate('PollFromSearch', { post: post})}>
+                            <View  style={{backgroundColor: (idx % 2 == 0) ? '#FFF' : '#F7F7F7' , height: dimensions.height/8, alignItems: 'center', justifyContent: 'space-evenly', flexDirection: 'row', paddingHorizontal: '5%', borderBottomWidth: 1, borderColor: 'rgba(0,166,166,0.4)'}}>
+                                {post.images[0] ?
+                                <Image
+                                    resizeMode='cover'
+                                    key={idx}
+                                    source={{uri: `http://${BASE_IP}${post.images[0].image}`}}
+                                    style={{width: dimensions.height/10, aspectRatio: 1, borderRadius: 10, borderWidth: 2, borderColor: '#00A6A6'}}
+                                />
+                                : <View/>}
+                                <PollQuestion question={post.question_text} size={12}/>
+
+                                {/* <Text>{post.images[0] ? post.images[0].image : 'hi'}</Text> */}
+                            </View>
+                            </TouchableOpacity>
                         )
                     })}
                 </View>
+                
             </ScrollView>
         </View>
     )

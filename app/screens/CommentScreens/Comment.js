@@ -26,9 +26,9 @@ const Comment = (props) => {
 
     const FindColor = () => {
 
-        if (props.colors.red == props.cid) return '#ED3030'
-        if (props.colors.yellow == props.cid) return '#EBAC1F'
-        if (props.colors.blue == props.cid) return '#309EED'
+        if (props.colors.red == props.cid) return '#EF946C'
+        if (props.colors.yellow == props.cid) return '#5ED1D0'
+        if (props.colors.blue == props.cid) return '#DC6BAD'
         if (props.colors.black == props.cid) return '#000'
 
         return '#CCC'

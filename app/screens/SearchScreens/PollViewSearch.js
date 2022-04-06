@@ -14,10 +14,14 @@ const PollViewSearch = () => {
     const route = useRoute();
 
     return(
+        <View>
+        <View style={{height: 50, borderBottomWidth: 2, borderColor: '#00A6A6'}}/>
         <PollView
-            question={route.params.question_text}
-            choices={route.params.choices}
+            post={route.params.post}
+            question={route.params.post.question_text}
+            choices={route.params.post.choices}
         />
+        </View>
     )
 }
 

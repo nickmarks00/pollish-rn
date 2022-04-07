@@ -1,9 +1,12 @@
 import authStorage from '../auth/storage'
+import {BASE_URL} from '@env';
+
+const base = BASE_URL;
 
 const CheckVote = async ({pid}) => {
     const res = await authStorage.getTokens();
     const access = JSON.parse(res).access;
-    const url = `http://192.168.1.140:8000/pollish/polls/${pid}/`;
+    const url = `http://${base}/pollish/polls/${pid}/`;
     var id = 0;
     const options = {
         method: 'GET',
@@ -25,7 +28,7 @@ const CheckVote = async ({pid}) => {
 
 const CommentAPI = async ({uid, pid, text}) => {
 
-    const url = `http://192.168.1.140:8000/core/users/${uid}/polls/${pid}/comments/`;
+    const url = `http://${base}/core/users/${uid}/polls/${pid}/comments/`;
     const user = await authStorage.getUser();
     const voteId = await CheckVote({pid: pid})
     const options = {
@@ -62,7 +65,7 @@ const PostPoll = async ({text, ch, m}) => {
     }
 
     var id = -1;
-    const response = await fetch('http://192.168.1.140:8000/pollish/polls/me/', options)
+    const response = await fetch(`http://${base}/pollish/polls/me/`, options)
         .then(response => response.json())
         .then(response => {
             id = response.id
@@ -89,7 +92,23 @@ const Post_Image = async ({m, id, access}) =>{
         body: data
     }
 
-    const response = await fetch(`http://192.168.1.140:8000/pollish/polls/${id}/images/`, options)
+    const response = await fetch(`http://${base}/pollish/polls/${id}/images/`, options)
 }
 
-export {CommentAPI, PostPoll};
+const RegisterVote = async ({id, cid}) => {
+
+    const res = await authStorage.getTokens();
+    const access = JSON.parse(res).access;
+
+    const requestOptions = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `JWT ${access}`,
+      },
+    };
+    
+    const response = await fetch(`http://${base}/pollish/polls/${id}/choices/${cid}/me/`, requestOptions);
+  };
+
+export {CommentAPI, PostPoll, RegisterVote};

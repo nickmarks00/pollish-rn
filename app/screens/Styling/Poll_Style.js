@@ -1,4 +1,5 @@
 import {Dimensions} from 'react-native';
+import {SubHeading, NavColor} from './App_Styles';
 
 const dimensions = Dimensions.get("screen");
 
@@ -27,14 +28,6 @@ const Post_Question = {
     color: 'black',
 }
 
-// Container for containing all options for a poll post
-const Options_Container = {
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    flex: 1,
-    paddingVertical: '0%'
-}
-
 // Container for storing additional options at base of poll (stats, report, comment)
 const More_Options = {
     marginTop: '5%',
@@ -51,30 +44,19 @@ const Circle_Option = {
 }
 
 // Letter for post options
-const Option_Letter = {
-    textAlign: 'center',
-    fontFamily: 'System',
-    fontWeight: 'bold',
-}
+const Option_Letter = [
+    SubHeading
+]
 
 // Question label above Poll question text
-const Question_Header = {
-    color: '#AAA',
-    fontSize: 10, 
-    textAlign: 'center', 
-    fontWeight: 'bold',
-    marginBottom: 10,
-}
-
-// Choices labels above Options (Choices / Votes)
-const Choices_Header = {
-    textAlign: 'left', 
-    position: 'absolute', 
-    left: dimensions.width*0.08, 
-    fontSize: 10, 
-    color: '#000',
-    fontWeight: '600'
-}
+const Question_Header = [
+    SubHeading,
+    {
+        color: '#AAA',
+        fontSize: 10, 
+        marginBottom: 10,
+    }
+]
 
 // Interior elements of an option button (Letter, Text, etc)
 const Inner_Option_Container = {
@@ -98,8 +80,16 @@ const Post_Option = {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+    borderColor: '#EEE', 
+    borderWidth: 0.4
 }
 
-export {Post_Image, Question_Box, Post_Question, Options_Container, More_Options, 
-        Circle_Option, Option_Letter, Question_Header, Choices_Header, Inner_Option_Container, Option_Text,
-        Post_Option } 
+const Nav_Text = {
+    fontWeight: 'bold', 
+    color: NavColor, 
+    fontSize: 12
+}
+
+export {Post_Image, Question_Box, Post_Question, More_Options, 
+        Circle_Option, Option_Letter, Question_Header, Inner_Option_Container, Option_Text,
+        Post_Option, Nav_Text } 

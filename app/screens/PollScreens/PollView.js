@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, Dimensions, Button, Modal} from 'react-native';
+import {View, Text, Dimensions} from 'react-native';
 import { useFonts } from 'expo-font';
 import {PollImage, PollQuestion, MoreOptions, OptionsContainer} from '.'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { PrimaryPollish, GreyBorder } from 'style/App_Styles';
+import InfoCard from './InfoCard';
 
 const dimensions = Dimensions.get('window');
 
@@ -23,22 +25,15 @@ const PollView = (props) => {
     <View style={{ width: dimensions.width, height: dimensions.height - tabBarHeight - 50}}>
 
       {/* Modal Popup */}
-      <Modal visible={open} animationType={"slide"}>
-        <View style={{width: dimensions.width, height: dimensions.height}}>
-          <Text>hi</Text>
-          <Text>hi</Text>
-          <Text>{props.votes}</Text>
-          <Button title="Close" onPress={()=>setOpen(false)}/>
-        </View>
-      </Modal>
+      <InfoCard setOpen={setOpen} open={open}/>
       {/* End Modal Popup */}
 
       {/* Main Poll View */}
-      <View style={{flex: 8}}><PollImage images={props.post.images}/></View>
-      <View style={{width: dimensions.width, marginTop: -6, flex: 0.3, backgroundColor: '#00A6A6', borderTopLeftRadius:500, borderTopRightRadius: 50}}/>
-      <View style={{flex: 2.5, zIndex: -1, marginTop: -10, borderBottomWidth: 1, borderBottomColor: '#CCC'}}><PollQuestion backColor={'#FAFAFA'} question={props.question} size={16}/></View>
-      <View style={{flex: 6}}><OptionsContainer choices={props.choices} votes={props.post.votes} pollID={props.post.id}/></View>
-      <View style={{flex: 2, backgroundColor: '#FFF', borderTopWidth: 1, borderColor: '#CCC'}}><MoreOptions post={props.post}/></View>
+      <View style={{ flex: 8 }}><PollImage images={props.post.images}/></View>
+      <View style={{ flex: 0.3, backgroundColor: PrimaryPollish}}/>
+      <View style={[{flex: 2.2}, GreyBorder]}><PollQuestion backColor={'#FAFAFA'} question={props.question} size={16}/></View>
+      <View style={[{flex: 6.5}, GreyBorder]}><OptionsContainer post={props.post}/></View>
+      <View style={{flex: 1.5}}><MoreOptions post={props.post}/></View>
       {/* End Main Poll View */}
 
     </View>

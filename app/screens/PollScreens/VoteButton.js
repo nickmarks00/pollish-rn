@@ -53,7 +53,7 @@ const VoteButton = (props) => {
             <View style={{width: dimensions.width/4, alignItems: 'center', flex: 1}}>
                 <LetterBox count={props.count} idx={props.idx} color={color}/>
             </View>
-            <Text style={[Option_Text, {color: props.chosen == 2 ? color : props.chosen == 1 ? '#CCC' : color}]} adjustsFontSizeToFit numberOfLines={2}>
+            <Text style={[Option_Text, {width: dimensions.width/2, color: props.chosen == 2 ? color : props.chosen == 1 ? '#CCC' : color}]} adjustsFontSizeToFit numberOfLines={2}>
                 {props.choice.choice_text}
             </Text>
             <View style={{width: dimensions.width/4}}>

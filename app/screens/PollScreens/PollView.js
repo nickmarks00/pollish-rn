@@ -31,7 +31,7 @@ const PollView = (props) => {
       {/* Main Poll View */}
       <View style={{ flex: 8 }}><PollImage images={props.post.images}/></View>
       <View style={{ flex: 0.3, backgroundColor: PrimaryPollish}}/>
-      <View style={[{flex: 2.2}, GreyBorder]}><PollQuestion backColor={'#FAFAFA'} question={props.question} size={16}/></View>
+      <View style={[{flex: 2.2}, GreyBorder]}><PollQuestion question={props.question} size={16}/></View>
       <View style={[{flex: 6.5}, GreyBorder]}><OptionsContainer post={props.post}/></View>
       <View style={{flex: 1.5}}><MoreOptions post={props.post}/></View>
       {/* End Main Poll View */}

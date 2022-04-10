@@ -13,7 +13,7 @@ const AppNavigator = props => {
       <Tab.Screen name="Feed" component={HomeStack} />
       <Tab.Screen name="Create" component={CreatePoll} />
       <Tab.Screen name="Search" component={SearchStack} />
-      <Tab.Screen name="Profile" component={UserProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfilePage} />
     </Tab.Navigator>
   );
 };

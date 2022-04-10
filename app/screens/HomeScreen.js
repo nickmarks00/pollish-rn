@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Dimensions, RefreshControl} from 'react-native';
+import {View, Text, ScrollView, Dimensions, RefreshControl, Image} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 import PollView from './PollScreens/PollView';
@@ -75,7 +75,12 @@ const HomeScreen = () => {
 
   return (
     <View>
-      <View style={{height: 50, borderBottomWidth: 2, borderColor: '#00A6A6', backgroundColor: 'rgba(0,166,166,0)'}}/>
+      <View style={{height: 50, borderBottomWidth: 2, borderColor: '#00A6A6', alignItems: 'center'}}>
+      {/* <Image
+          style={{width: dimensions.width/2, height: 80, marginTop: 25}}
+          source={require('../assets/logos/jpgs/logo3.png')}
+        /> */}
+        </View>
     <ScrollView
       decelerationRate={0}
       snapToAlignment="lefts"

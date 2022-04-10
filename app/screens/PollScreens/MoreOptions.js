@@ -2,7 +2,7 @@ import React from 'react';
 import { More_Options } from 'style/Poll_Style';
 import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import arrow from './arrow.png';
+import arrow from '../../assets/arrow.png';
 import { Nav_Text } from 'style/Poll_Style';
 
 const dimensions = Dimensions.get('window');

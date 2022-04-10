@@ -1,21 +1,25 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image, Dimensions } from 'react-native';
-import SearchPollView from './SearchScreens/SearchPollView';
+import {ListItem, ListItemSeparator} from '../components/lists';
+import Icon from '../components/Icon';
 
 
 const dimensions = Dimensions.get("screen")
 
 const ProfilePage = () => {
+
+  const {user, logOut} = useAuth();
+
   return (
     <View style={styles.container}>
-      <View style={{alignItems: 'center', backgroundColor: '#83EFB1', width: dimensions.width, height: dimensions.height/4.5}}>
+      <View style={{alignItems: 'center', backgroundColor: '#00A6A6', width: dimensions.width, height: dimensions.height/4.5}}>
         <Image source={{uri: 'https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'}}
         style={{
           marginTop: (dimensions.height/4.5)-(dimensions.width/3), 
           width: dimensions.width/2, 
           height: dimensions.width/2,
           borderRadius: dimensions.width/16,
-          borderColor: '#83EFB1',
+          borderColor: '#00A6A6',
           borderWidth: 3}}
         />
       </View>
@@ -48,20 +52,23 @@ const ProfilePage = () => {
         <Text style={{fontSize: dimensions.width/30, fontFamily: 'SFRound'}}>FOLLOWERS</Text>
         <Text style={{fontSize: dimensions.width/30, fontFamily: 'SFRound'}}>300K</Text>
       </View>
+      <View style={{alignItems: 'center', marginTop: 100}}>
+        <ListItem
+          title="Log Out"
+          IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
+          onPress={() => logOut()}
+        />
+      </View>
 
-      <View style={{marginLeft: dimensions.width*0.08, width: dimensions.width*0.84, height: dimensions.height/6, backgroundColor: 'rgba(204, 204, 204, 0.15)', borderRadius: 10,
+      {/* <View style={{marginLeft: dimensions.width*0.08, width: dimensions.width*0.84, height: dimensions.height/6, backgroundColor: 'rgba(204, 204, 204, 0.15)', borderRadius: 10,
        textAlign: 'left', justifyContent: 'space-evenly', marginTop: 30}}>
          <Text style={{fontFamily: 'SFRound'}}>RECENT</Text>
-         <SearchPollView/>
-         <SearchPollView/>
       </View>
 
       <View style={{marginLeft: dimensions.width*0.08, width: dimensions.width*0.84, height: dimensions.height/6, backgroundColor: 'rgba(204, 204, 204, 0.15)', borderRadius: 10,
        textAlign: 'left', justifyContent: 'space-evenly', marginTop: 30}}>
          <Text style={{fontFamily: 'SFRound'}}>POPULAR</Text>
-         <SearchPollView/>
-         <SearchPollView/>
-      </View>
+      </View> */}
       
     </View>
   );  

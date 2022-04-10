@@ -6,8 +6,8 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 import { PostPoll } from '../../api/post';
 
-import arrowR from './../PollScreens/arrow.png'
-import arrowL from './../PollScreens/arrowR.png'
+import arrowR from './../../assets/arrow.png'
+import arrowL from './../../assets/arrowR.png'
 import CreateBar from './CreateBar';
 import NavButton from './NavButton';
 import Question from './CreateQuestion';

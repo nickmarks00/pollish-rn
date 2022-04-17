@@ -46,17 +46,25 @@ const VoteButton = (props) => {
 
   return(
       <TouchableOpacity
-          style={[Post_Option, { backgroundColor: props.chosen == 2 ? fadedColor : '#FFF'} ]}
+          style={[Post_Option, { backgroundColor: props.chosen == 2 ? fadedColor : '#FEFEFE', borderRadius: 25, 
+          shadowColor: "#000",
+          shadowOffset: {
+          width: 0,
+          height: 1
+          },
+          shadowOpacity: 0.2,
+          shadowRadius: 1,
+          elevation: 5} ]}
           onPress={() => handleRegisterVote()}
       >
           <View style={Inner_Option_Container}>
-            <View style={{width: dimensions.width/4, alignItems: 'center', flex: 1}}>
+            <View style={{width: '25%', alignItems: 'center', flex: 1}}>
                 <LetterBox count={props.count} idx={props.idx} color={color}/>
             </View>
-            <Text style={[Option_Text, {width: dimensions.width/2, color: props.chosen == 2 ? color : props.chosen == 1 ? '#CCC' : color}]} adjustsFontSizeToFit numberOfLines={2}>
+            <Text style={[Option_Text, {shadowColor: '#FFF', width: '50%', color: props.chosen == 2 ? color : props.chosen == 1 ? '#CCC' : color}]} adjustsFontSizeToFit numberOfLines={2}>
                 {props.choice.choice_text}
             </Text>
-            <View style={{width: dimensions.width/4}}>
+            <View style={{width: '25%'}}>
               { props.chosen == 0 ? <View/> :
               <Text>{(votes / props.voteCount)*100}%</Text>
               }

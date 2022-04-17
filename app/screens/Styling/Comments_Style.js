@@ -3,6 +3,7 @@
 */
 
 import { Dimensions } from "react-native"
+import { PrimaryPollish } from "./App_Styles";
 const dimensions = Dimensions.get("screen");
 
 // Container displaying question text inside of Question_Container
@@ -117,10 +118,10 @@ const Filter_Text = {
 }
 
 const Modal_Container = {
-    margin: 20,
+    margin: 30,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -140,20 +141,20 @@ const Modal_Position = {
 }
 
 const Question_Container = {
-    marginTop: dimensions.height/40, 
+    marginTop: dimensions.height/30, 
     width: dimensions.width, 
-    height: dimensions.height/6
+    height: dimensions.height/7
 }
 
 const Comments_DisplayArea = {
     flex: 1, 
-    borderTopWidth: 10, 
-    paddingTop:20, 
-    borderColor: '#1F71EB'
+    borderTopWidth: 1, 
+    paddingTop:10, 
+    borderColor: '#EEE'
 }
 
 const Filter_Container = {
-    marginBottom: dimensions.height/30, 
+    marginBottom: dimensions.height/40, 
     flexDirection: 'row', 
     width: dimensions.width, 
     alignItems: 'center', 

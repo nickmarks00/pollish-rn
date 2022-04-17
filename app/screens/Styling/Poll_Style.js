@@ -5,7 +5,7 @@ const dimensions = Dimensions.get("screen");
 
 // Container for image at top of poll post
 const Post_Image = {
-    width: dimensions.width,
+    width: dimensions.width*0.9,
     flex: 1,
 }
 
@@ -29,6 +29,8 @@ const Post_Question = {
 // Container for storing additional options at base of poll (stats, report, comment)
 const More_Options = {
     marginVertical: '5%',
+    flex: 1,
+    justifyContent: 'center',
 }
 
 // Circle colour on post option
@@ -58,6 +60,8 @@ const Option_Text = {
 const Post_Option = {
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: '2%',
+    marginHorizontal: '5%',
     flex: 1,
     borderColor: '#EEE', 
     borderWidth: dimensions.height/3000

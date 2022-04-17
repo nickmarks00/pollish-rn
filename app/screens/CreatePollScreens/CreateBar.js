@@ -1,18 +1,22 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View } from 'react-native';
 import PollComponentButton from './PollComponentButton';
+import { Create_Navbar, Create_Navbar_BG } from 'style/Create_Style';
 
-const dimensions = Dimensions.get("window");
+/*
+    * This component shows the navigation bar ontop of the poll creation screen
+    TODO: Remove prop drilling
+*/
+
 const CreateBar = (props) => {
     return(
         <View>
-            <View style={{position: 'absolute', width: dimensions.width, marginTop: dimensions.width/36, height: dimensions.width/18, backgroundColor: 'rgba(31, 113, 235, 0.1)'}}/>
-            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: dimensions.width}}>
-                
-                <PollComponentButton { ...props } component={'QUESTION'} num={0} type={'?'}/>
-                <PollComponentButton { ...props } component={'CHOICES'} num={1} type={'C'}/>
-                <PollComponentButton { ...props } component={'IMAGES'} num={2} type={'O'}/>
-                <PollComponentButton { ...props } component={'SETTINGS'} num={3} type={'S'}/>
+            <View style={Create_Navbar_BG}/>
+            <View style={Create_Navbar}>
+                <PollComponentButton { ...props } component={'QUESTION'} num={0} type={'help'} valid={props.ready.q}/>
+                <PollComponentButton { ...props } component={'CHOICES'} num={1} type={'poll'} valid={props.ready.o}/>
+                <PollComponentButton { ...props } component={'IMAGES'} num={2} type={'image-multiple'} valid={props.ready.m}/>
+                <PollComponentButton { ...props } component={'SETTINGS'} num={3} type={'cog'} valid={props.ready.s}/>
             </View>
         </View>
     );

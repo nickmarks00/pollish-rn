@@ -1,20 +1,85 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image, Dimensions } from 'react-native';
-import {ListItem, ListItemSeparator} from '../components/lists';
+import {ListItem} from '../components/lists';
 import Icon from '../components/Icon';
+import * as ImagePicker from 'expo-image-picker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import authStorage from '../auth/storage'
+import { PrimaryPollish } from './Styling/App_Styles';
+
 
 
 const dimensions = Dimensions.get("screen")
 
+const img = 'https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'
+
 const ProfilePage = () => {
 
   const {user, logOut} = useAuth();
+  const [profilePic, setProfilePic] = React.useState('')
+
+  React.useEffect(() => {
+    findAvatar();
+  }, []);
+
+  const findAvatar = async () => {
+    const tokens = await authStorage.getTokens();
+    const access = JSON.parse(tokens).access;
+
+    const options = {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'multipart/form-data; ',
+          Authorization: `JWT ${access}`,
+      },
+  }
+
+  const response = await fetch(`http://192.168.1.140:8000/pollish/profiles/me/`, options)
+  .then(response => response.json())
+        .then(response => {
+          console.log("Av " + response.avatar)
+            setProfilePic(response.avatar)
+        })
+
+  }
+
+  let openImagePickerAsync = async () => {
+    const tokens = await authStorage.getTokens();
+    const access = JSON.parse(tokens).access;
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+    const data = new FormData();
+    data.append("avatar", {uri: pickerResult.uri, name: 'image.png', type: 'image/png'});
+
+    const options = {
+        method: 'PATCH',
+        headers: {
+            Authorization: `JWT ${access}`,
+        },
+        body: data
+    }
+
+    const response = await fetch(`http://192.168.1.140:8000/pollish/profiles/me/`, options)
+    findAvatar()
+};
 
   return (
     <View style={styles.container}>
-      <View style={{alignItems: 'center', backgroundColor: '#00A6A6', width: dimensions.width, height: dimensions.height/4.5}}>
-        <Image source={{uri: 'https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'}}
+      <View style={{alignItems: 'center', backgroundColor: PrimaryPollish, width: dimensions.width, height: dimensions.height/4.5}}>
+        <TouchableOpacity onPress={() => openImagePickerAsync()}>
+        <Image source={{uri: profilePic ? `http://192.168.1.140:8000${profilePic}` : undefined}}
         style={{
+          backgroundColor: '#FFF',
           marginTop: (dimensions.height/4.5)-(dimensions.width/3), 
           width: dimensions.width/2, 
           height: dimensions.width/2,
@@ -22,6 +87,7 @@ const ProfilePage = () => {
           borderColor: '#00A6A6',
           borderWidth: 3}}
         />
+        </TouchableOpacity>
       </View>
 
       <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: dimensions.width/5, fontSize: 15}}>

@@ -4,6 +4,7 @@ import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 import PollView from './PollScreens/PollView';
 import {BASE_URL} from '@env';
+import { PrimaryPollish } from './Styling/App_Styles';
 const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
@@ -75,16 +76,16 @@ const HomeScreen = () => {
 
   return (
     <View>
-      <View style={{height: 50, borderBottomWidth: 2, borderColor: '#00A6A6', alignItems: 'center'}}>
-      {/* <Image
-          style={{width: dimensions.width/2, height: 80, marginTop: 25}}
-          source={require('../assets/logos/jpgs/logo3.png')}
-        /> */}
+      <View style={{height: 100, borderBottomWidth: 2, borderColor: '#EEE', alignItems: 'center'}}>
+      <Image
+          style={{width: dimensions.width/2.8, height: 80, marginTop: 30}}
+          source={require('../assets/logos/logo.png')}
+        />
         </View>
     <ScrollView
       decelerationRate={0}
       snapToAlignment="lefts"
-      snapToInterval={dimensions.height - tabBarHeight - 50}
+      snapToInterval={dimensions.height - tabBarHeight - 100}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl

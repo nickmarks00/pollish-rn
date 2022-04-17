@@ -19,8 +19,18 @@ const Comment = (props) => {
 
     // Function for sourcing username tied to comment
     const loadUserData = async () => {
-        const user = await authStorage.getUser();
-        setUserName(user.username)
+        const url = `http://192.168.1.140:8000/core/users/${props.user}/`
+        const options = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          };
+        const res = await fetch(url, options)
+        .then(response => response.json())
+        .then(response => {
+            setUserName(response.username)
+        })
         
     }
 

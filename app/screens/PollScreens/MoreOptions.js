@@ -7,12 +7,12 @@ import { Nav_Text } from 'style/Poll_Style';
 
 const dimensions = Dimensions.get('window');
 
-const MoreOptions = (props) => {
+const MoreOptions = ({setOpen, post}) => {
 
     const navigation = useNavigation();
     return(
     <View style={More_Options}>
-                <TouchableOpacity onPress={console.log("hi")} style={{position: 'absolute', flexDirection: 'row', left: dimensions.width*0.08}}>
+                <TouchableOpacity onPress={() => setOpen(true)} style={{position: 'absolute', flexDirection: 'row', left: dimensions.width*0.08}}>
                   <Image source={arrow} style={{
                     transform: [{rotate: '180deg'}],
                     width: dimensions.width/30,
@@ -22,7 +22,7 @@ const MoreOptions = (props) => {
                   <Text style={[{paddingLeft: '2%'}, Nav_Text]}>MORE INFO</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() =>
-                    navigation.navigate('Comments', { post: props.post})
+                    navigation.navigate('Comments', { post: post})
                   } style={{position: 'absolute', flexDirection: 'row', right: dimensions.width*0.08}}>
                   <Text style={[{paddingRight: '2%'}, Nav_Text]}>COMMENTS</Text>
                   <Image source={arrow} style={{ 

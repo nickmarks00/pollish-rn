@@ -1,16 +1,26 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Option_Buttons, Option_Text } from '../Styling/Create_Style';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Component_Button, Option_Buttons, Option_Text, Component_Button_Text } from 'style/Create_Style';
+import { PrimaryPollish } from 'style/App_Styles';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-const dimensions = Dimensions.get("window");
+/*
+    * Component for showing an individual button on the create poll screen
+    TODO: Reduce prop drilling
+*/
 
 const PollComponentButton = (props) => {
     return (
-        <View style={{width: dimensions.width/7, alignItems: 'center'}}>
+        <View style={Component_Button}>
             <TouchableOpacity onPress={() => props.setSection(props.num)}>
-                <View style={[Option_Buttons, {backgroundColor: props.background}]}>
-                    <Text style={{fontWeight: 'bold', fontSize: 30, color: props.color}}>{props.type}</Text>
+                <View style={[Option_Buttons, {backgroundColor: props.valid ? PrimaryPollish : '#FFF'}]}>
+                    <MaterialCommunityIcons
+                      name={props.type}
+                      size={30}
+                      color={props.valid ? '#FFF' : PrimaryPollish}
+                      style={{}}
+                    />
+                    {/* <Text style={[Component_Button_Text, {color: props.valid ? '#FFF' : PrimaryPollish }]}>{props.type}</Text> */}
                 </View>
             </TouchableOpacity>
             <Text style={Option_Text}>{props.component}</Text>

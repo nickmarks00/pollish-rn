@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { PrimaryPollish } from './App_Styles';
 
 const dimensions = Dimensions.get("window");
 
@@ -7,7 +8,7 @@ const Option_Buttons = {
     aspectRatio: 1, 
     borderRadius: 10, 
     borderWidth: 1,
-    borderColor: '#1F71EB',
+    borderColor: PrimaryPollish,
     backgroundColor: 'white',
     alignItems: 'center', 
     justifyContent: 'center'
@@ -18,7 +19,7 @@ const Option_Text = {
     fontSize: 9, 
     fontWeight: 'bold', 
     marginTop: 3,
-    color: '#1F71EB'
+    color: PrimaryPollish
 }
 
 const Top_Options_BG = {
@@ -41,9 +42,9 @@ const Header_Text = {
 
 const Content_Section = {
     height: dimensions.height*(0.5), 
-    borderBottomWidth: dimensions.height/60, 
+    // borderBottomWidth: dimensions.height/60, 
     width: dimensions.width, 
-    borderColor: '#1F71EB'
+    borderColor: PrimaryPollish
 }
 
 const Content_Navbar = {
@@ -62,7 +63,7 @@ const NavBar_Image = {
 const NavBar_Text = {
     fontWeight: 'bold', 
     fontSize: 12, 
-    color: '#1F71EB', 
+    color: PrimaryPollish, 
     marginHorizontal: 8
 }
 
@@ -130,7 +131,66 @@ const Media_Page = {
     alignItems: 'center'
 }
 
+const Create_Navbar = {
+    flexDirection: 'row', 
+    justifyContent: 'space-evenly',
+    width: dimensions.width
+}
+
+const Create_Navbar_BG = {
+    position: 'absolute', 
+    width: dimensions.width, 
+    marginTop: dimensions.width/36, 
+    height: dimensions.width/18, 
+    backgroundColor: 'rgba(31, 113, 235, 0.1)'
+}
+
+const Option_Input = {
+    borderWidth: 1,
+    width: dimensions.width/1.2,
+    height: dimensions.height/25,
+    paddingHorizontal: 10,
+    borderColor: '#DDD',
+    borderRadius: 10,
+}
+
+const Choices_Container = {
+    flex: 0.9, 
+    justifyContent: 'space-evenly', 
+    alignItems: 'center'
+}
+
+const SubHeader = {
+    color: PrimaryPollish, 
+    fontWeight: 'bold', 
+    fontSize: 16
+}
+
+const Option_Header = {
+    marginVertical: '2%', 
+    fontWeight: 'bold', 
+    fontSize: 12
+}
+
+const Media_PlusButton_Text = {
+    fontSize: 25, 
+    color: '#FFF', 
+    textAlign: 'center'
+}
+
+const Component_Button = {
+    width: dimensions.width/7, 
+    alignItems: 'center'
+}
+
+const Component_Button_Text = {
+    fontWeight: 'bold', 
+    fontSize: 30
+}
+
 
 export {Option_Buttons, Option_Text, Top_Options_BG, Header_Text, Content_Section, Content_Navbar,
         NavBar_Image, NavBar_Text, Question_InputBox, Question_Container, Question_Header, Media_Container, 
-        Media_PlusButton, Media_Object, Media_Row, Media_HeaderText, Media_Page }
+        Media_PlusButton, Media_Object, Media_Row, Media_HeaderText, Media_Page, Create_Navbar, Create_Navbar_BG,
+        Option_Input, Choices_Container, SubHeader, Option_Header, Media_PlusButton_Text, Component_Button,
+        Component_Button_Text }

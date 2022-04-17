@@ -4,6 +4,10 @@ import { Text, View } from 'react-native';
 import MediaContainer from './MediaContainer';
 import { Media_Row, Media_HeaderText, Media_Page } from 'style/Create_Style';
 
+/*
+  * Component for the media page in create section
+*/
+
 const CreateMedia = ({setMedia, media}) => {
 
     let openImagePickerAsync = async ({num}) => {
@@ -20,10 +24,10 @@ const CreateMedia = ({setMedia, media}) => {
           return;
         }
         
-        if(num == 1) setMedia({m1: pickerResult.uri, m2: media.m2, m3: media.m3, m4: media.m4});
-        if(num == 2) setMedia({m1: media.m1, m2: pickerResult.uri, m3: media.m3, m4: media.m4});
-        if(num == 3) setMedia({m1: media.m1, m2: media.m2, m3: pickerResult.uri, m4: media.m4});
-        if(num == 4) setMedia({m1: media.m1, m2: media.m2, m3: media.m3, m4: pickerResult.uri});
+        if(num == 1) setMedia({...media, m1: pickerResult.uri});
+        if(num == 2) setMedia({...media, m2: pickerResult.uri});
+        if(num == 3) setMedia({...media, m3: pickerResult.uri});
+        if(num == 4) setMedia({...media, m4: pickerResult.uri});
     };
 
     return (

@@ -1,18 +1,19 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, View, Image, Text} from 'react-native';
+import {ImageBackground, StyleSheet, View, Image, Text, Dimensions} from 'react-native';
 
 import AppButton from '../../components/AppButton';
 
+const dimensions = Dimensions.get('screen');
+
 function WelcomeScreen({navigation}) {
   return (
-    <ImageBackground
-      blurRadius={10}
-      style={styles.background}
-      source={require('../../assets/background.jpg')}>
+    <View>
+      <View style={{position: 'absolute', height: dimensions.height/4, width: dimensions.width*3, top: -150, marginLeft: -50, backgroundColor: '#58e4bc', transform: [{rotate: '-10deg'}], borderBottomLeftRadius: 1000}}/>
+      <View style={{justifyContent: 'center', alignItems: 'center', height: dimensions.height}}>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logo}
-          source={require('../../assets/pollish-logo.png')}
+          source={require('../../assets/logos/jpgs/logo1.png')}
         />
       </View>
       <View style={styles.buttonsContainer}>
@@ -23,7 +24,9 @@ function WelcomeScreen({navigation}) {
           onPress={() => navigation.navigate('Register')}
         />
       </View>
-    </ImageBackground>
+      </View>
+      <View style={{position: 'absolute', height: dimensions.height/4, width: dimensions.width*3, bottom: -150, marginLeft: -dimensions.width*1.9, backgroundColor: '#58e4bc', transform: [{rotate: '-10deg'}], borderTopRightRadius: 1000}}/>
+      </View>
   );
 }
 
@@ -34,16 +37,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonsContainer: {
+    marginTop: -50,
     padding: 20,
     width: '100%',
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: 400,
+    height: 400,
   },
   logoContainer: {
-    position: 'absolute',
-    top: 70,
+    marginTop: -100,
     alignItems: 'center',
   },
 });

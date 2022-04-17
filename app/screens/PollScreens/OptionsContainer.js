@@ -1,10 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Options_Container } from 'style/Poll_Style';
 import { View } from 'react-native';
 import VoteButton from './VoteButton';
 import {BASE_URL} from '@env';
-import authStorage from './../../auth/storage'
+import authStorage from 'auth/storage'
 
 const base = BASE_URL;
 

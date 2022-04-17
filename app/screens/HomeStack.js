@@ -11,7 +11,7 @@ const MyStack = () => {
         <Stack.Navigator
           screenOptions={{
             gestureEnabled: true,
-            gestureDirection: "horizontal"
+            gestureDirection: "horizontal",
           }}
         >
           <Stack.Screen 

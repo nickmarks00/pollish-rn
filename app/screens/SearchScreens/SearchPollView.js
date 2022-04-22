@@ -1,31 +1,33 @@
 import * as React from 'react'
-import { Text, Image, View, Dimensions, StyleSheet } from 'react-native'
+import { Text, Image, View, Dimensions, StyleSheet, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import { SearchBar } from 'react-native-paper';
+import { PollQuestion } from '../PollScreens';
+import {BASE_IP} from '@env';
+
+
 
 const dimensions = Dimensions.get("screen")
 
-const SearchPollView = (props) => {
+const SearchPollView = ({post}) => {
+
+  const navigation = useNavigation();
+
   return (
-    <View style={{alignContent: 'center', height: dimensions.width/6, flexDirection: 'row', justifyContent: 'center', width: dimensions.width, marginVertical: '3%'}}>
-      <Image
-        source={{uri: 'https://' + props.img.slice(34)
-        }}
-        style={{
-          width: dimensions.width/6,
-          height: dimensions.width/6,
-          borderRadius: dimensions.width/32
-        }}
-      />
-      <View style={{paddingHorizontal: '5%', width: dimensions.width*(2/3)}}>
-        <Text style={{
-            fontWeight: 'bold', fontSize: dimensions.width/40, marginBottom: dimensions.width/80, color: '#2134DB'
-        }}>
-            Sports
-        </Text>
-        <Text style={styles.paragraph}>
-              {props.question}
-        </Text>
+    <TouchableOpacity onPress={() => navigation.navigate('PollFromSearch', { post: post})}>
+      <View  style={{backgroundColor: (2 % 2 == 0) ? '#FFF' : '#F7F7F7' , height: dimensions.height/8, alignItems: 'center', justifyContent: 'space-evenly', flexDirection: 'row', paddingHorizontal: '5%', margin: '3%', borderWidth: 1, borderColor: 'rgba(0,166,166,0.4)'}}>
+          {post.images[0] ?
+          <Image
+              resizeMode='cover'
+              source={{uri: `http://${BASE_IP}${post.images[0].image}`}}
+              style={{width: dimensions.height/10, aspectRatio: 1, borderRadius: 10, borderWidth: 2, borderColor: '#00A6A6'}}
+          />
+          : <View/>}
+          <PollQuestion question={post.question_text} size={12}/>
+
+          {/* <Text>{post.images[0] ? post.images[0].image : 'hi'}</Text> */}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

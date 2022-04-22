@@ -1,12 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, StyleSheet, Dimensions, Button, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {View, TextInput, StyleSheet, Dimensions, Button, ScrollView, Image, TouchableOpacity, Text} from 'react-native';
 import {BASE_IP} from '@env';
-import { NavigationContainer } from '@react-navigation/native';
-import { clickProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 import { useNavigation } from '@react-navigation/native';
 import SearchPollView from './SearchPollView';
-import { SearchBar } from 'react-native-paper';
-import { PollQuestion } from '../PollScreens';
 
 const dimensions = Dimensions.get('screen');
 
@@ -77,7 +73,7 @@ const SearchScreen = () => {
     }
 
     return (
-        <View>
+        <View style={{flex: 1}}>
             <View style ={{ justifyContent: 'flex-end', marginTop: 50, marginBottom: 10, padding: 0, flexDirection: 'row', alignItems: 'center'}}>
                 <TextInput
                 style={styles.comment_input}
@@ -93,39 +89,40 @@ const SearchScreen = () => {
                 />
             </View>
 
-            <View style={{width: dimensions.width, height: dimensions.height/70, backgroundColor: '#00A6A6'}}/>
+            <View style={{width: dimensions.width, height: dimensions.height/200, backgroundColor: '#00A6A6'}}/>
+            <Text style={{padding: '5%'}}>Communities you may like</Text>
+            <View style={{alignItems: 'center', flex: 1, marginHorizontal: Dimensions.get('screen').width*0.05, paddingVertical: '2%'}}>
+                <ScrollView>
 
+                    <View style={{flexDirection: 'row', flex: 1}}>
+                        
+                        {posts.map((post, idx) => {
+                            return (
+                                <SearchPollView post={post} key={idx}/>
+                            )
+                        })}
+                    </View>
+                    
+                </ScrollView>
+            </View>
+            <Text style={{padding: '5%'}}>Polls you may like</Text>
+            <View style={{height: dimensions.height/2.3}}>
+            <ScrollView>
 
-            
-            <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
-
-                <View>
+                <View style>
                     
                     {posts.map((post, idx) => {
                         // console.log("hi")
                         var item = ""
                         // console.log(images)
                         return (
-                            <TouchableOpacity key={idx} onPress={() => navigation.navigate('PollFromSearch', { post: post})}>
-                            <View  style={{backgroundColor: (idx % 2 == 0) ? '#FFF' : '#F7F7F7' , height: dimensions.height/8, alignItems: 'center', justifyContent: 'space-evenly', flexDirection: 'row', paddingHorizontal: '5%', borderBottomWidth: 1, borderColor: 'rgba(0,166,166,0.4)'}}>
-                                {post.images[0] ?
-                                <Image
-                                    resizeMode='cover'
-                                    key={idx}
-                                    source={{uri: `http://${BASE_IP}${post.images[0].image}`}}
-                                    style={{width: dimensions.height/10, aspectRatio: 1, borderRadius: 10, borderWidth: 2, borderColor: '#00A6A6'}}
-                                />
-                                : <View/>}
-                                <PollQuestion question={post.question_text} size={12}/>
-
-                                {/* <Text>{post.images[0] ? post.images[0].image : 'hi'}</Text> */}
-                            </View>
-                            </TouchableOpacity>
+                            <SearchPollView post={post} key={idx}/>
                         )
                     })}
                 </View>
                 
             </ScrollView>
+            </View>
         </View>
     )
 }

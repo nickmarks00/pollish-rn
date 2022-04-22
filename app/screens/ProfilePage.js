@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Image, Dimensions, Modal } from 'react-native';
 import {ListItem} from '../components/lists';
 import Icon from '../components/Icon';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import authStorage from '../auth/storage'
 import { PrimaryPollish } from './Styling/App_Styles';
+import FollowersScreen from './ProfileScreens/FollowersScreen';
+import CommunitiesScreen from './ProfileScreens/CommunitiesScreen';
 
 
 
@@ -17,6 +19,9 @@ const ProfilePage = () => {
 
   const {user, logOut} = useAuth();
   const [profilePic, setProfilePic] = React.useState('')
+  const [modal, setModal] = React.useState(false);
+  const [followers, setFollowers] = React.useState(false);
+  const [communities, setCommunity] = React.useState(false);
 
   React.useEffect(() => {
     findAvatar();
@@ -73,8 +78,18 @@ const ProfilePage = () => {
     findAvatar()
 };
 
+  const ShowFollowers = () => {
+    setFollowers(true)
+    setModal(true)
+  }
+
   return (
     <View style={styles.container}>
+
+      <Modal visible={followers} animationType={'slide'}><FollowersScreen setFollowers={setFollowers}/></Modal>
+      <Modal visible={communities} animationType={'slide'}><CommunitiesScreen setCommunity={setCommunity}/></Modal>
+
+      {/* // * Profile Piscture Display and change functionality */}
       <View style={{alignItems: 'center', backgroundColor: PrimaryPollish, width: dimensions.width, height: dimensions.height/4.5}}>
         <TouchableOpacity onPress={() => openImagePickerAsync()}>
         <Image source={{uri: profilePic ? `http://192.168.1.140:8000${profilePic}` : undefined}}
@@ -90,34 +105,34 @@ const ProfilePage = () => {
         </TouchableOpacity>
       </View>
 
+      {/* // ! Display Username */}
       <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: dimensions.width/5, fontSize: 15}}>
-      USERNAME00
+      ** USERNAME HERE (UNIMPLEMENTED) **
       </Text>
-      <View style={{borderRadius: 10, backgroundColor: 'rgba(204, 204, 204, 0.26)', width: dimensions.width*0.92, height: dimensions.height/18, alignContent: 'center', marginLeft: dimensions.width*0.04, marginTop: dimensions.height/80, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', opacity: '50%'}}>
-      <View style={{width: dimensions.width/6}}>
-      <Text style={[styles.text, {fontSize: 15}]}>30</Text>
-      <Text style={[styles.text, {fontSize: 10}]}>POLLS</Text>
-      </View>
-      <View/>
-      <View style={{width: dimensions.width/6}}>
-      <Text style={[styles.text, {fontSize: 15}]}>389,450</Text>
-      <Text style={[styles.text, {fontSize: 10}]}>VOTES</Text>
-      </View>
-      <View/>
-      <View style={{width: dimensions.width/6}}>
-      <Text style={[styles.text, {fontSize: 15}]}>100,000</Text>
-      <Text style={[styles.text, {fontSize: 10}]}>VOTED</Text>
-      </View>
+      
+      {/* // ! Navigate to followers page */}
+      <TouchableOpacity onPress={() => setFollowers(true)} style={{margin: '5%'}}>
+        <Text style={{color: 'blue'}}>Followers: ????</Text>
+      </TouchableOpacity>
 
-      </View>
-      <View style={{marginLeft: dimensions.width*0.115, width: dimensions.width*0.77, height: dimensions.height/22, backgroundColor: 'rgba(204, 204, 204, 0.15)', borderBottomLeftRadius: 10, borderBottomRightRadius: 10, flexDirection: 'row'
-    , textAlign: 'center', justifyContent: 'space-evenly', alignItems: 'center'}}>
-        <Text style={{fontSize: dimensions.width/30, fontFamily: 'SFRound'}}>FOLLOWERS</Text>
-        <Text style={{fontSize: dimensions.width/30, fontFamily: 'SFRound'}}>30M</Text>
-        <View/>
-        <Text style={{fontSize: dimensions.width/30, fontFamily: 'SFRound'}}>FOLLOWERS</Text>
-        <Text style={{fontSize: dimensions.width/30, fontFamily: 'SFRound'}}>300K</Text>
-      </View>
+      {/* // ! Navigate to following page */}
+      <TouchableOpacity onPress={() => setFollowers(true)} style={{margin: '5%'}}>
+          <Text style={{color: 'blue'}}>Following: ????</Text>
+      </TouchableOpacity>
+
+      {/* // ! Navigate to list of polls created by user */}
+      <TouchableOpacity onPress={() => console.log('show polls list')} style={{margin: '5%'}}>
+        <Text style={{color: 'blue'}}>** POLLS (UNIMPLEMENTED) **</Text>
+      </TouchableOpacity>
+
+      {/* // ! Navigate to list of communities followed by user */}
+      <TouchableOpacity onPress={() => setCommunity(true)} style={{margin: '5%'}}>
+        <Text style={{color: 'blue'}}>COMMUNITIES</Text>
+      </TouchableOpacity>
+      
+
+
+      
       <View style={{alignItems: 'center', marginTop: 100}}>
         <ListItem
           title="Log Out"
@@ -125,16 +140,6 @@ const ProfilePage = () => {
           onPress={() => logOut()}
         />
       </View>
-
-      {/* <View style={{marginLeft: dimensions.width*0.08, width: dimensions.width*0.84, height: dimensions.height/6, backgroundColor: 'rgba(204, 204, 204, 0.15)', borderRadius: 10,
-       textAlign: 'left', justifyContent: 'space-evenly', marginTop: 30}}>
-         <Text style={{fontFamily: 'SFRound'}}>RECENT</Text>
-      </View>
-
-      <View style={{marginLeft: dimensions.width*0.08, width: dimensions.width*0.84, height: dimensions.height/6, backgroundColor: 'rgba(204, 204, 204, 0.15)', borderRadius: 10,
-       textAlign: 'left', justifyContent: 'space-evenly', marginTop: 30}}>
-         <Text style={{fontFamily: 'SFRound'}}>POPULAR</Text>
-      </View> */}
       
     </View>
   );  

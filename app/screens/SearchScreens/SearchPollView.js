@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Text, Image, View, Dimensions, StyleSheet, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { SearchBar } from 'react-native-paper';
-import { PollQuestion } from '../PollScreens';
+import { PollQuestion } from '../PollScreens/PollComponents';
 import {BASE_IP} from '@env';
 
 

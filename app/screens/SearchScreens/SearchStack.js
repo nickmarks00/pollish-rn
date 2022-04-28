@@ -4,6 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 import PollViewSearch from './PollViewSearch';
 import SearchScreen from './SearchScreen';
+import ProfilePage from '../ProfileScreens/ProfilePage';
+import CommunitiesScreen from '../ProfileScreens/CommunitiesScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +19,7 @@ const SearchStack = () => {
           }}
         >
           <Stack.Screen 
-            options={{headerShown: false}} name="Home" component={SearchScreen}
+            options={{headerShown: false}} name="HomeSearch" component={SearchScreen}
             screenOptions={{
               transitionSpec: {
                 open: config,
@@ -25,6 +28,8 @@ const SearchStack = () => {
             }}
             />
           <Stack.Screen name="PollFromSearch" component={PollViewSearch} options={{ headerShown: false}} />
+          <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: '#FFF'}}} name="ProfileHome" component={ProfilePage} />
+          <Stack.Screen name="S_Community" component={CommunitiesScreen}/>
         </Stack.Navigator>
     );
   };

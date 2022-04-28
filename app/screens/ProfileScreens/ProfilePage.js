@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image, Dimensions, Modal } from 'react-native';
-import {ListItem} from '../components/lists';
-import Icon from '../components/Icon';
+import {ListItem} from '../../components/lists';
+import Icon from '../../components/Icon';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import authStorage from '../auth/storage'
-import { PrimaryPollish } from './Styling/App_Styles';
-import FollowersScreen from './ProfileScreens/FollowersScreen';
-import CommunitiesScreen from './ProfileScreens/CommunitiesScreen';
+import authStorage from '../../auth/storage'
+import { PrimaryPollish } from '../Styling/App_Styles';
+import FollowersScreen from './FollowersScreen';
+import CommunitiesScreen from './CommunitiesScreen';
+import PollsScreen from './PollsScreen';
 
 
 
@@ -15,17 +16,24 @@ const dimensions = Dimensions.get("screen")
 
 const img = 'https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'
 
-const ProfilePage = () => {
+const ProfilePage = ({navigation, route}) => {
 
   const {user, logOut} = useAuth();
   const [profilePic, setProfilePic] = React.useState('')
   const [modal, setModal] = React.useState(false);
   const [followers, setFollowers] = React.useState(false);
   const [communities, setCommunity] = React.useState(false);
+  const [polls, setPolls] = React.useState(false);
 
   React.useEffect(() => {
     findAvatar();
   }, []);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: route.params?.user ? true : false,
+    });
+  }, [navigation]);
 
   const findAvatar = async () => {
     const tokens = await authStorage.getTokens();
@@ -86,8 +94,9 @@ const ProfilePage = () => {
   return (
     <View style={styles.container}>
 
-      <Modal visible={followers} animationType={'slide'}><FollowersScreen setFollowers={setFollowers}/></Modal>
+      <Modal visible={followers} animationType={'slide'}><FollowersScreen setFollowers={setFollowers} id={user.id}/></Modal>
       <Modal visible={communities} animationType={'slide'}><CommunitiesScreen setCommunity={setCommunity}/></Modal>
+      <Modal visible={polls} animationType={'slide'}><PollsScreen setPolls={setPolls}/></Modal>
 
       {/* // * Profile Piscture Display and change functionality */}
       <View style={{alignItems: 'center', backgroundColor: PrimaryPollish, width: dimensions.width, height: dimensions.height/4.5}}>
@@ -107,26 +116,21 @@ const ProfilePage = () => {
 
       {/* // ! Display Username */}
       <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: dimensions.width/5, fontSize: 15}}>
-      ** USERNAME HERE (UNIMPLEMENTED) **
+      {route.params?.user ? route.params.user.username : user.username}
       </Text>
       
       {/* // ! Navigate to followers page */}
-      <TouchableOpacity onPress={() => setFollowers(true)} style={{margin: '5%'}}>
-        <Text style={{color: 'blue'}}>Followers: ????</Text>
-      </TouchableOpacity>
-
-      {/* // ! Navigate to following page */}
-      <TouchableOpacity onPress={() => setFollowers(true)} style={{margin: '5%'}}>
-          <Text style={{color: 'blue'}}>Following: ????</Text>
+      <TouchableOpacity onPress={() => {navigation.push('Follow', { id: route.params?.user ? route.params.user.id : user.id })} } style={{margin: '5%'}}>
+        <Text style={{color: 'blue'}}>Following: ????</Text>
       </TouchableOpacity>
 
       {/* // ! Navigate to list of polls created by user */}
-      <TouchableOpacity onPress={() => console.log('show polls list')} style={{margin: '5%'}}>
-        <Text style={{color: 'blue'}}>** POLLS (UNIMPLEMENTED) **</Text>
+      <TouchableOpacity onPress={() => setPolls(true)} style={{margin: '5%'}}>
+        <Text style={{color: 'blue'}}>POLLS</Text>
       </TouchableOpacity>
 
       {/* // ! Navigate to list of communities followed by user */}
-      <TouchableOpacity onPress={() => setCommunity(true)} style={{margin: '5%'}}>
+      <TouchableOpacity onPress={() => navi} style={{margin: '5%'}}>
         <Text style={{color: 'blue'}}>COMMUNITIES</Text>
       </TouchableOpacity>
       

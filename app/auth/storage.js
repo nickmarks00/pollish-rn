@@ -22,6 +22,13 @@ const getTokens = async () => {
   }
 };
 
+const getAccess = async () => {
+  const tok = await getTokens();
+  const access = JSON.parse(tok).access;
+  console.log('access' + access)
+  return `JWT ${access}`;
+}
+
 const getUser = async () => {
   const res = await getTokens();
   const tokens = JSON.parse(res);
@@ -54,4 +61,4 @@ const removeTokens = async () => {
   }
 };
 
-export default {getTokens, getUser, removeTokens, storeTokens};
+export default {getTokens, getUser, removeTokens, storeTokens, getAccess};

@@ -74,6 +74,26 @@ const Nav_Text = {
     fontSize: dimensions.height/70
 }
 
+const Media_Container = {
+    alignItems: 'center', 
+    flex: 1, 
+    marginHorizontal: dimensions.width*0.05, 
+    paddingVertical: '2%'
+}
+
+const Media_DropShadow = {
+    flex: 1, 
+    shadowOffset: {
+        width: 0,
+        height: 2
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    elevation: 5
+}
+
+
+
 export {Post_Image, Question_Box, Post_Question, More_Options, 
         Circle_Option, Inner_Option_Container, Option_Text,
-        Post_Option, Nav_Text } 
+        Post_Option, Nav_Text, Media_Container, Media_DropShadow } 

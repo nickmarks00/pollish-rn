@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { Inner_Option_Container, Option_Text, Post_Option} from 'style/Poll_Style';
 import {BASE_URL} from '@env';
 import { OptionColors, FadedOptionColors } from 'style/App_Styles';
-import { RegisterVote } from '../../api/post';
+import { RegisterVote } from '../../../../../api/post';
 import LetterBox from './ButtonComponents/LetterBox';
 
 const base = BASE_URL;

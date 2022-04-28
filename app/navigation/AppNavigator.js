@@ -6,6 +6,7 @@ import {HomeStack, ProfilePage, UserProfileScreen} from '../screens';
 import CreatePoll from '../screens/CreatePollScreens/CreatePoll';
 import {SearchStack} from '../screens/SearchScreens';
 import CreationHub from '../screens/CreatePollScreens/CreationHub';
+import ProfileStack from '../screens/ProfileScreens/ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +17,7 @@ const AppNavigator = props => {
       borderTopColor: '#ccc'
 }}}>
       <Tab.Screen name="Feed" component={HomeStack} options={{
+                    tabBarActiveBackgroundColor: 'blue',
                     tabBarIcon: () => (<MaterialCommunityIcons
                       name={"home-variant-outline"}
                       size={30}
@@ -39,7 +41,7 @@ const AppNavigator = props => {
                       style={{}}
                     />)
                 }}/>
-      <Tab.Screen name="Profile" component={ProfilePage} options={{
+      <Tab.Screen name="Profile" component={ProfileStack} options={{
                     tabBarIcon: () => (<MaterialCommunityIcons
                       name={"account"}
                       size={30}

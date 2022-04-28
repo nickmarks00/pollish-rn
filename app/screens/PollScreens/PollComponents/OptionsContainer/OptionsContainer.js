@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import VoteButton from './VoteButton';
+import VoteButton from './OptionsComponents/VoteButton';
 import {BASE_URL} from '@env';
 import authStorage from 'auth/storage'
 

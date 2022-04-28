@@ -2,12 +2,12 @@ import React from 'react';
 import { More_Options } from 'style/Poll_Style';
 import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import arrow from '../../assets/arrow.png';
+import arrow from '../../../assets/arrow.png';
 import { Nav_Text } from 'style/Poll_Style';
 
 const dimensions = Dimensions.get('window');
 
-const MoreOptions = ({setOpen, post}) => {
+const MoreOptions = ({setOpen, post, commentsScreen}) => {
 
     const navigation = useNavigation();
     return(
@@ -22,7 +22,7 @@ const MoreOptions = ({setOpen, post}) => {
                   <Text style={[{paddingLeft: '2%'}, Nav_Text]}>MORE INFO</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() =>
-                    navigation.navigate('Comments', { post: post})
+                    navigation.navigate(commentsScreen, { post: post})
                   } style={{position: 'absolute', flexDirection: 'row', right: dimensions.width*0.08}}>
                   <Text style={[{paddingRight: '2%'}, Nav_Text]}>COMMENTS</Text>
                   <Image source={arrow} style={{ 

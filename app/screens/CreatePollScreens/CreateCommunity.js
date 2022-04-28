@@ -3,14 +3,37 @@ import * as ImagePicker from 'expo-image-picker';
 import { View, Text, TextInput, Button } from 'react-native';
 import MediaContainer from './MediaContainer';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import authStorage from '../../auth/storage'
+import {BASE_URL} from '@env';
 
+const base = BASE_URL;
 
 const CreateCommunity = ({setCommunity}) => {
 
     const [title, setTitle] = React.useState('');
     const [media, setMedia] = React.useState(null);
 
-    const createCommunity = () => {
+    const createCommunity = async () => {
+        const res = await authStorage.getTokens();
+        const access = JSON.parse(res).access;
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `JWT ${access}` );
+
+        var formdata = new FormData();
+        formdata.append("name", title);
+        formdata.append("image", {uri: media, name: 'image.jpg', type: 'image/jpg'});
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+        };
+
+        fetch(`http://${base}/pollish/communities/`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
         setCommunity(false)
     }
 
@@ -35,8 +58,8 @@ const CreateCommunity = ({setCommunity}) => {
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
             <Button onPress={() => setCommunity(false)} title="close"/>
             <Text style={{textAlign: 'center'}}>Community Name</Text>
-            <TextInput placeholder='hi'></TextInput>
-            <Text onChangeText={newText => setTitle(newText)} style={{textAlign: 'center'}}>Community Image</Text>
+            <TextInput onChangeText={newText => setTitle(newText)} placeholder='hi'></TextInput>
+            <Text style={{textAlign: 'center'}}>Community Image</Text>
             <MediaContainer openImagePickerAsync={openImagePickerAsync} media={media}/>
             <TouchableOpacity onPress={() => createCommunity()}>
                 <Text>CREATE</Text>

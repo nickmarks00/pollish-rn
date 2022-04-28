@@ -11,8 +11,10 @@ import CreateComment from './CreateComment';
 import {BASE_URL} from '@env';
 import { Question_Container, Comments_DisplayArea } from 'style/Comments_Style';
 import FilterPopup from './FilterPopup';
-import { PollQuestion } from '../PollScreens';
+import { PollQuestion } from '../PollScreens/PollComponents';
 import FilterBar from './FilterBar';
+import authStorage from '../../auth/storage'
+import axios from 'axios'
 
 const base = BASE_URL;
 
@@ -44,25 +46,14 @@ const CommentSection = () => {
       }
 
       const fetchDataFromApi = async () => {
-          console.log("c")
-        const url = `http://${base}/core/users/${post.user_id}/polls/${post.id}/comments`;
-    
+
         setLoading(true);
-    
-        const res = fetch(url, {
-            method: 'GET',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-        })
-            .then(res => res.json())
-            .then(data => {
-            setComments(data);
-            setLoading(false);
-            })
-            .catch(error => {
-            console.error(error);
-            });
+          
+        const url = `http://${base}/core/users/${post.user_id}/polls/${post.id}/comments/`;
+        const access = await authStorage.getAccess()
+
+        axios.get(url, { headers: {Authorization: access} })
+            .then(res => { setComments(res.data)})
     };
 
 

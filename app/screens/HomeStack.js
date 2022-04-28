@@ -1,20 +1,30 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './HomeScreen';
 import CommentSection from './CommentScreens/CommentSection';
 import PollView from './PollScreens/PollView';
+import ProfilePage from './ProfileScreens/ProfilePage';
 
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
+
+    const navComments = ({post}) => {
+      const navigation = useNavigation();
+      navigation.navigate('Comments', { post: post})
+    }
+
     return (
         <Stack.Navigator
+        name='main'
           screenOptions={{
             gestureEnabled: true,
             gestureDirection: "horizontal",
           }}
         >
-          <Stack.Screen 
+          <Stack.Screen
+            initialParams={{commentsScreen: 'Comments'}}
             options={{headerShown: false}} name="Home" component={HomeScreen}
             screenOptions={{
               transitionSpec: {
@@ -25,6 +35,7 @@ const MyStack = () => {
             />
           <Stack.Screen name="Comments" component={CommentSection} options={{headerShown: false}} />
           <Stack.Screen name="PollFromSearch" component={PollView} options={{ headerShown: false}} />
+          <Stack.Screen name="ProfileNav" component={ProfilePage} options={{ headerShown: true}}/>
         </Stack.Navigator>
     );
   };

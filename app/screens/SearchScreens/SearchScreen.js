@@ -3,126 +3,89 @@ import {View, TextInput, StyleSheet, Dimensions, Button, ScrollView, Image, Touc
 import {BASE_IP} from '@env';
 import { useNavigation } from '@react-navigation/native';
 import SearchPollView from './SearchPollView';
+import authStorage from '../../auth/storage'
 
+const base = BASE_IP;
 const dimensions = Dimensions.get('screen');
 
-const SearchScreen = () => {
-
-    const navigation = useNavigation();
-
-    const [loading, setLoading] = useState(false);
-    const [posts, setPosts] = useState([]);
-    const [images, setImages] = useState([]);
-
-    const [filteredData, setfilteredData] = useState([]);
-    const [masterData, setmasterData] = useState([]);
+const SearchScreen = ({navigation}) => {
 
     const [search, setSearch] = useState('');
+    const [content, setContent] = useState([])
+    const [toggle, setToggle] = useState('poll')
 
     useEffect(() => {
-        fetchDataFromApi();
       }, []);
 
-      const fetchDataFromApi = async () => {
-        const url = `http://${BASE_IP}/pollish/polls/`;
-    
-        setLoading(true);
-    
-        const res = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-          .then(res => res.json())
-          .then(data => {
-            setPosts(data.results);
-            console.log(data.results);
-            setImages(data.results.images);
-            setfilteredData(data.results);
-            setLoading(false);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-
-          console.log(res)
-          console.log("hi")
-
-          
-      };
-
     const searchFilter = (text) => {
+        console.log(text)
         if (text) {
-            const newData = posts.filter((item) => {
-                const itemData = item.question_text ? item.question_text.toUpperCase() : ''.toUpperCase();
-                const textData = text.toUpperCase();
-                return itemData.indexOf(textData) > -1;
-            });
-            setfilteredData(newData);
-            setSearch(text);
-        } else {
-            setfilteredData(posts);
-            setSearch(text);
+            findContent(text)
+        }
+        else{
+            setContent([])
+        }
+        setSearch(text)
+    }
+
+    const nextPage = (poll) => {
+        console.log(poll)
+        if(toggle === 'user'){
+            navigation.push('ProfileHome', {user: poll })
+        }
+        else if(toggle === 'comm'){
+            navigation.push('S_Community', { polls: poll.polls })
         }
     }
 
-    function handleComment(){
-        const newlist = comments.concat({'item': text, 'idx': uuid.v4()})
-        addComment(newlist);
+    const findContent = async (text) => {
+        const res = await authStorage.getTokens();
+        const access = JSON.parse(res).access;
+        console.log(access)
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `JWT ${access}`,
+            },
+        }
+        var url = ''
+        if(toggle === 'poll') url = `http://${BASE_IP}/pollish/polls/?search=${text}`
+        else if(toggle === 'comm') url = `http://${BASE_IP}/pollish/communities/?search=${text}`
+        else if(toggle === 'user') url = `http://${BASE_IP}/core/users/?search=${text}`
+        const response = await fetch(url, options)
+        .then(response => response.json())
+                .then(response => {
+                    if(toggle !== 'comm')
+                        setContent(response.results)
+                    else setContent(response)
+        })
     }
 
     return (
-        <View style={{flex: 1}}>
-            <View style ={{ justifyContent: 'flex-end', marginTop: 50, marginBottom: 10, padding: 0, flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center'}}>
                 <TextInput
                 style={styles.comment_input}
                 onChangeText={(text) => searchFilter(text)}
                 value={search}
                 placeholder="What do you want to know?"
                 />
-                <Button
-                onPress={handleComment}
-                title="Search"
-                color="#841584"
-                accessibilityLabel="Learn more about this purple button"
-                />
-            </View>
-
-            <View style={{width: dimensions.width, height: dimensions.height/200, backgroundColor: '#00A6A6'}}/>
-            <Text style={{padding: '5%'}}>Communities you may like</Text>
-            <View style={{alignItems: 'center', flex: 1, marginHorizontal: Dimensions.get('screen').width*0.05, paddingVertical: '2%'}}>
-                <ScrollView>
-
-                    <View style={{flexDirection: 'row', flex: 1}}>
-                        
-                        {posts.map((post, idx) => {
+                <View style={{flexDirection: 'row'}}>
+                    <TouchableOpacity style={{padding: '3%'}} onPress={() => setToggle('poll')}><Text style={{color: toggle === 'poll' ? 'blue' : 'black'}}>Poll</Text></TouchableOpacity>
+                    <TouchableOpacity style={{padding: '3%'}} onPress={() => setToggle('comm')}><Text style={{color: toggle === 'comm' ? 'blue' : 'black'}}>Community</Text></TouchableOpacity>
+                    <TouchableOpacity style={{padding: '3%'}} onPress={() => setToggle('user')}><Text style={{color: toggle === 'user' ? 'blue' : 'black'}}>User</Text></TouchableOpacity>
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{flex: 1, padding: '2%'}}>
+                        {content?.map((poll, idx) => {
                             return (
-                                <SearchPollView post={post} key={idx}/>
+                                <TouchableOpacity key={idx} onPress={() => nextPage(poll)}>
+                                    <Text style={{ padding: '3%', margin: '2%', borderWidth: 1 }}>{toggle==='poll' ? poll.question_text : toggle==='user' ? poll.username : poll.name}</Text>
+                                </TouchableOpacity>
                             )
                         })}
                     </View>
-                    
                 </ScrollView>
-            </View>
-            <Text style={{padding: '5%'}}>Polls you may like</Text>
-            <View style={{height: dimensions.height/2.3}}>
-            <ScrollView>
-
-                <View style>
-                    
-                    {posts.map((post, idx) => {
-                        // console.log("hi")
-                        var item = ""
-                        // console.log(images)
-                        return (
-                            <SearchPollView post={post} key={idx}/>
-                        )
-                    })}
-                </View>
-                
-            </ScrollView>
-            </View>
         </View>
     )
 }
@@ -132,12 +95,13 @@ export default SearchScreen;
 const styles = StyleSheet.create({
     comment_input: {
         height: 40,
-        width: dimensions.width/1.3,
-        margin: 12,
+        width: dimensions.width/1.1,
+        marginTop: 60,
         borderWidth: 1,
         borderRadius: 15,
         borderColor: '#BBB',
         padding: 10,
+        justifyContent: 'center'
       },
 
     post_container: {

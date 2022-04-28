@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Dimensions, RefreshControl, Image} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import AppStack from '../navigation/AppStack';
+import authStorage from '../auth/storage'
+
 
 import PollView from './PollScreens/PollView';
 import {BASE_URL} from '@env';
@@ -9,7 +12,7 @@ const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
 
-const HomeScreen = () => {
+const HomeScreen = ({route, navigation}) => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
@@ -37,10 +40,14 @@ const HomeScreen = () => {
 
     setLoading(true);
 
+    const resp = await authStorage.getTokens();
+    const access = JSON.parse(resp).access;
+
     const res = fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `JWT ${access}`,
       },
     })
       .then(res => res.json())
@@ -104,13 +111,13 @@ const HomeScreen = () => {
         }}>
         {posts.results?.map((post, idx) => {
           if (posts.length - 2 === idx) fetchDataFromApi2(posts.next);
-
+          console.log("HHH: " + post)
           return (
+            // <AppStack key={idx} post={post}/>
             <PollView
               key={idx}
-              question={post.question_text}
-              choices={post.choices}
-              images={post.images}
+              commentsScreen={route.params.commentsScreen}
+              navigation={navigation}
               post={post}></PollView>
           );
         }) || []}

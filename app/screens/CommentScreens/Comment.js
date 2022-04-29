@@ -8,31 +8,15 @@ import {View, Text, Dimensions, Image} from 'react-native';
 import { useState, useEffect } from 'react';
 import authStorage from '../../auth/storage'
 import { Comment_ColorBar, Comment_Text, Username_Text } from 'style/Comments_Style';
+import { LoadUser } from '../../api/comments';
 
 const Comment = (props) => {
 
-    const [username, setUserName] = useState("");
+    const [user, setUser] = useState("");
 
     useEffect(() => {
-        loadUserData();
+        setUser(LoadUser(props.user));
     }, []);
-
-    // Function for sourcing username tied to comment
-    const loadUserData = async () => {
-        const url = `http://192.168.1.140:8000/core/users/${props.user}/`
-        const options = {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          };
-        const res = await fetch(url, options)
-        .then(response => response.json())
-        .then(response => {
-            setUserName(response.username)
-        })
-        
-    }
 
     const FindColor = () => {
 
@@ -49,7 +33,7 @@ const Comment = (props) => {
             <View style={[Comment_ColorBar, {backgroundColor: FindColor()}]}/>
             <Image style={{aspectRatio: 1, borderRadius: 1000}} source={{uri: 'https://www.gannett-cdn.com/presto/2020/07/21/USAT/86dfdd2f-db14-4a9f-8137-24536a574d3c-AP_Election_2020_Kanye_West.jpg?crop=4159,2339,x0,y0&width=3200&height=1800&format=pjpg&auto=webp'}}/>
             <View style={{paddingHorizontal: 8}}>
-                    <Text style={Username_Text}>{username}</Text>
+                    <Text style={Username_Text}>{user.username}</Text>
                 <Text style={Comment_Text}>{props.comment_text}</Text>
             </View>
         </View>

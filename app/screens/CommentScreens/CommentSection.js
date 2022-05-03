@@ -18,9 +18,8 @@ import axios from 'axios'
 
 const base = BASE_URL;
 
-const CommentSection = () => {
+const CommentSection = ({route}) => {
 
-    const route = useRoute();
     const post = route.params.post
 
     const [loading, setLoading] = useState(false);
@@ -32,6 +31,7 @@ const CommentSection = () => {
     useEffect(() => {
         fetchDataFromApi();
         assignColors();
+        console.log(route.params.S_Profile)
       }, []);
 
       const assignColors = () => {
@@ -99,7 +99,7 @@ const CommentSection = () => {
                         {comments.map((comment, index) => {
                             if (selected.cid == comment.choice_id || selected.cid == 0)
                                 return (
-                                <Comment colors={colors} key={index} comment_text={comment.comment_text} user={comment.user_id} cid={comment.choice_id}/>
+                                <Comment profileScreen={route.params.profileScreen} colors={colors} key={index} comment_text={comment.comment_text} user={comment.user_id} cid={comment.choice_id}/>
                                 )
                         })}
                     </ScrollView>

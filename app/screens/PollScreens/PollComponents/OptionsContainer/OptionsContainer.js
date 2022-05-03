@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import VoteButton from './OptionsComponents/VoteButton';
 import {BASE_URL} from '@env';
 import authStorage from 'auth/storage'
+import { GetPoll } from '../../../../api/comments';
 
 const base = BASE_URL;
 
@@ -17,30 +18,18 @@ const OptionsContainer = ({post}) => {
     }, []);
 
     const checkVote = async () => {
+        const pollInfo = await GetPoll(post.id);
+        console.log(pollInfo)
 
-        const res = await authStorage.getTokens();
-        const access = JSON.parse(res).access;
+        setUserVote(pollInfo.user_vote)
         
-        const options = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `JWT ${access}`,
-          }
-        }
-    
-        const response = await fetch(`http://${base}/pollish/polls/${post.id}/`, options)
-        .then(response => response.json())
-            .then(response => {
-                setUserVote(response.user_vote);
+        var count = 0
+        pollInfo.choices.map((choice, idx) => {
+            count += choice.num_votes;
+        })
+        setVoteCount(count);
 
-                var count = 0
-                response.choices.map((choice, idx) => {
-                    count += choice.num_votes;
-                })
-                setVoteCount(count);
-            })
-      }
+    }
 
     return(
         <View style={{flex: 1}}>

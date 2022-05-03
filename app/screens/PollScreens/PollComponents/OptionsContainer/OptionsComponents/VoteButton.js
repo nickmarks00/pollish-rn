@@ -5,6 +5,7 @@ import {BASE_URL} from '@env';
 import { OptionColors, FadedOptionColors } from 'style/App_Styles';
 import { RegisterVote } from '../../../../../api/post';
 import LetterBox from './ButtonComponents/LetterBox';
+import { GetChoice } from '../../../../../api/comments';
 
 const base = BASE_URL;
 
@@ -22,17 +23,8 @@ const VoteButton = (props) => {
   }, []);
 
   const findVotes = async () => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    const response = await fetch(`http://${base}/pollish/polls/${props.post.id}/choices/${props.choice.id}/`, requestOptions)
-    .then(response => response.json())
-            .then(response => {
-                setVotes(response.num_votes)
-            })
+    const choice = await GetChoice(props.post.id, props.choice.id)
+    setVotes(choice.num_votes)
   }
 
   // Add a vote to given poll in the backend

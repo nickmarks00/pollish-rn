@@ -30,6 +30,7 @@ const HomeScreen = ({route, navigation}) => {
 
   useEffect(() => {
     fetchDataFromApi();
+    console.log('param: ' + route.params.commentsScreen)
   }, []);
 
   
@@ -117,6 +118,7 @@ const HomeScreen = ({route, navigation}) => {
             <PollView
               key={idx}
               commentsScreen={route.params.commentsScreen}
+              profileScreen={route.params.profileScreen}
               navigation={navigation}
               post={post}></PollView>
           );

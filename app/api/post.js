@@ -27,6 +27,8 @@ const CheckVote = async ({pid}) => {
 }
 
 const CommentAPI = async ({uid, pid, text}) => {
+    const tokens = await authStorage.getTokens();
+    const access = JSON.parse(tokens).access;
 
     const url = `http://${base}/core/users/${uid}/polls/${pid}/comments/`;
     const user = await authStorage.getUser();
@@ -35,6 +37,7 @@ const CommentAPI = async ({uid, pid, text}) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `JWT ${access}`,
         },
         body: JSON.stringify({
             choice_id: voteId ? voteId : 1,

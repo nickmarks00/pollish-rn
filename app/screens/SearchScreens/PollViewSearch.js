@@ -6,21 +6,35 @@ import { useRoute } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import PollView from '../PollScreens/PollView';
+import { GetPoll } from '../../api/comments';
 
 const dimensions = Dimensions.get('screen');
 
-const PollViewSearch = () => {
+const PollViewSearch = ({}) => {
 
     const route = useRoute();
 
+    const [poll, setPoll] = useState();
+
+    useEffect(() => {
+        loadPoll();
+    }, []);
+
+    const loadPoll = async () => {
+        const p = await GetPoll(route.params.id);
+        console.log('poll -------------' + p.user_id)
+        setPoll(p); 
+    }
+
     return(
         <View>
-        <View style={{height: 50, borderBottomWidth: 2, borderColor: '#00A6A6'}}/>
-        <PollView
-            post={route.params.post}
-            question={route.params.post.question_text}
-            choices={route.params.post.choices}
-        />
+            { poll && 
+                <PollView
+                    post={poll}
+                    commentsScreen={route.params.commentsScreen}
+                    profileScreen={route.params.profileScreen}
+                />
+            }
         </View>
     )
 }

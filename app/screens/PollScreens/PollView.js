@@ -3,6 +3,8 @@ import { useFonts } from 'expo-font';
 import { View, Dimensions, Text } from 'react-native';
 import { PollImage, PollQuestion, MoreOptions, OptionsContainer, InfoCard } from './PollComponents'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
+
 
 const dimensions = Dimensions.get('window');
 
@@ -13,7 +15,9 @@ const dimensions = Dimensions.get('window');
   TODO: Remove the View components around each of the custom components
 */
 
-const PollView = ({post, commentsScreen, navigation}) => {
+const PollView = ({post, commentsScreen, profileScreen, communityScreen}) => {
+
+  const navigation = useNavigation();
 
   const [open, setOpen] = useState(false)
   const tabBarHeight = useBottomTabBarHeight();
@@ -28,16 +32,24 @@ const PollView = ({post, commentsScreen, navigation}) => {
     return <Text>Loading Fonts</Text>;
   }
 
+  
+
   const navigateProfile = (owner) => {
     setOpen(false)
-    navigation.push('ProfileNav', {user: owner})
+    console.log(profileScreen)
+    navigation.push(profileScreen, {user: owner})
+  }
+
+  const navigateCommunity = (id) => {
+    setOpen(false)
+    navigation.push(communityScreen, {id: id})
   }
 
   return (
     <View style={{ width: dimensions.width, height: pollHeight}}>
 
       {/* Modal Popup */}
-      <InfoCard setOpen={setOpen} id={post.user_id} open={open} navigateProfile={navigateProfile}/>
+      <InfoCard setOpen={setOpen} post={post} id={post.user_id} open={open} navigateCommunity={navigateCommunity} navigateProfile={navigateProfile}/>
 
       {/* Main Poll View */}
       {post.images.length > 0 && <View style={{ flex: 6}}><PollImage images={post.images}/></View>}

@@ -12,11 +12,12 @@ import PollsScreen from './PollsScreen';
 
 
 
+
 const dimensions = Dimensions.get("screen")
 
 const img = 'https://images.unsplash.com/photo-1618641986557-1ecd230959aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'
 
-const ProfilePage = ({navigation, route}) => {
+const ProfilePage = ({route, navigation}) => {
 
   const {user, logOut} = useAuth();
   const [profilePic, setProfilePic] = React.useState('')
@@ -120,17 +121,17 @@ const ProfilePage = ({navigation, route}) => {
       </Text>
       
       {/* // ! Navigate to followers page */}
-      <TouchableOpacity onPress={() => {navigation.push('Follow', { id: route.params?.user ? route.params.user.id : user.id })} } style={{margin: '5%'}}>
+      <TouchableOpacity onPress={() => navigation.push(route.params.followScreen, { id: route.params?.user ? route.params.user.id : user.id }) } style={{margin: '5%'}}>
         <Text style={{color: 'blue'}}>Following: ????</Text>
       </TouchableOpacity>
 
       {/* // ! Navigate to list of polls created by user */}
-      <TouchableOpacity onPress={() => setPolls(true)} style={{margin: '5%'}}>
+      <TouchableOpacity onPress={() => navigation.push(route.params.pollListScreen, { id: route.params?.user ? route.params.user.id : user.id })} style={{margin: '5%'}}>
         <Text style={{color: 'blue'}}>POLLS</Text>
       </TouchableOpacity>
 
       {/* // ! Navigate to list of communities followed by user */}
-      <TouchableOpacity onPress={() => navi} style={{margin: '5%'}}>
+      <TouchableOpacity onPress={() => navigation.push(route.params.communityListScreen, { id: route.params?.user ? route.params.user.id : user.id })} style={{margin: '5%'}}>
         <Text style={{color: 'blue'}}>COMMUNITIES</Text>
       </TouchableOpacity>
       

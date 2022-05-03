@@ -4,34 +4,26 @@
 
 
 import React from 'react';
-import {View, Text, Dimensions, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import { useState, useEffect } from 'react';
-import authStorage from '../../auth/storage'
 import { Comment_ColorBar, Comment_Text, Username_Text } from 'style/Comments_Style';
+import { GetUser } from '../../api/comments';
+import { useNavigation } from '@react-navigation/native';
+
 
 const Comment = (props) => {
 
-    const [username, setUserName] = useState("");
+    const navigation = useNavigation();
+
+    const [user, setUser] = useState("");
 
     useEffect(() => {
-        loadUserData();
+        findUser()
     }, []);
 
-    // Function for sourcing username tied to comment
-    const loadUserData = async () => {
-        const url = `http://192.168.1.140:8000/core/users/${props.user}/`
-        const options = {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          };
-        const res = await fetch(url, options)
-        .then(response => response.json())
-        .then(response => {
-            setUserName(response.username)
-        })
-        
+    const findUser = async () => {
+        const user = await GetUser(props.user);
+        setUser(user);
     }
 
     const FindColor = () => {
@@ -47,9 +39,11 @@ const Comment = (props) => {
     return(
         <View style={{ flexDirection: 'row', marginVertical: 5}}>
             <View style={[Comment_ColorBar, {backgroundColor: FindColor()}]}/>
-            <Image style={{aspectRatio: 1, borderRadius: 1000}} source={{uri: 'https://www.gannett-cdn.com/presto/2020/07/21/USAT/86dfdd2f-db14-4a9f-8137-24536a574d3c-AP_Election_2020_Kanye_West.jpg?crop=4159,2339,x0,y0&width=3200&height=1800&format=pjpg&auto=webp'}}/>
+            <TouchableOpacity style ={{aspectRatio: 1}} onPress={() => navigation.push(props.profileScreen, {user: user})}>
+                <Image style={{aspectRatio: 1, borderRadius: 1000}} source={{uri: 'https://www.gannett-cdn.com/presto/2020/07/21/USAT/86dfdd2f-db14-4a9f-8137-24536a574d3c-AP_Election_2020_Kanye_West.jpg?crop=4159,2339,x0,y0&width=3200&height=1800&format=pjpg&auto=webp'}}/>
+            </TouchableOpacity>
             <View style={{paddingHorizontal: 8}}>
-                    <Text style={Username_Text}>{username}</Text>
+                    <Text style={Username_Text}>{user.username}</Text>
                 <Text style={Comment_Text}>{props.comment_text}</Text>
             </View>
         </View>

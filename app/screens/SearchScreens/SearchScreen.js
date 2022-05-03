@@ -31,17 +31,19 @@ const SearchScreen = ({navigation}) => {
     const nextPage = (poll) => {
         console.log(poll)
         if(toggle === 'user'){
-            navigation.push('ProfileHome', {user: poll })
+            navigation.push('S_Profile', {user: poll })
         }
         else if(toggle === 'comm'){
             navigation.push('S_Community', { polls: poll.polls })
+        }
+        else if(toggle === 'poll'){
+            navigation.push('PollFromSearch', {post: poll})
         }
     }
 
     const findContent = async (text) => {
         const res = await authStorage.getTokens();
         const access = JSON.parse(res).access;
-        console.log(access)
         const options = {
             method: 'GET',
             headers: {

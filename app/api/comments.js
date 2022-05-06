@@ -10,12 +10,17 @@ const GetUser = async (uid) => {
     return GetRequest(url);
 }
 
+// * Return a list of users a user follows given a user id
+const GetFollowing = async (uid) => {
+    const url = `http://${base}/core/users/${uid}/following/`
+    return GetRequest(url);
+}
+
 // * Return information about a poll
 const GetPoll = async (pid) => {
     const url = `http://${base}/pollish/polls/${pid}/`
     return GetRequest(url);
 }
-
 
 // * Return information about a choice on a poll
 const GetChoice = async (pid, cid) => {
@@ -48,4 +53,4 @@ const GetRequest = async (url) => {
     return res.data
 }
 
-export { GetUser, GetPoll, GetChoice, GetUserPolls, GetUserComms, GetCommPolls };
+export { GetUser, GetPoll, GetChoice, GetUserPolls, GetUserComms, GetCommPolls, GetFollowing };

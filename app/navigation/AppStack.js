@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import PollView from '../screens/PollScreens/PollView';
-import CommentSection from '../screens/CommentScreens/CommentSection';
+import PollView from '../screens/PollView';
+import CommentSection from '../screens/CommentSection';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, Text } from 'react-native';
 

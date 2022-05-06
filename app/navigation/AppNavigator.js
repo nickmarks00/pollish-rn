@@ -2,11 +2,10 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-import {HomeStack, ProfilePage, UserProfileScreen} from '../screens';
-import CreatePoll from '../screens/CreatePollScreens/CreatePoll';
-import {SearchStack} from '../screens/SearchScreens';
+import HomeStack from '../stacks/HomeStack';
+import SearchStack from '../stacks/SearchStack';
 import CreationHub from '../screens/CreatePollScreens/CreationHub';
-import ProfileStack from '../screens/ProfileScreens/ProfileStack';
+import ProfileStack from '../stacks/ProfileStack';
 
 const Tab = createBottomTabNavigator();
 

@@ -5,9 +5,9 @@ import AppStack from '../navigation/AppStack';
 import authStorage from '../auth/storage'
 
 
-import PollView from './PollScreens/PollView';
+import PollView from './PollView';
 import {BASE_URL} from '@env';
-import { PrimaryPollish } from './Styling/App_Styles';
+import { PrimaryPollish } from '../Styling/App_Styles';
 const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
@@ -112,15 +112,14 @@ const HomeScreen = ({route, navigation}) => {
         }}>
         {posts.results?.map((post, idx) => {
           if (posts.length - 2 === idx) fetchDataFromApi2(posts.next);
-          console.log("HHH: " + post)
+          
           return (
-            // <AppStack key={idx} post={post}/>
             <PollView
               key={idx}
               commentsScreen={route.params.commentsScreen}
               profileScreen={route.params.profileScreen}
               navigation={navigation}
-              post={post}></PollView>
+              id={post.id}></PollView>
           );
         }) || []}
       </View>

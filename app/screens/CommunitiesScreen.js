@@ -14,6 +14,7 @@ const CommunitiesScreen = ({route, navigation}) => {
     const [polls, setPolls] = React.useState()
 
     React.useEffect(() => {
+        console.log(route.params.id + ' id')
         loadCommPolls();
     }, []);
 

@@ -10,6 +10,7 @@ const dimensions = Dimensions.get('window');
 const MoreOptions = ({setOpen, post, commentsScreen}) => {
 
     const navigation = useNavigation();
+
     return(
     <View style={More_Options}>
                 <TouchableOpacity onPress={() => setOpen(true)} style={{position: 'absolute', flexDirection: 'row', left: dimensions.width*0.08}}>

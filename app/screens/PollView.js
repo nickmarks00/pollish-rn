@@ -97,7 +97,7 @@ const PollView = ({id, commentsScreen, profileScreen, communityScreen}) => {
         </View>
 
         {/* Navigation Buttons */}
-        <View style={{flex: 1.5}}><MoreOptions post={post} setOpen={setOpen} commentsScreen={commentsScreen}/></View>
+        <View style={{flex: 1.5}}><MoreOptions post={post} setOpen={setOpen} commentsScreen={commentsScreen ? commentsScreen : route.params.commentsScreen}/></View>
 
       </View>
     );

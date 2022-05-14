@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
 import {StyleSheet, Image} from 'react-native';
 
-import * as Yup from 'yup';
-
 import authApi from '../../api/authApi';
 import useAuth from '../../auth/useAuth';
 
 import AppScreen from '../AppScreen';
 import {AppForm, AppFormField, SubmitButton} from '../../components/forms';
 
-const validationSchema = Yup.object().shape({
-  username: Yup.string().required().label('Username'),
-  password: Yup.string().required().min(4).label('Password'),
-});
+const validationSchema = {};
 
 function LoginScreen({navigation, ...props}) {
   // const {user, setUser} = useContext(AuthContext);
@@ -21,7 +16,7 @@ function LoginScreen({navigation, ...props}) {
   const auth = useAuth();
 
   const handleUserLogin = async ({username, password}) => {
-    console.log("rr")
+    console.log('rr');
 
     const response = await authApi.login(username, password);
     if (response.status === 200) {
@@ -33,7 +28,7 @@ function LoginScreen({navigation, ...props}) {
     } else {
       setLoginFailed(true);
     }
-    console.log("redr")
+    console.log('redr');
     console.log(loginFailed);
   };
 

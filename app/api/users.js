@@ -1,8 +1,10 @@
 import {BASE_URL} from '@env';
 
 const register = async values => {
-  const base = BASE_URL;
-  const url = `http://${base}/auth/users/`;
+  const url = `http://${BASE_URL}/auth/users/`;
+
+  console.log(values);
+  console.log(url);
 
   const options = {
     method: 'POST',
@@ -14,8 +16,13 @@ const register = async values => {
 
   try {
     const response = await fetch(url, options);
-    const data = await response.json();
-    return data;
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } else {
+      console.error('Bad network request');
+    }
   } catch (e) {
     console.log('Something went wrong registering...', e);
   }

@@ -8,4 +8,5 @@ export default {
   dark: '#0c0c0c',
   danger: '#ff5252',
   primaryDisabled: '#d7f2ea',
+  buttonFocused: '#456aff',
 };

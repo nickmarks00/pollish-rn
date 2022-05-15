@@ -3,6 +3,7 @@ import {View} from 'react-native';
 
 import {FormContext} from './formContext';
 
+import Loader from '../Loader';
 import SubmitButton from './SubmitButton';
 
 function AppForm({
@@ -11,6 +12,7 @@ function AppForm({
   title = 'Submit',
   validationSchema = {},
   children,
+  style,
 }) {
   const [formValue, setFormValue] = useState({});
   const [fieldTouched, setFieldTouched] = useState({});
@@ -32,28 +34,32 @@ function AppForm({
   }, []);
 
   return (
-    <FormContext.Provider
-      value={{
-        errors,
-        fieldTouched,
-        formValue,
-        setErrors,
-        setFieldTouched,
-        setFormValue,
-        validationSchema,
-      }}>
-      <View>
-        {children}
-        <SubmitButton
-          title={title}
-          onSubmit={onSubmit}
-          errors={errors}
-          touched={fieldTouched}
-          loading={loading}
-          setLoading={setLoading}
-        />
-      </View>
-    </FormContext.Provider>
+    <>
+      <Loader visible={loading} />
+      <FormContext.Provider
+        value={{
+          errors,
+          fieldTouched,
+          formValue,
+          setErrors,
+          setFieldTouched,
+          setFormValue,
+          validationSchema,
+        }}>
+        <View style={style}>
+          {children}
+          <SubmitButton
+            title={title}
+            onSubmit={onSubmit}
+            onPress={() => setLoading(true)}
+            errors={errors}
+            touched={fieldTouched}
+            loading={loading}
+            setLoading={setLoading}
+          />
+        </View>
+      </FormContext.Provider>
+    </>
   );
 }
 

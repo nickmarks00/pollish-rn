@@ -16,11 +16,6 @@ function SubmitButton({title, onSubmit, errors, touched, loading, setLoading}) {
   const handleChange = () => {
     let isValid;
     isValid = Object.keys(errors).every(key => {
-      // console.log(
-      //   `Key=${key}, error=${errors[key]}, t=${touched[key]}, ${
-      //     !errors[key] && touched[key]
-      //   }`,
-      // );
       return !errors[key] && touched[key];
     });
 

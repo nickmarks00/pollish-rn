@@ -1,13 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, Dimensions, RefreshControl, Image} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Dimensions,
+  RefreshControl,
+  Image,
+} from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import AppStack from '../navigation/AppStack';
-import authStorage from '../auth/storage'
-
+import authStorage from '../auth/storage';
 
 import PollView from './PollView';
 import {BASE_URL} from '@env';
-import { PrimaryPollish } from '../Styling/App_Styles';
+import {PrimaryPollish} from '../Styling/App_Styles';
 const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
@@ -18,9 +24,9 @@ const HomeScreen = ({route, navigation}) => {
   const [error, setError] = useState(null);
   const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState(false);
-  const wait = (timeout) => {
+  const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
-  }
+  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -30,11 +36,7 @@ const HomeScreen = ({route, navigation}) => {
 
   useEffect(() => {
     fetchDataFromApi();
-    console.log('param: ' + route.params.commentsScreen)
   }, []);
-
-  
-
 
   const fetchDataFromApi = async () => {
     const url = `http://${base}/pollish/polls/`;
@@ -84,46 +86,51 @@ const HomeScreen = ({route, navigation}) => {
 
   return (
     <View>
-      <View style={{height: 100, borderBottomWidth: 2, borderColor: '#EEE', alignItems: 'center'}}>
-      <Image
-          style={{width: dimensions.width/2.8, height: 80, marginTop: 30}}
+      <View
+        style={{
+          height: 100,
+          borderBottomWidth: 2,
+          borderColor: '#EEE',
+          alignItems: 'center',
+        }}>
+        <Image
+          style={{width: dimensions.width / 2.8, height: 80, marginTop: 30}}
           source={require('../assets/logos/logo.png')}
         />
-        </View>
-    <ScrollView
-      decelerationRate={0}
-      snapToAlignment="lefts"
-      snapToInterval={dimensions.height - tabBarHeight - 100}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl
+      </View>
+      <ScrollView
+        decelerationRate={0}
+        snapToAlignment="lefts"
+        snapToInterval={dimensions.height - tabBarHeight - 100}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
             style={{backgroundColor: 'transparent'}}
           />
-      }
-      >
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-        }}>
-        {posts.results?.map((post, idx) => {
-          if (posts.length - 2 === idx) fetchDataFromApi2(posts.next);
-          
-          return (
-            <PollView
-              key={idx}
-              commentsScreen={route.params.commentsScreen}
-              profileScreen={route.params.profileScreen}
-              navigation={navigation}
-              id={post.id}></PollView>
-          );
-        }) || []}
-      </View>
-    </ScrollView>
+        }>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}>
+          {posts.results?.map((post, idx) => {
+            if (posts.length - 2 === idx) fetchDataFromApi2(posts.next);
+
+            return (
+              <PollView
+                key={idx}
+                commentsScreen={route.params.commentsScreen}
+                profileScreen={route.params.profileScreen}
+                navigation={navigation}
+                id={post.id}></PollView>
+            );
+          }) || []}
+        </View>
+      </ScrollView>
     </View>
   );
 };

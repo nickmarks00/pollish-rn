@@ -1,14 +1,15 @@
 import {useContext} from 'react';
 
 import {AuthContext} from './context';
-import authStorage from './storage';
+import authApi from '../api/authApi';
 
 export default useAuth = () => {
   const {user, setUser} = useContext(AuthContext);
 
-  const logIn = async authTokens => {
-    const users = await authStorage.getUser();
-    setUser(users);
+  const loginWithTokens = async authTokens => {
+    const currentUser = await authApi.getUser();
+    console.log(`from loginwithtokens ${currentUser}`);
+    setUser(currentUser);
     authStorage.storeTokens(JSON.stringify(authTokens));
   };
 
@@ -17,5 +18,5 @@ export default useAuth = () => {
     authStorage.removeTokens();
   };
 
-  return {user, logIn, logOut};
+  return {user, loginWithTokens, logOut};
 };

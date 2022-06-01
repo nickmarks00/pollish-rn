@@ -15,8 +15,6 @@ import {PollQuestion, FilterBar, Comment, CreateComment} from 'components';
 import authStorage from '../auth/storage';
 import axios from 'axios';
 
-const base = BASE_URL;
-
 const CommentSection = ({route}) => {
   const post = route.params.post;
 
@@ -43,7 +41,7 @@ const CommentSection = ({route}) => {
   const fetchDataFromApi = async () => {
     setLoading(true);
 
-    const url = `http://${base}/core/users/${post.user_id}/polls/${post.id}/comments/`;
+    const url = `${BASE_URL}/core/users/${post.user_id}/polls/${post.id}/comments/`;
     const access = await authStorage.getAccess();
 
     axios.get(url, {headers: {Authorization: access}}).then(res => {

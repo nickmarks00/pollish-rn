@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {Text, View, StyleSheet, Image, Dimensions, Modal} from 'react-native';
 import {ListItem} from '../components/lists';
 import Icon from '../components/Icon';
@@ -10,22 +10,23 @@ import FollowersScreen from './FollowersScreen';
 import CommunitiesScreen from './CommunitiesScreen';
 import PollsScreen from './PollsScreen';
 
+import {BASE_URL} from '@env';
+
 const dimensions = Dimensions.get('screen');
 
 const ProfilePage = ({route, navigation}) => {
   const {user, logOut} = useAuth();
-  const [profile, setProfile] = React.useState('');
-  const [profilePic, setProfilePic] = React.useState('');
-  const [followers, setFollowers] = React.useState(false);
-  const [communities, setCommunity] = React.useState(false);
-  const [polls, setPolls] = React.useState(false);
+  const [profile, setProfile] = useState('');
+  const [profilePic, setProfilePic] = useState('');
+  const [followers, setFollowers] = useState(false);
+  const [communities, setCommunity] = useState(false);
+  const [polls, setPolls] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     findAvatar();
-    console.log(user?.profile);
   }, []);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: route.params?.user ? true : false,
     });
@@ -43,10 +44,7 @@ const ProfilePage = ({route, navigation}) => {
       },
     };
 
-    const response = await fetch(
-      `http://192.168.1.140:8000/pollish/profiles/me/`,
-      options,
-    )
+    const response = await fetch(`${BASE_URL}/pollish/profiles/me/`, options)
       .then(response => response.json())
       .then(response => {
         setProfilePic(response.avatar);
@@ -84,10 +82,7 @@ const ProfilePage = ({route, navigation}) => {
       body: data,
     };
 
-    const response = await fetch(
-      `http://192.168.1.140:8000/pollish/profiles/me/`,
-      options,
-    );
+    const response = await fetch(`${BASE_URL}/pollish/profiles/me/`, options);
     findAvatar();
   };
 

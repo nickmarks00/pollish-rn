@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Dimensions, Image} from 'react-native';
 
-import usersApi from '../../api/users';
 import authApi from '../../api/authApi';
 import useAuth from '../../auth/useAuth';
 
@@ -21,7 +20,7 @@ import Wave from '../../components/Wave';
 
 const dimensions = Dimensions.get('screen');
 
-function RegisterScreen({navigation}) {
+function RegisterScreen() {
   const auth = useAuth();
   const [registerFailed, setRegisterFailed] = useState(false);
 
@@ -34,21 +33,16 @@ function RegisterScreen({navigation}) {
   };
 
   const handleUserRegister = async values => {
-    // matching field names of UserCreateSerializer
+    values['email'] = values['email'].toLowerCase();
 
-    values['first_name'] = values['firstName'];
-    delete values['firstName'];
-    values['last_name'] = values['lastName'];
-    delete values['lastName'];
-
-    const registerApi = await usersApi.register(values);
+    // TODO - handle logic better here; what should happen when registerApi fails?
+    const registerApi = await authApi.register(values);
     const loginApi = await authApi.login(values.username, values.password);
 
-    if (loginApi.status === 200) {
+    if (loginApi.status === 200 && registerApi.status === 201) {
       // access token exists and still valid
       setRegisterFailed(false);
-      const tokens = await loginApi.json();
-      auth.logIn(tokens);
+      auth.loginWithTokens(loginApi.data);
     } else {
       setRegisterFailed(true);
     }
@@ -70,8 +64,8 @@ function RegisterScreen({navigation}) {
           />
           <Form
             initialValues={{
-              firstName: '',
-              lastName: '',
+              first_name: '',
+              last_name: '',
               username: '',
               email: '',
               password: '',
@@ -85,7 +79,7 @@ function RegisterScreen({navigation}) {
                   autoCapitalize="words"
                   autoCorrect={false}
                   icon="account"
-                  name="firstName"
+                  name="first_name"
                   placeholder="First name"
                 />
               </View>
@@ -94,7 +88,7 @@ function RegisterScreen({navigation}) {
                   autoCapitalize="words"
                   autoCorrect={false}
                   icon="account"
-                  name="lastName"
+                  name="last_name"
                   placeholder="Last name"
                 />
               </View>

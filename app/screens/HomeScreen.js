@@ -14,7 +14,6 @@ import authStorage from '../auth/storage';
 import PollView from './PollView';
 import {BASE_URL} from '@env';
 import {PrimaryPollish} from '../Styling/App_Styles';
-const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
 
@@ -39,7 +38,7 @@ const HomeScreen = ({route, navigation}) => {
   }, []);
 
   const fetchDataFromApi = async () => {
-    const url = `http://${base}/pollish/polls/`;
+    const url = `${BASE_URL}/pollish/polls/`;
 
     setLoading(true);
 

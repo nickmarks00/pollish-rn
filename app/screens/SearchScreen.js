@@ -10,10 +10,9 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import {BASE_IP} from '@env';
+import {BASE_URL} from '@env';
 import authStorage from '../auth/storage';
 
-const base = BASE_IP;
 const dimensions = Dimensions.get('screen');
 
 const SearchScreen = ({navigation}) => {
@@ -53,12 +52,10 @@ const SearchScreen = ({navigation}) => {
       },
     };
     var url = '';
-    if (toggle === 'poll')
-      url = `http://${BASE_IP}/pollish/polls/?search=${text}`;
+    if (toggle === 'poll') url = `${BASE_URL}/pollish/polls/?search=${text}`;
     else if (toggle === 'comm')
-      url = `http://${BASE_IP}/pollish/communities/?search=${text}`;
-    else if (toggle === 'user')
-      url = `http://${BASE_IP}/core/users/?search=${text}`;
+      url = `${BASE_URL}/pollish/communities/?search=${text}`;
+    else if (toggle === 'user') url = `${BASE_URL}/core/users/?search=${text}`;
     const response = await fetch(url, options)
       .then(response => response.json())
       .then(response => {

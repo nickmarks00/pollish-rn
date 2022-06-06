@@ -2,12 +2,14 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import CommentSection from '../screens/CommentSection';
-import ProfilePage from '../screens/ProfilePage';
 import FollowersScreen from '../screens/FollowersScreen'
 import PollsScreen from '../screens/PollsScreen';
 import CommunityList from '../screens/CommunityList';
 import PollView from '../screens/PollView';
 import CommunitiesScreen from '../screens/CommunitiesScreen';
+import TestingSpace from '../screens/ProfilePage';
+import PollDisplay from '../components/pollDisplay';
+import SinglePoll from '../screens/SinglePoll';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,12 +29,12 @@ const MyStack = () => {
             screenOptions={{ transitionSpec: { open: config, close: config } }}
           />
           <Stack.Screen name="H_Comments" component={CommentSection} initialParams={{profileScreen: 'H_Profile'}} options={{headerShown: false}} />
-          <Stack.Screen name="H_Poll" initialParams={{commentsScreen: 'H_Comments', profileScreen: 'H_Profile'}} component={PollView}/>
-          <Stack.Screen name="H_Profile" initialParams={{followScreen: 'H_Follow', pollListScreen: 'H_PollList', communityListScreen: 'H_CommunityList'}} component={ProfilePage} options={{ headerShown: true}}/>
+          <Stack.Screen name="H_Poll" component={SinglePoll} initialParams={{commentsScreen: 'H_Comments', profileScreen: 'H_Profile'}} />
+          <Stack.Screen name="H_Profile" initialParams={{followScreen: 'H_Follow', pollListScreen: 'H_PollList', communityListScreen: 'H_CommunityList'}} component={TestingSpace} options={{ headerShown: true}}/>
           <Stack.Screen name="H_Follow" initialParams={{profileScreen: 'H_Profile'}} options={{contentStyle: {backgroundColor: '#FFF'}}} component={FollowersScreen} />
-          <Stack.Screen name="H_PollList" initialParams={{pollScreen: 'H_Poll'}} component={PollsScreen}/>
-          <Stack.Screen name="H_CommunityList" initialParams={{communityScreen: 'H_Community'}} component={CommunityList} />
-          <Stack.Screen name="H_Community" initialParams={{pollScreen: 'H_Poll'}} component={CommunitiesScreen} />
+          <Stack.Screen name="H_PollList" component={PollsScreen} initialParams={{pollScreen: 'H_Poll'}} />
+          <Stack.Screen name="H_CommunityList" component={CommunityList} initialParams={{communityScreen: 'H_Community'}}  />
+          <Stack.Screen name="H_Community" component={CommunitiesScreen} initialParams={{pollScreen: 'H_Poll'}}  />
         </Stack.Navigator>
     );
   };

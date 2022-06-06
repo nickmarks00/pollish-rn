@@ -1,12 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import FollowersScreen from '../screens/FollowersScreen';
-import ProfilePage from '../screens/ProfilePage';
+import ProfilePage from '../screens/Old_ProfilePage';
 import PollsScreen from '../screens/PollsScreen';
 import PollView from '../screens/PollView';
 import CommentSection from '../screens/CommentSection';
 import CommunityList from '../screens/CommunityList';
 import CommunitiesScreen from '../screens/CommunitiesScreen';
+import TestingSpace from '../screens/ProfilePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,14 +16,15 @@ const Stack = createNativeStackNavigator();
  */
 
 const ProfileStack = () => {
+  
     return (
             <Stack.Navigator initialRouteName='P_Profile'
             screenOptions={{
                 gestureEnabled: true,
                 gestureDirection: "horizontal",
               }}>
-                <Stack.Screen name="P_Profile" initialParams={{followScreen: 'P_Follow', pollListScreen: 'P_PollList', communityListScreen: 'P_CommunityList'}} options={{headerShown: false, contentStyle: {backgroundColor: '#FFF'}}} component={ProfilePage} />
-                <Stack.Screen name="P_Follow" initialParams={{profileScreen: 'P_Profile'}} options={{contentStyle: {backgroundColor: '#FFF'}}} component={FollowersScreen} />
+                <Stack.Screen name="P_Profile" initialParams={{ show: false, followScreen: 'P_Follow', pollListScreen: 'P_PollList', communityListScreen: 'P_CommunityList'}} options={({ route }) => ({headerShown: route.params.show ? true: false, contentStyle: {backgroundColor: '#FFF'}})} component={TestingSpace} />
+                <Stack.Screen name="P_Follow" initialParams={{profileScreen: 'P_Profile'}} options={({ route }) => ({ title: route.params.title, contentStyle: {backgroundColor: '#FFF'}})} component={FollowersScreen} />
                 <Stack.Screen name="P_PollList" initialParams={{pollScreen: 'P_Poll'}} component={PollsScreen}/>
                 <Stack.Screen name="P_Poll" initialParams={{commentsScreen: 'P_Comments', profileScreen: 'P_Profile'}} component={PollView}/>
                 <Stack.Screen name="P_Comments" initialParams={{profileScreen: 'P_Profile'}} component={CommentSection}/>

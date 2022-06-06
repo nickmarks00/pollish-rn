@@ -3,6 +3,7 @@ import {
   View,
   Text,
   ScrollView,
+  FlatList,
   Dimensions,
   RefreshControl,
   Image,
@@ -14,6 +15,9 @@ import authStorage from '../auth/storage';
 import PollView from './PollView';
 import {BASE_URL} from '@env';
 import {PrimaryPollish} from '../Styling/App_Styles';
+import { GetPollFeed } from '../api/comments';
+import TestingSpace2 from '../TestingSpace2';
+import PollDisplay from '../components/pollDisplay';
 const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
@@ -24,43 +28,39 @@ const HomeScreen = ({route, navigation}) => {
   const [error, setError] = useState(null);
   const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState(false);
+  const [number, setNum] = useState(1);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    fetchDataFromApi();
+    fetchDataFromApi(1);
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
-    fetchDataFromApi();
+    fetchDataFromApi(1);
   }, []);
 
-  const fetchDataFromApi = async () => {
-    const url = `http://${base}/pollish/polls/`;
+  const fetchDataFromApi = async (page) => {
+    const polls = await GetPollFeed(page);
+    setPosts(polls.results)
+  };
 
-    setLoading(true);
-
-    const resp = await authStorage.getTokens();
-    const access = JSON.parse(resp).access;
-
-    const res = fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `JWT ${access}`,
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        setPosts(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const loadMoreData = async (page) => {
+    const polls = await GetPollFeed(page);
+    const total = [...posts, ...polls.results]
+    setPosts(total)
+    // console.log(posts.results)
+    // if (posts.results){
+    //   console.log('p: ' + posts.results)
+    //   setPosts(...posts, polls.results);
+    // }
+    // else{
+    //   console.log('load more')
+    //   setPosts(polls.results)
+    // }
   };
 
   // const fetchDataFromApi2 = async props => {
@@ -98,10 +98,27 @@ const HomeScreen = ({route, navigation}) => {
           source={require('../assets/logos/logo.png')}
         />
       </View>
-      <ScrollView
-        decelerationRate={0}
-        snapToAlignment="lefts"
-        snapToInterval={dimensions.height - tabBarHeight - 100}
+      <FlatList
+        data={posts}
+        renderItem={({ item }) => (
+          <View style={{flex: 1, width: '100%', marginVertical: '5%'}}>
+              <PollDisplay 
+                id={item.id}
+                commentsScreen={route.params.commentsScreen}
+                profileScreen={route.params.profileScreen}
+              />
+              </View>
+        )}
+        onEndReachedThreshold={0.01}
+        onEndReached= { info => {
+          loadMoreData(number+1)
+          setNum(number+1)
+        }}
+      />
+
+      {/* <ScrollView
+        decelerationRate={0.9}
+        snapToAlignment={'center'}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -109,28 +126,30 @@ const HomeScreen = ({route, navigation}) => {
             onRefresh={onRefresh}
             style={{backgroundColor: 'transparent'}}
           />
-        }>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-          }}>
+        }
+        
+        >
+
           {posts.results?.map((post, idx) => {
             if (posts.length - 2 === idx) fetchDataFromApi2(posts.next);
 
             return (
-              <PollView
-                key={idx}
+              <View key={idx} style={{flex: 1, width: '100%', marginVertical: '5%'}}>
+              <PollDisplay 
+                id={post.id}
                 commentsScreen={route.params.commentsScreen}
                 profileScreen={route.params.profileScreen}
-                navigation={navigation}
-                id={post.id}></PollView>
+              />
+              </View>
+              // <PollView
+              //   key={idx}
+              //   commentsScreen={route.params.commentsScreen}
+              //   profileScreen={route.params.profileScreen}
+              //   navigation={navigation}
+              //   id={post.id}></PollView>
             );
           }) || []}
-        </View>
-      </ScrollView>
+      </ScrollView> */}
     </View>
   );
 };

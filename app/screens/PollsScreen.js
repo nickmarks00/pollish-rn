@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { GetUserPolls } from '../api/comments';
+import PollCard from '../components/pollCard';
 
 /**
  * * Shows list of polls a user owns (requires: id, pollScreen)
@@ -21,13 +22,12 @@ const PollsScreen = ({route, navigation}) => {
         setPolls(userPolls.results);
     }
 
-    return(
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Your Polls</Text>
+    return (
+        <View style={{flex: 1, alignItems: 'center'}}>
             {polls?.map((poll, idx) => {
                 return(
                     <TouchableOpacity key={idx} onPress={() => navigation.push(route.params.pollScreen, {id: poll.id})}>
-                    <Text>{poll.question_text}</Text>
+                        <PollCard color={'#51E0B8'} qText={poll.question_text} id={poll.id}/>
                     </TouchableOpacity>
                 )
             })}

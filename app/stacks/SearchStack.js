@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SearchScreen from '../screens/SearchScreen';
-import ProfilePage from '../screens/ProfilePage';
+import ProfilePage from '../screens/Old_ProfilePage';
 import CommunitiesScreen from '../screens/CommunitiesScreen';
 import FollowersScreen from '../screens/FollowersScreen';
 import CommentSection from '../screens/CommentSection';
 import PollsScreen from '../screens/PollsScreen';
 import PollView from '../screens/PollView';
 import CommunityList from '../screens/CommunityList';
+import TestingSpace2 from '../TestingSpace2';
 
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +22,7 @@ const SearchStack = () => {
           }}
         >
           <Stack.Screen 
-            options={{headerShown: false}} name="HomeSearch" component={SearchScreen}
+            options={{headerShown: false}} name="HomeSearch" component={TestingSpace2}
             screenOptions={{
               transitionSpec: { open: config, close: config }
             }}

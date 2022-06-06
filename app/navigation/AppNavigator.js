@@ -6,6 +6,7 @@ import HomeStack from '../stacks/HomeStack';
 import SearchStack from '../stacks/SearchStack';
 import CreationHub from '../screens/CreatePollScreens/CreationHub';
 import ProfileStack from '../stacks/ProfileStack';
+import TestingSpace from '../screens/ProfilePage';
 
 const Tab = createBottomTabNavigator();
 

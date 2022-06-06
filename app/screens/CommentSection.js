@@ -14,6 +14,7 @@ import FilterPopup from 'modals/FilterPopup';
 import {PollQuestion, FilterBar, Comment, CreateComment} from 'components';
 import authStorage from '../auth/storage';
 import axios from 'axios';
+import { GetComments } from '../api/comments';
 
 const base = BASE_URL;
 
@@ -32,7 +33,7 @@ const CommentSection = ({route}) => {
   }, []);
 
   const assignColors = () => {
-    post.choices.map((option, idx) => {
+    route.params.post.choices.map((option, idx) => {
       if (idx == 0) setColors(prevState => ({...prevState, red: option.id}));
       if (idx == 1) setColors(prevState => ({...prevState, yellow: option.id}));
       if (idx == 2) setColors(prevState => ({...prevState, blue: option.id}));
@@ -43,12 +44,9 @@ const CommentSection = ({route}) => {
   const fetchDataFromApi = async () => {
     setLoading(true);
 
-    const url = `http://${base}/core/users/${post.user_id}/polls/${post.id}/comments/`;
-    const access = await authStorage.getAccess();
+    const data = await GetComments(route.params.post.user_id, route.params.post.id);
+    setComments(data);
 
-    axios.get(url, {headers: {Authorization: access}}).then(res => {
-      setComments(res.data);
-    });
   };
 
   // Load fonts

@@ -32,7 +32,7 @@ const getUser = async () => {
   const tokens = JSON.parse(res);
   if (!tokens) return null;
 
-  const url = `${BASE_URL}/auth/users/me/`;
+  const url = `http://${BASE_URL}/auth/users/me/`;
 
   const options = {
     payload: {},

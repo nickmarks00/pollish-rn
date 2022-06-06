@@ -51,7 +51,7 @@ const Inner_Option_Container = {
 
 // Text associated with an option button
 const Option_Text = {
-    fontFamily: PrimaryFont,
+    fontFamily: 'System',
     textAlign: 'center',
     fontSize: 15,
 }

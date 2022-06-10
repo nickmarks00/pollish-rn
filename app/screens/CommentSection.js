@@ -14,9 +14,7 @@ import FilterPopup from 'modals/FilterPopup';
 import {PollQuestion, FilterBar, Comment, CreateComment} from 'components';
 import authStorage from '../auth/storage';
 import axios from 'axios';
-import { GetComments } from '../api/comments';
-
-const base = BASE_URL;
+import {GetComments} from '../api/comments';
 
 const CommentSection = ({route}) => {
   const post = route.params.post;
@@ -44,9 +42,11 @@ const CommentSection = ({route}) => {
   const fetchDataFromApi = async () => {
     setLoading(true);
 
-    const data = await GetComments(route.params.post.user_id, route.params.post.id);
+    const data = await GetComments(
+      route.params.post.user_id,
+      route.params.post.id,
+    );
     setComments(data);
-
   };
 
   // Load fonts

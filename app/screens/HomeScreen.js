@@ -15,7 +15,7 @@ import authStorage from '../auth/storage';
 import PollView from './PollView';
 import {BASE_URL} from '@env';
 import {PrimaryPollish} from '../Styling/App_Styles';
-import { GetPollFeed } from '../api/comments';
+import {GetPollFeed} from '../api/comments';
 import TestingSpace2 from '../TestingSpace2';
 import PollDisplay from '../components/pollDisplay';
 const base = BASE_URL;
@@ -43,15 +43,15 @@ const HomeScreen = ({route, navigation}) => {
     fetchDataFromApi(1);
   }, []);
 
-  const fetchDataFromApi = async (page) => {
+  const fetchDataFromApi = async page => {
     const polls = await GetPollFeed(page);
-    setPosts(polls.results)
+    setPosts(polls.results);
   };
 
-  const loadMoreData = async (page) => {
+  const loadMoreData = async page => {
     const polls = await GetPollFeed(page);
-    const total = [...posts, ...polls.results]
-    setPosts(total)
+    const total = [...posts, ...polls.results];
+    setPosts(total);
     // console.log(posts.results)
     // if (posts.results){
     //   console.log('p: ' + posts.results)
@@ -100,19 +100,19 @@ const HomeScreen = ({route, navigation}) => {
       </View>
       <FlatList
         data={posts}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <View style={{flex: 1, width: '100%', marginVertical: '5%'}}>
-              <PollDisplay 
-                id={item.id}
-                commentsScreen={route.params.commentsScreen}
-                profileScreen={route.params.profileScreen}
-              />
-              </View>
+            <PollDisplay
+              id={item.id}
+              commentsScreen={route.params.commentsScreen}
+              profileScreen={route.params.profileScreen}
+            />
+          </View>
         )}
         onEndReachedThreshold={0.01}
-        onEndReached= { info => {
-          loadMoreData(number+1)
-          setNum(number+1)
+        onEndReached={info => {
+          loadMoreData(number + 1);
+          setNum(number + 1);
         }}
       />
 

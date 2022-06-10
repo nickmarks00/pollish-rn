@@ -1,5 +1,4 @@
 import * as SecureStore from 'expo-secure-store';
-import {BASE_URL} from '@env';
 
 // TODO Change to a .env secret
 const key = 'pollish_User';
@@ -27,28 +26,6 @@ const getAccess = async () => {
   return access;
 };
 
-const getUser = async () => {
-  const res = await getTokens();
-  const tokens = JSON.parse(res);
-  if (!tokens) return null;
-
-  const url = `http://${BASE_URL}/auth/users/me/`;
-
-  const options = {
-    payload: {},
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `JWT ${tokens.access}`,
-    },
-  };
-  const response = await fetch(url, options);
-  if (response.status === 200) {
-    // access token exists and still valid
-    return await response.json();
-  }
-};
-
 const removeTokens = async () => {
   try {
     await SecureStore.deleteItemAsync(key);
@@ -57,4 +34,4 @@ const removeTokens = async () => {
   }
 };
 
-export default {getTokens, getUser, removeTokens, storeTokens, getAccess};
+export default {getTokens, removeTokens, storeTokens, getAccess};

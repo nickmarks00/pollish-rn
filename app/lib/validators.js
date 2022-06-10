@@ -42,7 +42,7 @@ export const validateUsername = async username => {
 
   try {
     const response = await fetch(
-      `http://${BASE_URL}/core/users/?username=${username}`,
+      `${BASE_URL}/core/users/?username=${username}`,
       {
         method: 'GET',
         headers: {
@@ -74,15 +74,12 @@ export const validateEmail = async email => {
   }
 
   try {
-    const response = await fetch(
-      `http://${BASE_URL}/core/users/?email=${email}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const response = await fetch(`${BASE_URL}/core/users/?email=${email}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+    });
     if (response.ok) {
       const data = await response.json();
       return (

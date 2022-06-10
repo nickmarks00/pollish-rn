@@ -1,23 +1,25 @@
+import axios from 'axios';
 import {BASE_URL} from '@env';
+import authStorage from '../auth/storage';
 
-const base = BASE_URL
-const url = `http://${base}/auth/jwt/create`;
+const client = axios.create({
+  baseURL: `${BASE_URL}`,
+});
 
-const options = {
-  method: 'POST',
-  body: JSON.stringify(values),
-  headers: {
-    'Content-Type': 'application/json',
-  },
-};
-
-class ApiClient {
-  constructor(url, values) {
-    this.url = url;
-    this.values = values;
+client.interceptors.request.use(async config => {
+  const authToken = await authStorage.getTokens();
+  if (authToken) {
+    config.headers['Authorization'] = `JWT ${authToken.access}`;
   }
+  return config;
+});
 
-  get() {}
+/*  
+TO-DO for Axios:
+- Add global axios defaults e.g. authorization tokens
+- 
 
-  post() {}
-}
+
+*/
+
+export default client;

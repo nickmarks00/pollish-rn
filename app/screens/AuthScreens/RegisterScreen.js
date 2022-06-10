@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {StyleSheet, View, Dimensions, Image} from 'react-native';
 
 import authApi from '../../api/authApi';
@@ -11,11 +11,12 @@ import {
   validatePassword,
 } from '../../lib/validators';
 
-import Screen from '../AppScreen';
 import {
   AppForm as Form,
   AppFormField as FormField,
 } from '../../components/forms';
+import {ErrorMessage} from '../../components/forms';
+import Screen from '../AppScreen';
 import Wave from '../../components/Wave';
 
 const dimensions = Dimensions.get('screen');
@@ -42,7 +43,7 @@ function RegisterScreen() {
     if (loginApi.status === 200 && registerApi.status === 201) {
       // access token exists and still valid
       setRegisterFailed(false);
-      auth.loginWithTokens(loginApi.data);
+      await auth.loginWithTokens(loginApi.data);
     } else {
       setRegisterFailed(true);
     }
@@ -73,6 +74,10 @@ function RegisterScreen() {
             onSubmit={values => handleUserRegister(values)}
             title="Register"
             validationSchema={validationSchema}>
+            <ErrorMessage
+              error="Something went wrong registering"
+              visible={registerFailed}
+            />
             <View style={styles.nameContainer}>
               <View style={styles.nameColumn}>
                 <FormField

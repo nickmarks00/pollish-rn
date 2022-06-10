@@ -8,10 +8,9 @@ import {
   AppForm as Form,
   AppFormField as FormField,
 } from '../../components/forms';
+import {ErrorMessage} from '../../components/forms';
 import Screen from '../AppScreen';
 import Wave from '../../components/Wave';
-
-const validationSchema = {};
 
 const dimensions = Dimensions.get('screen');
 
@@ -22,15 +21,10 @@ function LoginScreen({navigation, ...props}) {
   const auth = useAuth();
 
   const handleUserLogin = async ({username, password}) => {
-    const response = await authApi.login(username, password);
-    if (response.status === 200) {
-      // access token exists and still valid
-      setLoginFailed(false);
-      const tokens = await response.json();
-      auth.logIn(tokens);
-    } else {
-      setLoginFailed(true);
-    }
+    const result = await authApi.login(username, password);
+    if (!result.status === 200) return setLoginFailed(true);
+    setLoginFailed(false);
+    auth.loginWithTokens(result.data);
   };
 
   return (
@@ -49,8 +43,11 @@ function LoginScreen({navigation, ...props}) {
           <Form
             initialValues={{username: '', password: ''}}
             onSubmit={handleUserLogin}
-            title="Login"
-            validationSchema={validationSchema}>
+            title="Login">
+            <ErrorMessage
+              error="Something went wrong logging in. Try again."
+              visible={loginFailed}
+            />
             <FormField
               autoCapitalize="none"
               autoCorrect={false}

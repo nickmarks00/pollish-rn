@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   View,
   Image,
@@ -10,8 +10,12 @@ import {
 import {Ionicons} from '@expo/vector-icons';
 import {BASE_URL} from '@env';
 
+import colors from '../config/colors';
+
 import Singer from './../assets/Harlow.jpg';
 import ColoredButton from '../components/coloredButton';
+import Icon from '../components/Icon';
+import {ListItem} from '../components/lists';
 import PollCard from '../components/pollCard';
 import {
   GetFollowers,
@@ -20,8 +24,6 @@ import {
   CheckFollowing,
   FollowUser,
 } from '../api/comments';
-
-import {BASE_URL} from '@env';
 
 const dimensions = Dimensions.get('screen');
 const url = BASE_URL;
@@ -52,7 +54,7 @@ const ProfilePage = ({route, navigation}) => {
   const [polls, setPolls] = React.useState([]);
   const [isFollowing, setIsFollowing] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     findFollowers();
     findFollowing();
     findPolls();
@@ -225,6 +227,12 @@ const ProfilePage = ({route, navigation}) => {
       {polls.length > 1 && (
         <PollCard color={'#907AD6'} qText={polls[1].question_text} />
       )}
+
+      <ListItem
+        title="Log Out"
+        IconComponent={<Icon name="logout" backgroundColor={colors.primary} />}
+        onPress={() => logOut()}
+      />
     </View>
   );
 };

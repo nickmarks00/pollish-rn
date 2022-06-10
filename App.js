@@ -4,6 +4,7 @@ import AppLoading from 'expo-app-loading';
 
 import {AuthContext} from './app/auth/context';
 import authApi from './app/api/authApi';
+import authStorage from './app/auth/storage';
 import AuthNavigator from './app/navigation/AuthNavigator';
 import AppNavigator from './app/navigation/AppNavigator';
 
@@ -20,12 +21,15 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    console.log(`from app.js ${user}`);
+    console.log(user);
   }, [user]);
 
   const restoreUser = async () => {
-    const user = await authApi.getUser();
-    if (user) setUser(user);
+    const tokens = await authStorage.getAccess();
+    if (tokens) {
+      const user = await authApi.getUser(tokens);
+      setUser(user);
+    }
   };
 
   if (!isReady) {

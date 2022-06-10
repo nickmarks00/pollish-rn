@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SearchScreen from '../screens/SearchScreen';
-import ProfilePage from '../screens/Old_ProfilePage';
 import CommunitiesScreen from '../screens/CommunitiesScreen';
 import FollowersScreen from '../screens/FollowersScreen';
 import CommentSection from '../screens/CommentSection';
@@ -9,37 +8,74 @@ import PollsScreen from '../screens/PollsScreen';
 import PollView from '../screens/PollView';
 import CommunityList from '../screens/CommunityList';
 import TestingSpace2 from '../TestingSpace2';
-
+import ProfilePage from '../screens/ProfilePage';
 
 const Stack = createNativeStackNavigator();
 
 const SearchStack = () => {
-    return (
-        <Stack.Navigator
-          screenOptions={{
-            gestureEnabled: true,
-            gestureDirection: "horizontal"
-          }}
-        >
-          <Stack.Screen 
-            options={{headerShown: false}} name="HomeSearch" component={TestingSpace2}
-            screenOptions={{
-              transitionSpec: { open: config, close: config }
-            }}
-            />
-          <Stack.Screen name="S_Profile" initialParams={{followScreen: 'S_Follow', pollListScreen: 'S_PollList', communityListScreen: 'S_CommunityList'}} options={{headerShown: false, contentStyle: {backgroundColor: '#FFF'}}} component={ProfilePage} />
-          <Stack.Screen name="S_Community" initialParams={{pollScreen: 'S_Poll'}} component={CommunitiesScreen} />
-          <Stack.Screen name="S_Follow" initialParams={{profileScreen: 'S_Profile'}} options={{contentStyle: {backgroundColor: '#FFF'}}} component={FollowersScreen} />
-          <Stack.Screen name="S_Comments" initialParams={{profileScreen: 'S_Profile'}} component={CommentSection}/>
-          <Stack.Screen name="S_PollList" initialParams={{pollScreen: 'S_Poll'}} component={PollsScreen}/>
-          <Stack.Screen name="S_Poll" initialParams={{commentsScreen: 'S_Comments', profileScreen: 'S_Profile'}} component={PollView}/>
-          <Stack.Screen name="S_CommunityList" initialParams={{communityScreen: 'S_Community'}} component={CommunityList} />
-          
-        </Stack.Navigator>
-    );
-  };
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+      }}>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="HomeSearch"
+        component={TestingSpace2}
+        screenOptions={{
+          transitionSpec: {open: config, close: config},
+        }}
+      />
+      <Stack.Screen
+        name="S_Profile"
+        initialParams={{
+          followScreen: 'S_Follow',
+          pollListScreen: 'S_PollList',
+          communityListScreen: 'S_CommunityList',
+        }}
+        options={{headerShown: false, contentStyle: {backgroundColor: '#FFF'}}}
+        component={ProfilePage}
+      />
+      <Stack.Screen
+        name="S_Community"
+        initialParams={{pollScreen: 'S_Poll'}}
+        component={CommunitiesScreen}
+      />
+      <Stack.Screen
+        name="S_Follow"
+        initialParams={{profileScreen: 'S_Profile'}}
+        options={{contentStyle: {backgroundColor: '#FFF'}}}
+        component={FollowersScreen}
+      />
+      <Stack.Screen
+        name="S_Comments"
+        initialParams={{profileScreen: 'S_Profile'}}
+        component={CommentSection}
+      />
+      <Stack.Screen
+        name="S_PollList"
+        initialParams={{pollScreen: 'S_Poll'}}
+        component={PollsScreen}
+      />
+      <Stack.Screen
+        name="S_Poll"
+        initialParams={{
+          commentsScreen: 'S_Comments',
+          profileScreen: 'S_Profile',
+        }}
+        component={PollView}
+      />
+      <Stack.Screen
+        name="S_CommunityList"
+        initialParams={{communityScreen: 'S_Community'}}
+        component={CommunityList}
+      />
+    </Stack.Navigator>
+  );
+};
 
-  export default SearchStack;
+export default SearchStack;
 
 const config = {
   animation: 'spring',
@@ -50,5 +86,5 @@ const config = {
     overshootClamping: true,
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
-  }
-}
+  },
+};

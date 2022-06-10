@@ -9,7 +9,7 @@ const GetUser = async uid => {
 };
 
 const GetPollFeed = async num => {
-  const url = `http://${base}/pollish/polls/?page=${num}`;
+  const url = `http://${BASE_URL}/pollish/polls/?page=${num}`;
   return GetRequest(url);
 };
 
@@ -21,7 +21,7 @@ const GetFollowing = async uid => {
 
 // * Return a list of users a user follows given a user id
 const GetFollowers = async uid => {
-  const url = `http://${base}/core/users/${uid}/followers/`;
+  const url = `http://${BASE_URL}/core/users/${uid}/followers/`;
   return GetRequest(url);
 };
 
@@ -56,12 +56,12 @@ const GetCommPolls = async id => {
 };
 
 const GetComments = async (uid, pid) => {
-  const url = `http://${base}/core/users/${uid}/polls/${pid}/comments/`;
+  const url = `http://${BASE_URL}/core/users/${uid}/polls/${pid}/comments/`;
   return GetRequest(url);
 };
 
 const CheckFollowing = async (mid, uid) => {
-  const url = `http://${base}/core/users/${mid}/following/?id=${uid}`;
+  const url = `http://${BASE_URL}/core/users/${mid}/following/?id=${uid}`;
   return GetRequest(url);
 };
 
@@ -70,8 +70,8 @@ const FollowUser = async (mid, uid, follow) => {
   var config = {
     method: 'put',
     url: follow
-      ? `http://${base}/core/users/${mid}/?unfollow=True&user_id=${uid}`
-      : `http://${base}/core/users/${mid}/?user_id=${uid}`,
+      ? `http://${BASE_URL}/core/users/${mid}/?unfollow=True&user_id=${uid}`
+      : `http://${BASE_URL}/core/users/${mid}/?user_id=${uid}`,
     headers: {
       Authorization: `JWT ${access}`,
     },

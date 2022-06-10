@@ -6,13 +6,20 @@ const client = axios.create({
   baseURL: `${BASE_URL}`,
 });
 
-client.interceptors.request.use(async config => {
-  const authToken = await authStorage.getTokens();
-  if (authToken) {
-    config.headers['Authorization'] = `JWT ${authToken.access}`;
-  }
-  return config;
-});
+// client.interceptors.request.use(async config => {
+//   const authToken = await authStorage.getTokens();
+//   if (authToken) {
+//     config.headers['Authorization'] = `JWT ${authToken.access}`;
+//   }
+//   return config;
+// });
+
+client.interceptors.response.use(
+  response => response,
+  error => {
+    throw error;
+  },
+);
 
 /*  
 TO-DO for Axios:

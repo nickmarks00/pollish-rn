@@ -52,13 +52,10 @@ const HomeScreen = ({route, navigation}) => {
     const polls = await GetPollFeed(page);
     const total = [...posts, ...polls.results];
     setPosts(total);
-    // console.log(posts.results)
     // if (posts.results){
-    //   console.log('p: ' + posts.results)
     //   setPosts(...posts, polls.results);
     // }
     // else{
-    //   console.log('load more')
     //   setPosts(polls.results)
     // }
   };

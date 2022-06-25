@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import {StyleSheet, Image, View, Dimensions} from 'react-native';
 
 import authApi from '../../api/authApi';
+import Loader from '../../components/Loader';
 import useAuth from '../../auth/useAuth';
+import useApi from '../../hooks/useApi';
 
 import {
   AppForm as Form,
@@ -15,59 +17,64 @@ import Wave from '../../components/Wave';
 const dimensions = Dimensions.get('screen');
 
 function LoginScreen({navigation, ...props}) {
-  // const {user, setUser} = useContext(AuthContext);
   const [loginFailed, setLoginFailed] = useState(false);
-
   const auth = useAuth();
+  const loginApi = useApi(authApi.login);
 
   const handleUserLogin = async ({username, password}) => {
-    const result = await authApi.login(username, password);
-    if (!result.status === 200) return setLoginFailed(true);
-    setLoginFailed(false);
-    auth.loginWithTokens(result.data);
+    try {
+      const result = await loginApi.request(username, password);
+      setLoginFailed(false);
+      auth.loginWithTokens(result.data);
+    } catch (e) {
+      setLoginFailed(true);
+    }
   };
 
   return (
-    <Screen style={styles.container}>
-      <Wave>
-        <View
-          style={{
-            alignItems: 'center',
-            height: dimensions.height,
-            padding: 15,
-          }}>
-          <Image
-            style={styles.logo}
-            source={require('../../assets/logos/jpgs/logo1.png')}
-          />
-          <Form
-            initialValues={{username: '', password: ''}}
-            onSubmit={handleUserLogin}
-            title="Login">
-            <ErrorMessage
-              error="Something went wrong logging in. Try again."
-              visible={loginFailed}
+    <>
+      <Loader visible={loginApi.loading} />
+      <Screen style={styles.container}>
+        <Wave>
+          <View
+            style={{
+              alignItems: 'center',
+              height: dimensions.height,
+              padding: 15,
+            }}>
+            <Image
+              style={styles.logo}
+              source={require('../../assets/logos/jpgs/logo1.png')}
             />
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="account"
-              name="username"
-              placeholder="Username"
-            />
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="password"
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-            />
-          </Form>
-        </View>
-      </Wave>
-    </Screen>
+            <Form
+              initialValues={{username: '', password: ''}}
+              onSubmit={handleUserLogin}
+              title="Login">
+              <ErrorMessage
+                error="Incorrect username or password. Please try again."
+                visible={loginFailed}
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="account"
+                name="username"
+                placeholder="Username"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="lock"
+                name="password"
+                placeholder="Password"
+                secureTextEntry
+                textContentType="password"
+              />
+            </Form>
+          </View>
+        </Wave>
+      </Screen>
+    </>
   );
 }
 

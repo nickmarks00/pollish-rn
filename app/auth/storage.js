@@ -21,9 +21,18 @@ const getTokens = async () => {
 
 const getAccess = async () => {
   const tokens = await getTokens();
+  if (!tokens) return null;
   const access = JSON.parse(tokens).access;
 
   return access;
+};
+
+const getRefresh = async () => {
+  const tokens = await getTokens();
+  if (!tokens) return null;
+  const refresh = JSON.parse(tokens).refresh;
+
+  return refresh;
 };
 
 const removeTokens = async () => {
@@ -34,4 +43,4 @@ const removeTokens = async () => {
   }
 };
 
-export default {getTokens, removeTokens, storeTokens, getAccess};
+export default {getTokens, removeTokens, storeTokens, getAccess, getRefresh};

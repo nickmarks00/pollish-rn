@@ -15,9 +15,12 @@ const login = async (username, password) => {
       username,
       password,
     });
-    return response;
+
+    if (response.status === 200) {
+      return response;
+    }
   } catch (e) {
-    console.error(e);
+    Promise.resolve('Incorrect username or password');
   }
 };
 
@@ -32,9 +35,8 @@ const getUser = async tokens => {
   if (response.status === 200) {
     // access token exists and still valid
     return response.data;
-  } else if (response.status === 401) {
-    console.log('Refresh access token');
   }
+  return Promise.reject(response.status);
 };
 
 export default {

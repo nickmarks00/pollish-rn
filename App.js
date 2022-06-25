@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
 
@@ -19,10 +19,6 @@ const MyTheme = {
 export default function App() {
   const [user, setUser] = useState(null);
   const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   const restoreUser = async () => {
     const tokens = await authStorage.getAccess();
@@ -45,7 +41,6 @@ export default function App() {
   return (
     <AuthContext.Provider value={{user, setUser}}>
       <NavigationContainer theme={MyTheme}>
-        {/* <AppNavigator /> */}
         {user ? <AppNavigator /> : <AuthNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>

@@ -1,50 +1,65 @@
-{/*
-    Component for rendering a single comment as it would appear in a comment section
-*/}
-
+/**
+    * * Component for rendering a single comment as it would appear in a comment section
+    * TODO: Remove colors prop
+*/
 
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import { useState, useEffect } from 'react';
-import { Comment_ColorBar, Comment_Text, Username_Text } from 'style/Comments_Style';
 import { GetUser } from '../../api/comments';
 import { useNavigation } from '@react-navigation/native';
+import Styles from './styles';
+import color from '../../config/colors';
 
 
-const Comment = (props) => {
+const Comment = ({profileScreen, colors, comment}) => {
 
     const navigation = useNavigation();
 
-    const [user, setUser] = useState("");
+    const [noProfilePic, setError] = React.useState(true);
+    const [user, setUser] = React.useState("");
 
-    useEffect(() => {
+    React.useEffect(() => {
         findUser()
     }, []);
 
     const findUser = async () => {
-        const user = await GetUser(props.user);
+        const user = await GetUser(comment.user_id);
         setUser(user);
     }
 
     const FindColor = () => {
 
-        if (props.colors.red == props.cid) return '#EF946C'
-        if (props.colors.yellow == props.cid) return '#5ED1D0'
-        if (props.colors.blue == props.cid) return '#DC6BAD'
-        if (props.colors.black == props.cid) return '#000'
+        if (colors.red == comment.choice_id) return color.optionColor1
+        if (colors.yellow == comment.choice_id) return color.optionColor2
+        if (colors.blue == comment.choice_id) return color.optionColor3
+        if (colors.black == comment.choice_id) return color.optionColor4
 
-        return '#CCC'
+        return color.gray
     }
 
     return(
-        <View style={{ flexDirection: 'row', marginVertical: 5}}>
-            <View style={[Comment_ColorBar, {backgroundColor: FindColor()}]}/>
-            <TouchableOpacity style ={{aspectRatio: 1}} onPress={() => navigation.push(props.profileScreen, {user: user})}>
-                <Image style={{aspectRatio: 1, borderRadius: 1000}} source={{uri: 'https://www.gannett-cdn.com/presto/2020/07/21/USAT/86dfdd2f-db14-4a9f-8137-24536a574d3c-AP_Election_2020_Kanye_West.jpg?crop=4159,2339,x0,y0&width=3200&height=1800&format=pjpg&auto=webp'}}/>
+        <View style={Styles.container}>
+            <View style={[Styles.colorbar, {backgroundColor: FindColor()}]}/>
+            <TouchableOpacity 
+                style ={{aspectRatio: 1}} 
+                onPress={() => navigation.push(profileScreen, {user: user})}
+            >
+                {(user && noProfilePic) ?
+                    <Image style={{aspectRatio: 1, borderRadius: 1000}} source={{uri: user.profile.avatar}} onError={() => setError(false)}/>
+                :
+                user ?
+                    <View style={Styles.noProfileContainer}>
+                        <Text style={Styles.noProfileInitial}>
+                            {user.username.slice(0,1).toUpperCase()}
+                        </Text>
+                    </View>
+                :
+                    <View/>
+                }
             </TouchableOpacity>
-            <View style={{paddingHorizontal: 8}}>
-                    <Text style={Username_Text}>{user.username}</Text>
-                <Text style={Comment_Text}>{props.comment_text}</Text>
+            <View style={{paddingHorizontal: '2%'}}>
+                <Text style={Styles.username}>{user.username}</Text>
+                <Text style={Styles.content}>{comment.comment_text}</Text>
             </View>
         </View>
     )

@@ -67,6 +67,21 @@ const CheckFollowing = async (mid, uid) => {
     return GetRequest(url);
 }
 
+const SearchPolls = async (query) => {
+    const url = `http://${base}/pollish/polls/?search=${query}`
+    return GetRequest(url);
+}
+
+const SearchCommunities = async (query) => {
+    const url = `http://${base}/pollish/communities/?search=${query}`
+    return GetRequest(url);
+}
+
+const SearchUsers = async (query) => {
+    const url = `http://${base}/core/users/?search=${query}`
+    return GetRequest(url);
+}
+
 const FollowUser = async (mid, uid, follow) => {
     const access = await authStorage.getAccess()
     var config = {
@@ -87,6 +102,7 @@ const FollowUser = async (mid, uid, follow) => {
 // * Query API with a get request to given **url** endpoint
 const GetRequest = async (url) => {
     const access = await authStorage.getAccess()
+    console.log(access)
     const res = await axios.get(url, {headers: {Authorization: `JWT ${access}`} })
     return res.data
 }
@@ -101,4 +117,4 @@ const GetPollVotes = async (pid) => {
 }
 
 export { GetUser, GetPoll, GetChoice, GetUserPolls, GetUserComms, GetCommPolls, GetFollowing, GetPollFeed, GetComments, GetFollowers, 
-            GetPollVotes, CheckFollowing, FollowUser };
+            GetPollVotes, CheckFollowing, FollowUser, SearchCommunities, SearchPolls, SearchUsers };

@@ -4,10 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import {BASE_URL} from '@env';
 
 
-import Singer from './../assets/Harlow.jpg';
-import ColoredButton from '../components/coloredButton';
-import PollCard from '../components/pollCard';
-import { GetFollowers, GetFollowing, GetUserPolls, CheckFollowing, FollowUser } from '../api/comments';
+import ColoredButton from '../../components/coloredButton';
+import PollCard from '../../components/pollCard';
+import { GetFollowers, GetFollowing, GetUserPolls, CheckFollowing, FollowUser } from '../../api/comments';
 
 const dimensions = Dimensions.get('screen');
 const url = BASE_URL;
@@ -102,7 +101,7 @@ const ProfilePage = ({route, navigation}) => {
 
             {route.params?.user &&
                 <View>
-                <ColoredButton fill={!isFollowing} color={'#00a2ed'} text={isFollowing ? 'Following' : 'Follow'} navToFollowers={followUser}/>
+                <ColoredButton fill={!isFollowing} color={'#00a2ed'} text={isFollowing ? 'Following' : 'Follow'} whenPressed={followUser}/>
                 <View style={{height: '2%'}}/>
                 </View>
             }
@@ -131,8 +130,8 @@ const ProfilePage = ({route, navigation}) => {
 
             <View style={{flexDirection: 'row', width: dimensions.width, justifyContent: 'space-evenly'}}>
                 
-                <ColoredButton color={'#51E0B8'} text={followers + ' Followers'} navToFollowers={navToFollowers}/>
-                <ColoredButton color={'#907AD6'} text={following + ' Following'} navToFollowers={navToFollowers}/>
+                <ColoredButton color={'#51E0B8'} text={followers + ' Followers'} whenPressed={navToFollowers}/>
+                <ColoredButton color={'#907AD6'} text={following + ' Following'} whenPressed={navToFollowers}/>
 
             </View>
 

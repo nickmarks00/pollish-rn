@@ -11,7 +11,8 @@ import {
   Text,
 } from 'react-native';
 import {BASE_IP} from '@env';
-import authStorage from '../auth/storage';
+import authStorage from '../../auth/storage';
+import { SearchCommunities, SearchPolls, SearchUsers } from '../../api/comments';
 
 const base = BASE_IP;
 const dimensions = Dimensions.get('screen');
@@ -43,28 +44,18 @@ const SearchScreen = ({navigation}) => {
   };
 
   const findContent = async text => {
-    const res = await authStorage.getTokens();
-    const access = JSON.parse(res).access;
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `JWT ${access}`,
-      },
-    };
-    var url = '';
-    if (toggle === 'poll')
-      url = `http://${BASE_IP}/pollish/polls/?search=${text}`;
-    else if (toggle === 'comm')
-      url = `http://${BASE_IP}/pollish/communities/?search=${text}`;
-    else if (toggle === 'user')
-      url = `http://${BASE_IP}/core/users/?search=${text}`;
-    const response = await fetch(url, options)
-      .then(response => response.json())
-      .then(response => {
-        if (toggle !== 'comm') setContent(response.results);
-        else setContent(response);
-      });
+    if (toggle === 'poll'){
+      const data = await SearchPolls(text);
+      setContent(data.results)
+    }
+    else if (toggle === 'comm'){
+      const data = await SearchCommunities(text);
+      setContent(data)
+    }
+    else if (toggle === 'user'){
+      const data = await SearchUsers(text);
+      setContent(data.results)
+    }
   };
 
   return (

@@ -1,14 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import { Inner_Option_Container, Option_Text, Post_Option} from 'style/Poll_Style';
-import {BASE_URL} from '@env';
-import { OptionColors, FadedOptionColors } from 'style/App_Styles';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Inner_Option_Container, Option_Text} from 'style/Poll_Style';
 import { RegisterVote } from '../../api/post';
 import { GetChoice } from '../../api/comments';
-
-const base = BASE_URL;
-
-const dimensions = Dimensions.get("screen");
+import Styles from './styles';
 
 const VoteButton = (props) => {
   
@@ -34,17 +29,7 @@ const VoteButton = (props) => {
 
   return (
       <TouchableOpacity
-          style={[Post_Option, { backgroundColor: '#FEFEFE', borderRadius: 10,
-          borderColor: '#907AD6',
-          borderWidth: props.chosen == 2 ? 2 : 0, 
-          shadowColor: "#000",
-          shadowOffset: {
-          width: 0,
-          height: 1
-          },
-          shadowOpacity: 0.2,
-          shadowRadius: 1,
-          elevation: 5} ]}
+          style={[Styles.Post_Option, {borderWidth: props.chosen == 2 ? 2 : 0}]}
           onPress={() => handleRegisterVote()}
       >
           <View style={[Inner_Option_Container, {padding: '1%'} ]}>

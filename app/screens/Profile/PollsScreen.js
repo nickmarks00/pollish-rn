@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { GetUserPolls } from '../api/comments';
-import PollCard from '../components/pollCard';
+import { GetUserPolls } from '../../api/comments';
+import PollCard from '../../components/pollCard';
 
 /**
  * * Shows list of polls a user owns (requires: id, pollScreen)

@@ -8,15 +8,10 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import {useFonts} from 'expo-font';
 
-import {BASE_URL} from '@env';
 import {Question_Container, Comments_DisplayArea} from 'style/Comments_Style';
 import FilterPopup from 'modals/FilterPopup';
 import {PollQuestion, FilterBar, Comment, CreateComment} from 'components';
-import authStorage from '../auth/storage';
-import axios from 'axios';
 import { GetComments } from '../api/comments';
-
-const base = BASE_URL;
 
 const CommentSection = ({route}) => {
   const post = route.params.post;
@@ -91,12 +86,10 @@ const CommentSection = ({route}) => {
               if (selected.cid == comment.choice_id || selected.cid == 0)
                 return (
                   <Comment
+                    key={index}
                     profileScreen={route.params.profileScreen}
                     colors={colors}
-                    key={index}
-                    comment_text={comment.comment_text}
-                    user={comment.user_id}
-                    cid={comment.choice_id}
+                    comment={comment}
                   />
                 );
             })}

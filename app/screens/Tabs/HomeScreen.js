@@ -7,17 +7,20 @@ import {
   Dimensions,
   RefreshControl,
   Image,
+  Modal,
 } from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import AppStack from '../navigation/AppStack';
-import authStorage from '../auth/storage';
+import AppStack from '../../navigation/AppStack';
+import authStorage from '../../auth/storage';
 
-import PollView from './PollView';
+import PollView from '../PollView';
 import {BASE_URL} from '@env';
-import {PrimaryPollish} from '../Styling/App_Styles';
-import { GetPollFeed } from '../api/comments';
-import TestingSpace2 from '../TestingSpace2';
-import PollDisplay from '../components/pollDisplay';
+import {PrimaryPollish} from '../../Styling/App_Styles';
+import { GetPollFeed } from '../../api/comments';
+import PollDisplay from '../../components/pollDisplay';
+import ColoredButton from '../../components/coloredButton';
+import colors from '../../config/colors';
+import CreatePoll from '../CreatePollScreens/CreatePoll';
 const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
@@ -28,6 +31,7 @@ const HomeScreen = ({route, navigation}) => {
   const [error, setError] = useState(null);
   const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState(false);
+  const [create, setCreate] = useState(false)
   const [number, setNum] = useState(1);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -63,6 +67,10 @@ const HomeScreen = ({route, navigation}) => {
     // }
   };
 
+  const openModel = () => {
+    setCreate(true);
+  }
+
   // const fetchDataFromApi2 = async props => {
   //   const url = props.url;
 
@@ -86,17 +94,19 @@ const HomeScreen = ({route, navigation}) => {
 
   return (
     <View>
+      <Modal visible={create} animationType={'slide'}>
+                <CreatePoll setPoll={setCreate}/>
+            </Modal>
       <View
         style={{
           height: 100,
           borderBottomWidth: 2,
           borderColor: '#EEE',
           alignItems: 'center',
+          justifyContent: 'center'
         }}>
-        <Image
-          style={{width: dimensions.width / 2.8, height: 80, marginTop: 30}}
-          source={require('../assets/logos/logo.png')}
-        />
+        <View style={{height: '30%'}}/>  
+        <ColoredButton whenPressed={openModel} color={colors.secondary} text={'Create Poll'}/>
       </View>
       <FlatList
         data={posts}

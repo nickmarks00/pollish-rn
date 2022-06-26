@@ -7,7 +7,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {PollImage, VoteButton, PollQuestion, MoreOptions} from 'components';
 import InfoCard from 'modals/InfoCard';
 
-import {GetPoll} from '../api/comments';
+import { getPoll } from '../network/lib/pollish';
 
 const dimensions = Dimensions.get('window');
 
@@ -33,12 +33,12 @@ const PollView = ({id, commentsScreen, profileScreen, communityScreen}) => {
   }, []);
 
   const loadPoll = async () => {
-    const data = await GetPoll(route.params?.id ? route.params.id : id);
+    const data = await getPoll(route.params?.id ? route.params.id : id);
     setPost(data);
   };
 
   const checkVote = async () => {
-    const pollInfo = await GetPoll(route.params?.id ? route.params.id : id);
+    const pollInfo = await getPoll(route.params?.id ? route.params.id : id);
 
     setUserVote(pollInfo.user_vote);
 

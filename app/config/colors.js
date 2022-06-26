@@ -9,4 +9,9 @@ export default {
   danger: '#ff5252',
   primaryDisabled: '#d7f2ea',
   buttonFocused: '#456aff',
+  optionColor1: '#EF946C',
+  optionColor2: '#5ED1D0',
+  optionColor3: '#DC6BAD',
+  optionColor4: '#000',
+  gray: '#ccc',
 };

@@ -5,10 +5,8 @@ import CommentSection from '../screens/CommentSection';
 import FollowersScreen from '../screens/Profile/FollowersScreen'
 import PollsScreen from '../screens/Profile/PollsScreen';
 import CommunityList from '../screens/Profile/UserCommunities';
-import PollView from '../screens/PollView';
 import CommunitiesScreen from '../screens/Community';
 import TestingSpace from '../screens/Tabs/ProfilePage';
-import PollDisplay from '../components/pollDisplay';
 import SinglePoll from '../screens/SinglePoll';
 
 const Stack = createNativeStackNavigator();

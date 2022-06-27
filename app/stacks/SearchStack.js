@@ -6,9 +6,8 @@ import CommunitiesScreen from '../screens/Community';
 import FollowersScreen from '../screens/Profile/FollowersScreen';
 import CommentSection from '../screens/CommentSection';
 import PollsScreen from '../screens/Profile/PollsScreen';
-import PollView from '../screens/PollView';
 import CommunityList from '../screens/Profile/UserCommunities';
-import TestingSpace2 from '../TestingSpace2';
+import SinglePoll from '../screens/SinglePoll';
 
 
 const Stack = createNativeStackNavigator();
@@ -32,7 +31,7 @@ const SearchStack = () => {
           <Stack.Screen name="S_Follow" initialParams={{profileScreen: 'S_Profile'}} options={{contentStyle: {backgroundColor: '#FFF'}}} component={FollowersScreen} />
           <Stack.Screen name="S_Comments" initialParams={{profileScreen: 'S_Profile'}} component={CommentSection}/>
           <Stack.Screen name="S_PollList" initialParams={{pollScreen: 'S_Poll'}} component={PollsScreen}/>
-          <Stack.Screen name="S_Poll" initialParams={{commentsScreen: 'S_Comments', profileScreen: 'S_Profile'}} component={PollView}/>
+          <Stack.Screen name="S_Poll" initialParams={{commentsScreen: 'S_Comments', profileScreen: 'S_Profile'}} component={SinglePoll}/>
           <Stack.Screen name="S_CommunityList" initialParams={{communityScreen: 'S_Community'}} component={CommunityList} />
           
         </Stack.Navigator>

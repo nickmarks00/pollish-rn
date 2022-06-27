@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { GetUserPolls } from '../../api/comments';
+import { View, TouchableOpacity } from 'react-native';
+import { getUserPolls } from 'endpoints/core';
 import PollCard from '../../components/pollCard';
 
 /**
@@ -18,8 +18,8 @@ const PollsScreen = ({route, navigation}) => {
       }, []);
 
     const loadPolls = async () => {
-        const userPolls = await GetUserPolls(route.params.id);
-        setPolls(userPolls.results);
+        const userPolls = await getUserPolls(route.params.id);
+        setPolls(userPolls.data.results);
     }
 
     return (

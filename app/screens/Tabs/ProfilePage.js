@@ -6,7 +6,7 @@ import {BASE_URL} from '@env';
 
 import ColoredButton from '../../components/coloredButton';
 import PollCard from '../../components/pollCard';
-import { GetFollowers, GetFollowing, GetUserPolls, CheckFollowing, FollowUser } from '../../api/comments';
+import { getFollowers, getFollowing, getUserPolls, checkFollowing, followUser } from 'endpoints/core';
 
 const dimensions = Dimensions.get('screen');
 const url = BASE_URL;
@@ -35,29 +35,29 @@ const ProfilePage = ({route, navigation}) => {
         findFollowers();
         findFollowing();
         findPolls();
-        checkFollowing();
+        checkFollow();
     }, []);
 
-    const checkFollowing = async () => {
+    const checkFollow = async () => {
         if (route.params?.user){
-            const data = await CheckFollowing(user.id, route.params.user.id);
-            setIsFollowing(data);
+            const data = await checkFollowing(user.id, route.params.user.id);
+            setIsFollowing(data.data);
         }
     }
 
     const findFollowers = async () => {
-        const data = await GetFollowers(route.params?.user ? route.params.user.id : user.id)
-        setFollowers(data.length)
+        const data = await getFollowers(route.params?.user ? route.params.user.id : user.id)
+        setFollowers(data.data.length)
     }
 
     const findFollowing = async () => {
-        const data = await GetFollowing(route.params?.user ? route.params.user.id : user.id)
-        setFollowing(data.length)
+        const data = await getFollowing(route.params?.user ? route.params.user.id : user.id)
+        setFollowing(data.data.length)
     }
 
     const findPolls = async () => {
-        const data = await GetUserPolls(route.params?.user ? route.params.user.id : user.id)
-        setPolls(data.results);
+        const data = await getUserPolls(route.params?.user ? route.params.user.id : user.id)
+        setPolls(data.data.results);
     }
 
     const navToFollowers = () => {
@@ -67,11 +67,11 @@ const ProfilePage = ({route, navigation}) => {
           })
     }
 
-    const followUser = async () => {
+    const follow = async () => {
         if (route.params?.user){
-            const follow = await CheckFollowing(user.id, route.params.user.id)
-            const data = await FollowUser(user.id, route.params.user.id, follow);
-            setIsFollowing(!follow);
+            const follow = await checkFollowing(user.id, route.params.user.id)
+            const data = await followUser(user.id, route.params.user.id, follow);
+            setIsFollowing(!follow.data);
         }
     }
 
@@ -101,7 +101,7 @@ const ProfilePage = ({route, navigation}) => {
 
             {route.params?.user &&
                 <View>
-                <ColoredButton fill={!isFollowing} color={'#00a2ed'} text={isFollowing ? 'Following' : 'Follow'} whenPressed={followUser}/>
+                <ColoredButton fill={!isFollowing} color={'#00a2ed'} text={isFollowing ? 'Following' : 'Follow'} whenPressed={follow}/>
                 <View style={{height: '2%'}}/>
                 </View>
             }

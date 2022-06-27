@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
-import { GetUserComms } from '../../api/comments';
+import { getUserComms } from 'endpoints/core';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 
@@ -16,8 +16,8 @@ const CommunityTab = () => {
     }, []);
 
     const findCommunities = async () => {
-        const data = await GetUserComms(user.id)
-        setCommunities(data);
+        const data = await getUserComms(user.id)
+        setCommunities(data.data);
     }
     
     const Community = () => {

@@ -11,7 +11,7 @@ import {useFonts} from 'expo-font';
 import {Question_Container, Comments_DisplayArea} from 'style/Comments_Style';
 import FilterPopup from 'modals/FilterPopup';
 import {PollQuestion, FilterBar, Comment, CreateComment} from 'components';
-import { GetComments } from '../api/comments';
+import { getComments } from 'endpoints/core';
 
 const CommentSection = ({route}) => {
   const post = route.params.post;
@@ -39,8 +39,8 @@ const CommentSection = ({route}) => {
   const fetchDataFromApi = async () => {
     setLoading(true);
 
-    const data = await GetComments(route.params.post.user_id, route.params.post.id);
-    setComments(data);
+    const data = await getComments(route.params.post.user_id, route.params.post.id);
+    setComments(data.data);
 
   };
 

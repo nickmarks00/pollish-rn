@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Inner_Option_Container, Option_Text} from 'style/Poll_Style';
 import { RegisterVote } from '../../api/post';
-import { GetChoice } from '../../api/comments';
 import Styles from './styles';
+import { getChoice } from 'endpoints/pollish';
 
 const VoteButton = (props) => {
   
@@ -14,8 +14,8 @@ const VoteButton = (props) => {
   }, []);
 
   const findVotes = async () => {
-    const choice = await GetChoice(props.post.id, props.choice.id)
-    setVotes(choice.num_votes)
+    const choice = await getChoice(props.post.id, props.choice.id)
+    setVotes(choice.data.num_votes)
   }
 
   // Add a vote to given poll in the backend

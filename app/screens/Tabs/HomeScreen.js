@@ -10,13 +10,10 @@ import {
   Modal,
 } from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import AppStack from '../../navigation/AppStack';
-import authStorage from '../../auth/storage';
 
-import PollView from '../PollView';
 import {BASE_URL} from '@env';
 import {PrimaryPollish} from '../../Styling/App_Styles';
-import { GetPollFeed } from '../../api/comments';
+import { getPollFeed } from 'endpoints/pollish';
 import PollDisplay from '../../components/pollDisplay';
 import ColoredButton from '../../components/coloredButton';
 import colors from '../../config/colors';
@@ -48,49 +45,19 @@ const HomeScreen = ({route, navigation}) => {
   }, []);
 
   const fetchDataFromApi = async (page) => {
-    const polls = await GetPollFeed(page);
-    setPosts(polls.results)
+    const polls = await getPollFeed(page);
+    setPosts(polls.data.results)
   };
 
   const loadMoreData = async (page) => {
-    const polls = await GetPollFeed(page);
-    const total = [...posts, ...polls.results]
+    const polls = await getPollFeed(page);
+    const total = [...posts, ...polls.data.results]
     setPosts(total)
-    // console.log(posts.results)
-    // if (posts.results){
-    //   console.log('p: ' + posts.results)
-    //   setPosts(...posts, polls.results);
-    // }
-    // else{
-    //   console.log('load more')
-    //   setPosts(polls.results)
-    // }
   };
 
   const openModel = () => {
     setCreate(true);
   }
-
-  // const fetchDataFromApi2 = async props => {
-  //   const url = props.url;
-
-  //   setLoading(true);
-
-  //   const response = await fetch(url, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-  //   if (response.status >= 200 && response.status <= 299) {
-  //     const jsonResponse = await response.json();
-  //     setPosts(jsonResponse['results']);
-  //     setLoading(false);
-  //   } else {
-  //     console.error(response.status, response.statusText);
-  //     setError(true);
-  //   }
-  // };
 
   return (
     <View>

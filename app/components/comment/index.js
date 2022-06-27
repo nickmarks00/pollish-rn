@@ -5,10 +5,10 @@
 
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import { GetUser } from '../../api/comments';
 import { useNavigation } from '@react-navigation/native';
 import Styles from './styles';
 import color from '../../config/colors';
+import { getUser } from 'endpoints/core';
 
 
 const Comment = ({profileScreen, colors, comment}) => {
@@ -23,8 +23,9 @@ const Comment = ({profileScreen, colors, comment}) => {
     }, []);
 
     const findUser = async () => {
-        const user = await GetUser(comment.user_id);
-        setUser(user);
+        getUser(comment.user_id).then(function(response){
+            setUser(response.data);
+        })
     }
 
     const FindColor = () => {

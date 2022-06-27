@@ -4,17 +4,13 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
-  Button,
   ScrollView,
-  Image,
   TouchableOpacity,
   Text,
 } from 'react-native';
-import {BASE_IP} from '@env';
-import authStorage from '../../auth/storage';
-import { SearchCommunities, SearchPolls, SearchUsers } from '../../api/comments';
+import { searchPolls, searchCommunities } from 'endpoints/pollish';
+import { searchUsers } from 'endpoints/core';
 
-const base = BASE_IP;
 const dimensions = Dimensions.get('screen');
 
 const SearchScreen = ({navigation}) => {
@@ -45,16 +41,16 @@ const SearchScreen = ({navigation}) => {
 
   const findContent = async text => {
     if (toggle === 'poll'){
-      const data = await SearchPolls(text);
-      setContent(data.results)
+      const data = await searchPolls(text);
+      setContent(data.data.results)
     }
     else if (toggle === 'comm'){
-      const data = await SearchCommunities(text);
-      setContent(data)
+      const data = await searchCommunities(text);
+      setContent(data.data)
     }
     else if (toggle === 'user'){
-      const data = await SearchUsers(text);
-      setContent(data.results)
+      const data = await searchUsers(text);
+      setContent(data.data.results)
     }
   };
 

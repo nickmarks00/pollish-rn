@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { GetUserComms } from '../../api/comments';
+import { getUserComms } from 'endpoints/core';
 
 /**
  * * Show list of communities (requires: id, CommunityScreen)
@@ -17,8 +17,8 @@ const UserCommunities = ({route, navigation}) => {
       }, []);
 
     const loadCommunities = async () => {
-        const userComms = await GetUserComms(route.params.id);
-        setCommunities(userComms);
+        const userComms = await getUserComms(route.params.id);
+        setCommunities(userComms.data);
     }
 
     return(

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {GetCommPolls} from '../api/comments';
+import { getCommPolls } from 'endpoints/pollish';
 import PollCard from '../components/pollCard';
 
 /**
@@ -19,9 +19,9 @@ const Community = ({route, navigation}) => {
   }, []);
 
   const loadCommPolls = async () => {
-    const commPolls = await GetCommPolls(route.params.id);
-    setPolls(commPolls.polls);
-    setCommName(commPolls.name);
+    const commPolls = await getCommPolls(route.params.id);
+    setPolls(commPolls.data.polls);
+    setCommName(commPolls.data.name);
   };
 
   return (

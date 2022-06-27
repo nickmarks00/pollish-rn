@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, Image, Text, Dimensions } from 'react-native';
-import Singer from './../../assets/Harlow.jpg';
-import { GetPollVotes } from '../../api/comments';
 import {BASE_URL} from '@env';
-import { getPoll } from '../../network/lib/pollish';
+import { getPoll, getPollVotes } from 'endpoints/pollish';
 
 
 const dimensions = Dimensions.get('screen');
@@ -23,9 +21,9 @@ const PollCard = ({color, qText, id}) => {
     const loadPoll = async () => {
         if (id){
             const data = await getPoll(id);
-            setPoll(data);
+            setPoll(data.data);
 
-            const data2= await GetPollVotes(id);
+            const data2= await getPollVotes(id);
             setVotes(data2);
         }
     };

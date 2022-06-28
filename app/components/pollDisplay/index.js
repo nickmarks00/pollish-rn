@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, Dimensions, StyleSheet } from 'react-native';
+import { Text, View, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
 import Lebron from '../../assets/lebron.jpg';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { VoteButton, PollProfile, CommentsButton } from 'components';
 
-import { GetPoll, GetUser } from '../../api/comments';
 import {BASE_URL} from '@env';
-
+import { getPoll } from '../../network/lib/pollish';
+import { getUser } from '../../network/lib/core';
 const url = BASE_URL;
 
 
@@ -31,22 +31,23 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
         loadUser();
     }, [post]);
 
-
     const loadPoll = async () => {
-        const data = await GetPoll(route.params?.id ? route.params.id : id);
-        setPost(data);
+        getPoll(route.params?.id ? route.params.id : id).then(function(response){
+            setPost(response.data);
+        })
     };
 
     const loadUser = async () => {
         if (post){
-            const user = await GetUser(post.user_id);
-            setUser(user);
+            getUser(post.user_id).then(function(response){
+                setUser(response.data);
+            })
         }
     }
 
     const checkVote = async () => {
-        const pollInfo = await GetPoll(route.params?.id ? route.params.id : id);
-
+        const response = await getPoll(route.params?.id ? route.params.id : id);
+        const pollInfo = response.data;
         setUserVote(pollInfo.user_vote);
 
         var count = 0;
@@ -64,15 +65,21 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
         navigation.push(commentsScreen, {post: post});
     };
 
-    if (post && user)
+    if (post && user){
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                <View style={[Styles.cardContainer, { width: '90%', borderRadius: '15%', padding: '5%' }]}>
+                <View style={[Styles.cardContainer, { width: '100%', padding: '5%' }]}>
+                    {post?.community ?
+                        <TouchableOpacity onPress={() => navigation.push('H_Community', {id: post.community.id})} ><Text>{post.community.name}</Text></TouchableOpacity>
+                        :
+                        <Text>None</Text>
+
+                    }
                     <Text style={{fontSize: 20}}>{post.question_text}</Text>
 
                     {/* Profile Heading and comments navigation button */}
                     <View style={{flexDirection: 'row', marginTop: Dimensions.get('window').height/50, alignItems: 'center'}}>
-                        <PollProfile user={user} navigateProfile={navigateProfile} pid={post.id}/>
+                        <PollProfile user={user} navigateProfile={navigateProfile} pid={post.id} voteCount={voteCount}/>
                         <CommentsButton navigateComments={navigateComments}/>
                     </View>
 
@@ -101,6 +108,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
                 </View>
             </View>
         )
+                }
     else return <View />;
 }
 

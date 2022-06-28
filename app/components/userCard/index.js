@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
 import ColoredButton from '../coloredButton';
-import { GetFollowers } from '../../api/comments';
+import { getFollowers } from 'endpoints/core';
 
 const UserCard = ({user, navToProfile}) => {
 
@@ -12,8 +12,8 @@ const UserCard = ({user, navToProfile}) => {
     }, []);
     
     const loadFollowerCount = async () => {
-        const data = await GetFollowers(user.id);
-        setNumFollowers(data.length);
+        const data = await getFollowers(user.id);
+        setNumFollowers(data.data.length);
     }
 
 

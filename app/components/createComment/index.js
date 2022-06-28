@@ -5,10 +5,8 @@
 import React from 'react'
 import {View, TextInput, TouchableOpacity, Text, Keyboard} from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { Comment_Input } from 'style/Comments_Style';
 import {CommentAPI} from '../../api/post';
-import { Comment_TypeBar } from 'style/Comments_Style';
-
+import Styles from './styles';
 const CreateComment = ({reload}) => {
 
     const route = useRoute();
@@ -24,9 +22,9 @@ const CreateComment = ({reload}) => {
     };
 
     return (
-        <View style ={Comment_TypeBar}>
+        <View style ={Styles.container}>
             <TextInput
-            style={Comment_Input}
+            style={Styles.input}
             onChangeText={onChangeText}
             value={text}
             placeholder="What do you want to know?"

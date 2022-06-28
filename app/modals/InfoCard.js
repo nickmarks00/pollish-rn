@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, Modal, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { Modal_Container, Modal_Position } from 'style/Comments_Style';
 import useAuth from '../auth/useAuth';
-import { GetUser } from '../api/comments';
+import { getUser } from 'endpoints/core';
 
 import { PrimaryPollish } from 'style/App_Styles';
 
@@ -19,8 +19,8 @@ const InfoCard = ({setOpen, open, id, navigateProfile, post}) => {
       }, []);
 
     const findUser = async () => {
-        const user = await GetUser(id);
-        setUser(user);
+        const user = await getUser(id);
+        setUser(user.data);
     }
 
     return(

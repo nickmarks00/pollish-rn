@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { GetUserComms } from '../api/comments';
+import { getUserComms } from 'endpoints/core';
 
 /**
  * * Show list of communities (requires: id, CommunityScreen)
@@ -8,7 +8,7 @@ import { GetUserComms } from '../api/comments';
  * @param CommunityScreen - The name of community stack screen to navigate to
 */
 
-const CommunityList = ({route, navigation}) => {
+const UserCommunities = ({route, navigation}) => {
 
     const [communities, setCommunities] = React.useState()
 
@@ -17,8 +17,8 @@ const CommunityList = ({route, navigation}) => {
       }, []);
 
     const loadCommunities = async () => {
-        const userComms = await GetUserComms(route.params.id);
-        setCommunities(userComms);
+        const userComms = await getUserComms(route.params.id);
+        setCommunities(userComms.data);
     }
 
     return(
@@ -26,7 +26,7 @@ const CommunityList = ({route, navigation}) => {
             {communities?.map((comm, idx) => {
                 return(
                     <TouchableOpacity key={idx} onPress={() => navigation.push(route.params.communityScreen, {id: comm.id})}>
-                    <Text>{comm.name}</Text>
+                        <Text>{comm.name}</Text>
                     </TouchableOpacity>
                 )
             })}
@@ -34,4 +34,4 @@ const CommunityList = ({route, navigation}) => {
     )
 }
 
-export default CommunityList;
+export default UserCommunities;

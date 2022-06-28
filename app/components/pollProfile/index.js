@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image, StyleSheet, Dimensions } from 'react-native';
-import { GetPollVotes } from '../../api/comments';
+import { getPollVotes } from 'endpoints/pollish';
 
 const PollProfile = ({ user, navigateProfile, pid }) => {
 
@@ -12,7 +12,7 @@ const PollProfile = ({ user, navigateProfile, pid }) => {
     }, []);
 
     const loadVotes = async () => {
-        const data = await GetPollVotes(pid);
+        const data = await getPollVotes(pid);
         setVotes(data);
     }
 

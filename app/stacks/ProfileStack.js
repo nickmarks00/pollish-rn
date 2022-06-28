@@ -1,12 +1,12 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import FollowersScreen from '../screens/FollowersScreen';
-import PollsScreen from '../screens/PollsScreen';
-import PollView from '../screens/PollView';
+import FollowersScreen from '../screens/Profile/FollowersScreen';
+import PollsScreen from '../screens/Profile/PollsScreen';
 import CommentSection from '../screens/CommentSection';
-import CommunityList from '../screens/CommunityList';
-import CommunitiesScreen from '../screens/CommunitiesScreen';
-import TestingSpace from '../screens/ProfilePage';
+import CommunityList from '../screens/Profile/UserCommunities';
+import CommunitiesScreen from '../screens/Community';
+import TestingSpace from '../screens/Tabs/ProfilePage';
+import SinglePoll from '../screens/SinglePoll';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,7 +56,7 @@ const ProfileStack = () => {
           commentsScreen: 'P_Comments',
           profileScreen: 'P_Profile',
         }}
-        component={PollView}
+        component={SinglePoll}
       />
       <Stack.Screen
         name="P_Comments"

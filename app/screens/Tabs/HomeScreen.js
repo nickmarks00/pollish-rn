@@ -7,17 +7,24 @@ import {
   Dimensions,
   RefreshControl,
   Image,
+  Modal,
 } from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import AppStack from '../navigation/AppStack';
-import authStorage from '../auth/storage';
 
-import PollView from './PollView';
 import {BASE_URL} from '@env';
+<<<<<<< HEAD:app/screens/HomeScreen.js
 import {PrimaryPollish} from '../Styling/App_Styles';
 import {GetPollFeed} from '../api/comments';
 import TestingSpace2 from '../TestingSpace2';
 import PollDisplay from '../components/pollDisplay';
+=======
+import {PrimaryPollish} from '../../Styling/App_Styles';
+import { getPollFeed } from 'endpoints/pollish';
+import PollDisplay from '../../components/pollDisplay';
+import ColoredButton from '../../components/coloredButton';
+import colors from '../../config/colors';
+import CreatePoll from '../CreatePollScreens/CreatePoll';
+>>>>>>> 433df003617005e812ffc9693f52114420068d58:app/screens/Tabs/HomeScreen.js
 const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
@@ -28,6 +35,7 @@ const HomeScreen = ({route, navigation}) => {
   const [error, setError] = useState(null);
   const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState(false);
+  const [create, setCreate] = useState(false)
   const [number, setNum] = useState(1);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -43,6 +51,7 @@ const HomeScreen = ({route, navigation}) => {
     fetchDataFromApi(1);
   }, []);
 
+<<<<<<< HEAD:app/screens/HomeScreen.js
   const fetchDataFromApi = async page => {
     const polls = await GetPollFeed(page);
     setPosts(polls.results);
@@ -58,42 +67,38 @@ const HomeScreen = ({route, navigation}) => {
     // else{
     //   setPosts(polls.results)
     // }
+=======
+  const fetchDataFromApi = async (page) => {
+    const polls = await getPollFeed(page);
+    setPosts(polls.data.results)
   };
 
-  // const fetchDataFromApi2 = async props => {
-  //   const url = props.url;
+  const loadMoreData = async (page) => {
+    const polls = await getPollFeed(page);
+    const total = [...posts, ...polls.data.results]
+    setPosts(total)
+>>>>>>> 433df003617005e812ffc9693f52114420068d58:app/screens/Tabs/HomeScreen.js
+  };
 
-  //   setLoading(true);
-
-  //   const response = await fetch(url, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-  //   if (response.status >= 200 && response.status <= 299) {
-  //     const jsonResponse = await response.json();
-  //     setPosts(jsonResponse['results']);
-  //     setLoading(false);
-  //   } else {
-  //     console.error(response.status, response.statusText);
-  //     setError(true);
-  //   }
-  // };
+  const openModel = () => {
+    setCreate(true);
+  }
 
   return (
     <View>
+      <Modal visible={create} animationType={'slide'}>
+                <CreatePoll setPoll={setCreate}/>
+            </Modal>
       <View
         style={{
           height: 100,
           borderBottomWidth: 2,
           borderColor: '#EEE',
           alignItems: 'center',
+          justifyContent: 'center'
         }}>
-        <Image
-          style={{width: dimensions.width / 2.8, height: 80, marginTop: 30}}
-          source={require('../assets/logos/logo.png')}
-        />
+        <View style={{height: '30%'}}/>  
+        <ColoredButton whenPressed={openModel} color={colors.secondary} text={'Create Poll'}/>
       </View>
       <FlatList
         data={posts}

@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
+import {useFonts} from 'expo-font';
 import { View, Text, Dimensions, TouchableOpacity, StatusBar, Button } from "react-native";
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
@@ -67,8 +68,17 @@ const CreatePoll = ({setPoll}) => {
         setMedia({m1: null, m2: null, m3: null, m4: null});
         setCanPost(false);
 
-        navigation.navigate('Home')
+        setPoll(false)
 
+    }
+
+    // Load Fonts
+    let [fontsLoaded] = useFonts({
+        SFRound: require('./../../assets/fonts/SFRoundBold.ttf'),
+        SFReg: require('./../../assets/fonts/SFRound.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <Text>Loading Fonts</Text>;
     }
 
     return (

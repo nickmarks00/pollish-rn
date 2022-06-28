@@ -1,9 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
+import {View, Text} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {GetFollowers, GetFollowing, GetUser} from '../api/comments';
-import ColoredButton from '../components/coloredButton';
-import UserCard from '../components/userCard';
+import { getFollowers, getFollowing } from 'endpoints/core';
+import UserCard from '../../components/userCard';
 /*
     * This component should be a tabbed view displaying followers in one tab and following in the other
     * Users should be able to click on a profile and view it in a new screen
@@ -41,13 +40,13 @@ const FollowersScreen = ({route, navigation}) => {
   }, []);
 
   const LoadUsers = async () => {
-    const following = await GetFollowing(route.params.id);
-    setFollowList(following);
+    const following = await getFollowing(route.params.id);
+    setFollowList(following.data);
   };
 
   const LoadFollowers = async () => {
-    const data = await GetFollowers(route.params.id);
-    setFollowerList(data);
+    const data = await getFollowers(route.params.id);
+    setFollowerList(data.data);
   };
 
   const Following = ({route, navigation}) => {

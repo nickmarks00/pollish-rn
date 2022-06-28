@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/Tabs/HomeScreen';
 import CommentSection from '../screens/CommentSection';
-import FollowersScreen from '../screens/FollowersScreen'
-import PollsScreen from '../screens/PollsScreen';
-import CommunityList from '../screens/CommunityList';
-import PollView from '../screens/PollView';
-import CommunitiesScreen from '../screens/CommunitiesScreen';
-import TestingSpace from '../screens/ProfilePage';
-import PollDisplay from '../components/pollDisplay';
+import FollowersScreen from '../screens/Profile/FollowersScreen'
+import PollsScreen from '../screens/Profile/PollsScreen';
+import CommunityList from '../screens/Profile/UserCommunities';
+import CommunitiesScreen from '../screens/Community';
+import TestingSpace from '../screens/Tabs/ProfilePage';
 import SinglePoll from '../screens/SinglePoll';
 
 const Stack = createNativeStackNavigator();

@@ -4,14 +4,17 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
-  Button,
   ScrollView,
-  Image,
   TouchableOpacity,
   Text,
 } from 'react-native';
+<<<<<<< HEAD:app/screens/SearchScreen.js
 import {BASE_URL} from '@env';
 import authStorage from '../auth/storage';
+=======
+import { searchPolls, searchCommunities } from 'endpoints/pollish';
+import { searchUsers } from 'endpoints/core';
+>>>>>>> 433df003617005e812ffc9693f52114420068d58:app/screens/Tabs/SearchScreen.js
 
 const dimensions = Dimensions.get('screen');
 
@@ -42,6 +45,7 @@ const SearchScreen = ({navigation}) => {
   };
 
   const findContent = async text => {
+<<<<<<< HEAD:app/screens/SearchScreen.js
     const res = await authStorage.getTokens();
     const access = JSON.parse(res).access;
     const options = {
@@ -62,6 +66,20 @@ const SearchScreen = ({navigation}) => {
         if (toggle !== 'comm') setContent(response.results);
         else setContent(response);
       });
+=======
+    if (toggle === 'poll'){
+      const data = await searchPolls(text);
+      setContent(data.data.results)
+    }
+    else if (toggle === 'comm'){
+      const data = await searchCommunities(text);
+      setContent(data.data)
+    }
+    else if (toggle === 'user'){
+      const data = await searchUsers(text);
+      setContent(data.data.results)
+    }
+>>>>>>> 433df003617005e812ffc9693f52114420068d58:app/screens/Tabs/SearchScreen.js
   };
 
   return (

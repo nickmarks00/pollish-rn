@@ -1,12 +1,15 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {MaterialIcons, Ionicons} from '@expo/vector-icons';
 
 import HomeStack from '../stacks/HomeStack';
 import SearchStack from '../stacks/SearchStack';
 import CreationHub from '../screens/CreatePollScreens/CreationHub';
 import ProfileStack from '../stacks/ProfileStack';
-import TestingSpace from '../screens/ProfilePage';
+import TestingSpace from '../screens/Tabs/ProfilePage';
+import CommunityTab from '../screens/Tabs/CommunityTab';
+import colors from '../config/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,35 +20,34 @@ const AppNavigator = props => {
       borderTopColor: '#ccc'
 }}}>
       <Tab.Screen name="Feed" component={HomeStack} options={{
-                    tabBarActiveBackgroundColor: 'blue',
-                    tabBarIcon: () => (<MaterialCommunityIcons
-                      name={"home-variant-outline"}
+                    tabBarIcon: ({ focused }) => (<MaterialCommunityIcons
+                      name={"poll"}
                       size={30}
-                      color={'black'}
+                      color={focused ? colors.secondary : 'black'}
                       style={{borderTopWidth: 1, borderTopColor: 'red'}}
                     />)
                 }}/>
-      <Tab.Screen name="Create" component={CreationHub} options={{
-                    tabBarIcon: () => (<MaterialCommunityIcons
-                      name={"plus-circle-outline"}
+      <Tab.Screen name="Community" component={CommunityTab} options={{
+                    tabBarIcon: ({ focused }) => (<MaterialCommunityIcons
+                      name={focused ? "account-group" : "account-group-outline"}
                       size={30}
-                      color={'black'}
+                      color={focused ? colors.secondary : 'black'}
                       style={{}}
                     />)
                 }}/>
       <Tab.Screen name="Search" component={SearchStack} options={{
-                    tabBarIcon: () => (<MaterialCommunityIcons
-                      name={"magnify"}
+                    tabBarIcon: ({focused}) => (<Ionicons
+                      name={focused ? "search" : "search-outline"}
                       size={30}
-                      color={'black'}
+                      color={focused ? colors.secondary : 'black'}
                       style={{}}
                     />)
                 }}/>
       <Tab.Screen name="Profile" component={ProfileStack} options={{
-                    tabBarIcon: () => (<MaterialCommunityIcons
-                      name={"account"}
+                    tabBarIcon: ({focused}) => (<MaterialCommunityIcons
+                      name={focused ? "account" : "account-outline"}
                       size={30}
-                      color={'black'}
+                      color={focused ? colors.secondary : 'black'}
                       style={{}}
                     />)
                 }}/>

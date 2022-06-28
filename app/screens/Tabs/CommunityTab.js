@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { getUserComms } from 'endpoints/core';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 
 const Tab = createMaterialTopTabNavigator();
 
-const CommunityTab = () => {
+const CommunityTab = ({route, navigation}) => {
 
-    const {user, logOut} = useAuth();
+const {user, logOut} = useAuth();
     const [communities, setCommunities] = React.useState([]);
 
     React.useEffect(() => {
@@ -25,7 +25,9 @@ const CommunityTab = () => {
             communities?.map((comm, idx) => {
                 console.log(comm.length)
                 return (
-                    <Text key={idx}>{comm.name}</Text>
+                    <TouchableOpacity key={idx} onPress={() => navigation.push('C_Community', {id: comm.id})}>
+                        <Text>{comm.name}</Text>
+                    </TouchableOpacity>
                 )
             })
         )

@@ -4,10 +4,10 @@ import Lebron from '../../assets/lebron.jpg';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { VoteButton, PollProfile, CommentsButton } from 'components';
 
-import {BASE_URL} from '@env';
+import {REACT_APP_BASE_URL} from '@env';
 import { getPoll } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
-const url = BASE_URL;
+const url = REACT_APP_BASE_URL;
 
 
 const dimensions = Dimensions.get('window');
@@ -47,11 +47,10 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
     const checkVote = async () => {
         const response = await getPoll(route.params?.id ? route.params.id : id);
-        const pollInfo = response.data;
-        setUserVote(pollInfo.user_vote);
+        setUserVote(response.data.user_vote);
 
         var count = 0;
-        pollInfo.choices.map((choice, idx) => {
+        response.data.choices.map((choice, idx) => {
             count += choice.num_votes;
         });
         setVoteCount(count);

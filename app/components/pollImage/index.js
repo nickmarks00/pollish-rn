@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ScrollView, Image, Dimensions} from 'react-native';
 import {Post_Image, Media_Container, Media_DropShadow} from 'style/Poll_Style';
-import {BASE_URL} from '@env';
+import {REACT_APP_BASE_URL} from '@env';
 
 /*
     * This Component renders the image seen at the head of a poll view
@@ -30,7 +30,7 @@ const PollImage = ({images}) => {
               <View key={index} style={Media_DropShadow}>
                 <Image
                   resizeMode="cover"
-                  source={{uri: `${BASE_URL}${choice.image}`}}
+                  source={{uri: `${REACT_APP_BASE_URL}${choice.image}`}}
                   style={[
                     Post_Image,
                     {borderRadius: 30, borderWidth: 3, borderColor: '#ACACAC'},

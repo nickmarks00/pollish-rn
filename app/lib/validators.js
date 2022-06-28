@@ -1,4 +1,4 @@
-import {BASE_URL} from '@env';
+import {REACT_APP_BASE_URL} from '@env';
 import client from '../api/client';
 
 export const validateName = name => {

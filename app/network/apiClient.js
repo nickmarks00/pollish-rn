@@ -1,9 +1,9 @@
-import {REACT_APP_BASE_URL} from '@env';
+import {REACT_APP_REACT_APP_BASE_URL} from '@env';
 import axios from 'axios';
 import authStorage from '../auth/storage';
 
 const axiosClient = axios.create({
-  baseURL: `${REACT_APP_BASE_URL}`,
+  baseURL: `${REACT_APP_REACT_APP_BASE_URL}`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

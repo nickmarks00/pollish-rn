@@ -11,14 +11,14 @@ import {
 } from 'react-native';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
-import {REACT_APP_BASE_URL} from '@env';
+import {REACT_APP_REACT_APP_BASE_URL} from '@env';
 import {PrimaryPollish} from '../../Styling/App_Styles';
 import {getPollFeed} from 'endpoints/pollish';
 import PollDisplay from '../../components/pollDisplay';
 import ColoredButton from '../../components/coloredButton';
 import colors from '../../config/colors';
 import CreatePoll from '../CreatePollScreens/CreatePoll';
-const base = REACT_APP_BASE_URL;
+const base = REACT_APP_REACT_APP_BASE_URL;
 
 const dimensions = Dimensions.get('window');
 

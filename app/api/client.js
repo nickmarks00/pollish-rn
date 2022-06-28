@@ -1,9 +1,9 @@
 import axios from 'axios';
-import {BASE_URL} from '@env';
+import {REACT_APP_BASE_URL} from '@env';
 import authStorage from '../auth/storage';
 
 const client = axios.create({
-  baseURL: `${BASE_URL}`,
+  baseURL: `${REACT_APP_BASE_URL}`,
 });
 
 client.interceptors.request.use(async config => {
@@ -21,6 +21,7 @@ client.interceptors.response.use(
   async error => {
     const config = error.config;
 
+    console.log(error.response)
     // Already attempted refresh
     if (
       error.response.status === 401 &&
@@ -32,8 +33,7 @@ client.interceptors.response.use(
     // First attempt at refresh
     if (
       error.response.data.code === 'token_not_valid' &&
-      error.response.status === 401 &&
-      error.response.statusText === 'Unauthorized'
+      error.response.status === 401
     ) {
       console.log('Refreshing access token...');
       const refresh = await authStorage.getRefresh();

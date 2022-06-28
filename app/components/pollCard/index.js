@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Image, Text, Dimensions } from 'react-native';
-import {BASE_URL} from '@env';
+import {REACT_APP_BASE_URL} from '@env';
 import { getPoll, getPollVotes } from 'endpoints/pollish';
 
 
 const dimensions = Dimensions.get('screen');
 
-const url = BASE_URL;
+const url = REACT_APP_BASE_URL;
 
 
 const PollCard = ({color, qText, id}) => {

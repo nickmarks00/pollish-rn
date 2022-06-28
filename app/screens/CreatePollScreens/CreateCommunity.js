@@ -4,7 +4,7 @@ import {View, Text, TextInput, Button} from 'react-native';
 import MediaContainer from './MediaContainer';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import authStorage from '../../auth/storage';
-import {BASE_URL} from '@env';
+import {REACT_APP_BASE_URL} from '@env';
 
 const CreateCommunity = ({setCommunity}) => {
   const [title, setTitle] = React.useState('');
@@ -31,7 +31,7 @@ const CreateCommunity = ({setCommunity}) => {
       redirect: 'follow',
     };
 
-    fetch(`${BASE_URL}/pollish/communities/`, requestOptions)
+    fetch(`${REACT_APP_BASE_URL}/pollish/communities/`, requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));

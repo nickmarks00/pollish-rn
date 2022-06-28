@@ -31,7 +31,7 @@ export default function App() {
   if (!isReady) {
     return (
       <AppLoading
-        startAsync={restoreUser}
+        startAsync={restoreUserProfile}
         onFinish={() => setIsReady(true)}
         onError={console.warn}
       />
@@ -39,7 +39,7 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={{user, setUser}}>
+    <AuthContext.Provider value={{user, setUser, profile, setProfile}}>
       <NavigationContainer theme={MyTheme}>
         {user ? <AppNavigator /> : <AuthNavigator />}
       </NavigationContainer>

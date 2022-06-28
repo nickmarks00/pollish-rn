@@ -1,4 +1,5 @@
 import {BASE_URL} from '@env';
+import client from '../api/client';
 
 export const validateName = name => {
   const re = /^[A-Z][a-zA-Z]{3,15}$/;
@@ -41,19 +42,37 @@ export const validateUsername = async username => {
   }
 
   try {
-    const response = await fetch(
-      `${BASE_URL}/core/users/?username=${username}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    if (response.ok) {
-      const data = await response.json();
+    const response = await client.get(`/core/users/?username=${username}`);
+    if (response.status === 200) {
+      return response.data.length
+        ? {isValid: false, error: 'This username already exists'}
+        : {isValid: true, error: null};
+    } else {
+      throw new Error('Bad network response');
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  return {isValid: true, error: null};
+};
+
+export const validateEmailUnique = async email => {
+  const re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  if (!re.test(email)) {
+    return {isValid: false, error: 'Please provide a valid email'};
+  }
+
+  try {
+    const response = await client.get(`/core/users/?email=${email}`);
+    if (response.status === 200) {
       return (
-        data['count'] && {isValid: false, error: 'This username already exists'}
+        response.data.length && {
+          isValid: false,
+          error: 'This email already exists',
+        }
       );
     } else {
       throw new Error('Bad network response');
@@ -65,7 +84,7 @@ export const validateUsername = async username => {
   return {isValid: true, error: null};
 };
 
-export const validateEmail = async email => {
+export const validateAccountExistsWithEmail = async email => {
   const re =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -74,19 +93,13 @@ export const validateEmail = async email => {
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/core/users/?email=${email}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return (
-        data['count'] && {isValid: false, error: 'This email already exists'}
-      );
+    const response = await client.get(`/core/users/?email=${email}`);
+    if (response.status === 200) {
+      return response.data.length
+        ? {isValid: true, error: null}
+        : {isValid: false, error: 'No account with this email...'};
     } else {
-      throw new Error('Bad network response');
+      Promise.reject('Bad network response');
     }
   } catch (e) {
     console.error(e);

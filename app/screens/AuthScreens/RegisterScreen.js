@@ -9,7 +9,7 @@ import useAuth from '../../auth/useAuth';
 import {
   validateName,
   validateUsername,
-  validateEmail,
+  validateEmailUnique,
   validatePassword,
 } from '../../lib/validators';
 
@@ -33,7 +33,7 @@ function RegisterScreen() {
     firstName: validateName,
     lastName: validateName,
     username: validateUsername,
-    email: validateEmail,
+    email: validateEmailUnique,
     password: validatePassword,
   };
 

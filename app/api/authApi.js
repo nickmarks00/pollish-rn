@@ -39,8 +39,21 @@ const getUser = async tokens => {
   return Promise.reject(response.status);
 };
 
+const emailUserWithEmail = async email => {
+  const response = await client.post('/auth/users/reset_password/', {
+    email,
+  });
+
+  if (response.status === 204) {
+    return response.data;
+  }
+
+  return Promise.reject(response.status);
+};
+
 export default {
   login,
   register,
   getUser,
+  emailUserWithEmail,
 };

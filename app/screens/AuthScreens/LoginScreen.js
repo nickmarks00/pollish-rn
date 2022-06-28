@@ -10,6 +10,7 @@ import {
   AppForm as Form,
   AppFormField as FormField,
 } from '../../components/forms';
+import AppButton from '../../components/AppButton';
 import {ErrorMessage} from '../../components/forms';
 import Screen from '../AppScreen';
 import Wave from '../../components/Wave';
@@ -71,6 +72,13 @@ function LoginScreen({navigation, ...props}) {
                 textContentType="password"
               />
             </Form>
+            <AppButton
+              color="dark"
+              buttonStyle={styles.forgotButton}
+              textStyle={styles.forgotButtonText}
+              title="Forgot username or password?"
+              onPress={() => navigation.navigate('ForgotCredentials')}
+            />
           </View>
         </Wave>
       </Screen>
@@ -81,6 +89,13 @@ function LoginScreen({navigation, ...props}) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  forgotButton: {
+    width: '100%',
+  },
+  forgotButtonText: {
+    textTransform: 'none',
+    fontSize: 15,
   },
   logo: {
     height: 200,

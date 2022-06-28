@@ -27,29 +27,6 @@ const getAccess = async () => {
   return access;
 };
 
-const getProfile = async () => {
-  const res = await getTokens();
-  const tokens = JSON.parse(res);
-  if (!tokens) return null;
-
-  const profileUrl = `http://${base}/pollish/profiles/me/`;
-
-  const profileOptions = {
-    payload: {},
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `JWT ${tokens.access}`,
-    },
-  };
-  const response = await fetch(profileUrl, profileOptions);
-  if (response.status === 200) {
-    // access token exists and still valid
-    return await response.json();
-  }
-  return access;
-};
-
 const getRefresh = async () => {
   const tokens = await getTokens();
   if (!tokens) return null;
@@ -66,11 +43,4 @@ const removeTokens = async () => {
   }
 };
 
-export default {
-  getTokens,
-  getAccess,
-  getRefresh,
-  getProfile,
-  removeTokens,
-  storeTokens,
-};
+export default {getTokens, removeTokens, storeTokens, getAccess, getRefresh};

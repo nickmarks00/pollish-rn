@@ -1,133 +1,144 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {StyleSheet, View, Dimensions, Image} from 'react-native';
 
-import usersApi from '../../api/users';
 import authApi from '../../api/authApi';
+import Loader from '../../components/Loader';
+import useApi from '../../hooks/useApi';
 import useAuth from '../../auth/useAuth';
 
 import {
   validateName,
   validateUsername,
-  validateEmail,
+  validateEmailUnique,
   validatePassword,
 } from '../../lib/validators';
 
-import Screen from '../AppScreen';
 import {
   AppForm as Form,
   AppFormField as FormField,
 } from '../../components/forms';
+import {ErrorMessage} from '../../components/forms';
+import Screen from '../AppScreen';
 import Wave from '../../components/Wave';
 
 const dimensions = Dimensions.get('screen');
 
-function RegisterScreen({navigation}) {
-  const auth = useAuth();
+function RegisterScreen() {
   const [registerFailed, setRegisterFailed] = useState(false);
+  const auth = useAuth();
+  const registerApi = useApi(authApi.register);
+  const loginApi = useApi(authApi.login);
 
   const validationSchema = {
     firstName: validateName,
     lastName: validateName,
     username: validateUsername,
-    email: validateEmail,
+    email: validateEmailUnique,
     password: validatePassword,
   };
 
   const handleUserRegister = async values => {
-    // matching field names of UserCreateSerializer
+    /*
+      #TODO on submit fail, if register was successful we need to DELETE the created user profile from the database
+    */
+    values['email'] = values['email'].toLowerCase();
 
-    values['first_name'] = values['firstName'];
-    delete values['firstName'];
-    values['last_name'] = values['lastName'];
-    delete values['lastName'];
+    const registerResult = await registerApi.request(values);
+    const loginResult = await loginApi.request(
+      values.username,
+      values.password,
+    );
 
-    const registerApi = await usersApi.register(values);
-    const loginApi = await authApi.login(values.username, values.password);
-
-    if (loginApi.status === 200) {
+    if (loginResult.status === 200 && registerResult.status === 201) {
       // access token exists and still valid
       setRegisterFailed(false);
-      const tokens = await loginApi.json();
-      auth.logIn(tokens);
+      await auth.loginWithTokens(loginResult.data);
     } else {
       setRegisterFailed(true);
     }
   };
 
   return (
-    <Screen style={styles.container}>
-      <Wave>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: dimensions.height,
-            padding: 15,
-          }}>
-          <Image
-            style={styles.logo}
-            source={require('../../assets/logos/jpgs/logo1.png')}
-          />
-          <Form
-            initialValues={{
-              firstName: '',
-              lastName: '',
-              username: '',
-              email: '',
-              password: '',
-            }}
-            onSubmit={values => handleUserRegister(values)}
-            title="Register"
-            validationSchema={validationSchema}>
-            <View style={styles.nameContainer}>
-              <View style={styles.nameColumn}>
-                <FormField
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  icon="account"
-                  name="firstName"
-                  placeholder="First name"
-                />
+    <>
+      <Loader visible={registerApi.loading || loginApi.loading} />
+      <Screen style={styles.container}>
+        <Wave>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: dimensions.height,
+              padding: 15,
+            }}>
+            <Image
+              style={styles.logo}
+              source={require('../../assets/logos/jpgs/logo1.png')}
+            />
+            <Form
+              initialValues={{
+                first_name: '',
+                last_name: '',
+                username: '',
+                email: '',
+                password: '',
+              }}
+              onSubmit={values => handleUserRegister(values)}
+              title="Register"
+              validationSchema={validationSchema}>
+              <ErrorMessage
+                error="Something went wrong registering"
+                visible={registerFailed}
+              />
+              <View style={styles.nameContainer}>
+                <View style={styles.nameColumn}>
+                  <FormField
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                    icon="account"
+                    name="first_name"
+                    placeholder="First name"
+                  />
+                </View>
+                <View style={styles.nameColumn}>
+                  <FormField
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                    icon="account"
+                    name="last_name"
+                    placeholder="Last name"
+                  />
+                </View>
               </View>
-              <View style={styles.nameColumn}>
-                <FormField
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  icon="account"
-                  name="lastName"
-                  placeholder="Last name"
-                />
-              </View>
-            </View>
-            <FormField
-              autoCorrect={false}
-              icon="account"
-              name="username"
-              placeholder="Username"
-              autoCapitalize="none"
-            />
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              name="email"
-              placeholder="Email"
-              textContentType="emailAddress"
-            />
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="password"
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-            />
-          </Form>
-        </View>
-      </Wave>
-    </Screen>
+              <FormField
+                autoCorrect={false}
+                icon="account"
+                name="username"
+                placeholder="Username"
+                autoCapitalize="none"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="email"
+                keyboardType="email-address"
+                name="email"
+                placeholder="Email"
+                textContentType="emailAddress"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="lock"
+                name="password"
+                placeholder="Password"
+                secureTextEntry
+                textContentType="password"
+              />
+            </Form>
+          </View>
+        </Wave>
+      </Screen>
+    </>
   );
 }
 

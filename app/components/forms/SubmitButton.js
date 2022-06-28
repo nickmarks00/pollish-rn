@@ -4,7 +4,7 @@ import {FormContext} from './formContext';
 
 import AppButton from '../AppButton';
 
-function SubmitButton({title, onSubmit, errors, touched, loading, setLoading}) {
+function SubmitButton({title, onSubmit, errors, touched}) {
   const [disabled, setDisabled] = useState(true);
 
   const {formValue} = useContext(FormContext);
@@ -15,6 +15,7 @@ function SubmitButton({title, onSubmit, errors, touched, loading, setLoading}) {
 
   const handleChange = () => {
     let isValid;
+
     isValid = Object.keys(errors).every(key => {
       return !errors[key] && touched[key];
     });

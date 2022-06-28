@@ -1,12 +1,10 @@
 import authStorage from '../auth/storage';
 import {BASE_URL} from '@env';
 
-const base = BASE_URL;
-
 const CheckVote = async ({pid}) => {
   const res = await authStorage.getTokens();
   const access = JSON.parse(res).access;
-  const url = `http://${base}/pollish/polls/${pid}/`;
+  const url = `${BASE_URL}/pollish/polls/${pid}/`;
   var id = 0;
   const options = {
     method: 'GET',
@@ -29,7 +27,7 @@ const CommentAPI = async ({uid, pid, text}) => {
   const tokens = await authStorage.getTokens();
   const access = JSON.parse(tokens).access;
 
-  const url = `http://${base}/core/users/${uid}/polls/${pid}/comments/`;
+  const url = `${BASE_URL}/core/users/${uid}/polls/${pid}/comments/`;
   const user = await authStorage.getUser();
   const voteId = await CheckVote({pid: pid});
   const options = {
@@ -67,7 +65,7 @@ const PostPoll = async ({text, ch, m}) => {
   };
 
   var id = -1;
-  const response = await fetch(`http://${base}/pollish/polls/me/`, options)
+  const response = await fetch(`${BASE_URL}/pollish/polls/me/`, options)
     .then(response => response.json())
     .then(response => {
       id = response.id;
@@ -95,7 +93,7 @@ const Post_Image = async ({m, id, access}) => {
   };
 
   const response = await fetch(
-    `http://${base}/pollish/polls/${id}/images/`,
+    `${BASE_URL}/pollish/polls/${id}/images/`,
     options,
   );
 };
@@ -113,7 +111,7 @@ const RegisterVote = async ({id, cid}) => {
   };
 
   const response = await fetch(
-    `http://${base}/pollish/polls/${id}/choices/${cid}/me/`,
+    `${BASE_URL}/pollish/polls/${id}/choices/${cid}/me/`,
     requestOptions,
   );
 };

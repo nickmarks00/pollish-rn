@@ -12,12 +12,19 @@ import {
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 import {BASE_URL} from '@env';
+<<<<<<< HEAD:app/screens/HomeScreen.js
+import {PrimaryPollish} from '../Styling/App_Styles';
+import {GetPollFeed} from '../api/comments';
+import TestingSpace2 from '../TestingSpace2';
+import PollDisplay from '../components/pollDisplay';
+=======
 import {PrimaryPollish} from '../../Styling/App_Styles';
 import { getPollFeed } from 'endpoints/pollish';
 import PollDisplay from '../../components/pollDisplay';
 import ColoredButton from '../../components/coloredButton';
 import colors from '../../config/colors';
 import CreatePoll from '../CreatePollScreens/CreatePoll';
+>>>>>>> 433df003617005e812ffc9693f52114420068d58:app/screens/Tabs/HomeScreen.js
 const base = BASE_URL;
 
 const dimensions = Dimensions.get('window');
@@ -44,6 +51,23 @@ const HomeScreen = ({route, navigation}) => {
     fetchDataFromApi(1);
   }, []);
 
+<<<<<<< HEAD:app/screens/HomeScreen.js
+  const fetchDataFromApi = async page => {
+    const polls = await GetPollFeed(page);
+    setPosts(polls.results);
+  };
+
+  const loadMoreData = async page => {
+    const polls = await GetPollFeed(page);
+    const total = [...posts, ...polls.results];
+    setPosts(total);
+    // if (posts.results){
+    //   setPosts(...posts, polls.results);
+    // }
+    // else{
+    //   setPosts(polls.results)
+    // }
+=======
   const fetchDataFromApi = async (page) => {
     const polls = await getPollFeed(page);
     setPosts(polls.data.results)
@@ -53,6 +77,7 @@ const HomeScreen = ({route, navigation}) => {
     const polls = await getPollFeed(page);
     const total = [...posts, ...polls.data.results]
     setPosts(total)
+>>>>>>> 433df003617005e812ffc9693f52114420068d58:app/screens/Tabs/HomeScreen.js
   };
 
   const openModel = () => {
@@ -77,19 +102,19 @@ const HomeScreen = ({route, navigation}) => {
       </View>
       <FlatList
         data={posts}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <View style={{flex: 1, width: '100%', marginVertical: '5%'}}>
-              <PollDisplay 
-                id={item.id}
-                commentsScreen={route.params.commentsScreen}
-                profileScreen={route.params.profileScreen}
-              />
-              </View>
+            <PollDisplay
+              id={item.id}
+              commentsScreen={route.params.commentsScreen}
+              profileScreen={route.params.profileScreen}
+            />
+          </View>
         )}
         onEndReachedThreshold={0.01}
-        onEndReached= { info => {
-          loadMoreData(number+1)
-          setNum(number+1)
+        onEndReached={info => {
+          loadMoreData(number + 1);
+          setNum(number + 1);
         }}
       />
 

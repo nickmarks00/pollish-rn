@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 1000,
   },
   waveBottom: {
-    bottom: -150,
+    bottom: -100,
     marginLeft: -dimensions.width * 1.9,
   },
   waveTop: {

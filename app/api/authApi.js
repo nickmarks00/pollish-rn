@@ -1,23 +1,59 @@
-import {BASE_URL} from '@env';
+import client from './client';
+
+const register = async values => {
+  try {
+    const response = await client.post('/auth/users/', values);
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const login = async (username, password) => {
-  const base = BASE_URL;
-  
-  const url = `http://${base}/auth/jwt/create`;
-  const values = {username, password};
+  try {
+    const response = await client.post('/auth/jwt/create/', {
+      username,
+      password,
+    });
 
-  const options = {
-    method: 'POST',
-    body: JSON.stringify({username, password}),
+    if (response.status === 200) {
+      return response;
+    }
+  } catch (e) {
+    Promise.resolve('Incorrect username or password');
+  }
+};
+
+const getUser = async tokens => {
+  if (!tokens) return null;
+
+  const response = await client.get('/auth/users/me/', {
     headers: {
-      'Content-Type': 'application/json',
+      Authorization: `JWT ${tokens.access}`,
     },
-  };
+  });
+  if (response.status === 200) {
+    // access token exists and still valid
+    return response.data;
+  }
+  return Promise.reject(response.status);
+};
 
-  const response = await fetch(url, options);
-  return response;
+const emailUserWithEmail = async email => {
+  const response = await client.post('/auth/users/reset_password/', {
+    email,
+  });
+
+  if (response.status === 204) {
+    return response.data;
+  }
+
+  return Promise.reject(response.status);
 };
 
 export default {
   login,
+  register,
+  getUser,
+  emailUserWithEmail,
 };

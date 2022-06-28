@@ -1,4 +1,5 @@
 import authStorage from '../auth/storage';
+import authApi from './authApi';
 import {BASE_URL} from '@env';
 
 const CheckVote = async ({pid}) => {
@@ -23,12 +24,11 @@ const CheckVote = async ({pid}) => {
   return id;
 };
 
-const CommentAPI = async ({uid, pid, text}) => {
+const CommentAPI = async ({uid, pid, text, user}) => {
   const tokens = await authStorage.getTokens();
   const access = JSON.parse(tokens).access;
 
   const url = `${BASE_URL}/core/users/${uid}/polls/${pid}/comments/`;
-  const user = await authStorage.getUser();
   const voteId = await CheckVote({pid: pid});
   const options = {
     method: 'POST',

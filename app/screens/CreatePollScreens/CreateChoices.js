@@ -1,41 +1,23 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Dimensions } from 'react-native';
+import { View, Text } from 'react-native';
+import ChoiceItem from './ChoiceItem';
+import { Choices_Container, SubHeader } from 'style/Create_Style';
 
-const dimensions = Dimensions.get('screen'); 
+/*
+    * Component for the choices pages in create section
+    TODO: Remove prop drilling
+*/
 
 const Choices = ({setOptions, optionsText}) => {
     return(
-        <View style={{flex: 0.9, justifyContent: 'space-evenly', alignItems: 'center'}}>
-                <Text style={{color: '#125AC5', fontWeight: 'bold', fontSize: 16}}>WHAT IS THERE TO CHOSE FROM?</Text>
-                <View>
-                    <Text style={{marginBottom: '2%', fontWeight: 'bold', fontSize: 12, color: '#ED3030'}}>Choice A</Text>
-                    <TextInput onChangeText={newText => setOptions(newText, 1)} style={[styles.input2, {backgroundColor: 'rgba(237,48,48,0.03)'}]}>{optionsText.o1}</TextInput>
-                </View>
-                <View>
-                    <Text style={{marginBottom: '2%', fontWeight: 'bold', fontSize: 12, color: '#EBAC1F'}}>Choice B</Text>
-                    <TextInput onChangeText={newText => setOptions(newText, 2)} style={[styles.input2, {backgroundColor: 'rgba(235,172,31,0.03)'}]}>{optionsText.o2}</TextInput>
-                </View>
-                <View>
-                    <Text style={{marginBottom: '2%', fontWeight: 'bold', fontSize: 12, color: '#309EED'}}>Choice C</Text>
-                    <TextInput onChangeText={newText => setOptions(newText, 3)} style={[styles.input2, {backgroundColor: 'rgba(48,158,237,0.03)'}]}>{optionsText.o3}</TextInput>
-                </View>
-                <View>
-                    <Text style={{marginBottom: '2%', fontWeight: 'bold', fontSize: 12}}>Choice D</Text>
-                    <TextInput onChangeText={newText => setOptions(newText, 4)} style={[styles.input2, {backgroundColor: 'rgba(0,0,0,0.03)'}]}>{optionsText.o4}</TextInput>
-                </View>
-            </View>
+        <View style={Choices_Container}>
+            <Text style={SubHeader}>WHAT IS THERE TO CHOSE FROM?</Text>
+            <ChoiceItem optionsText={optionsText} setOptions={setOptions} num={0} />
+            <ChoiceItem optionsText={optionsText} setOptions={setOptions} num={1} />
+            <ChoiceItem optionsText={optionsText} setOptions={setOptions} num={2} />
+            <ChoiceItem optionsText={optionsText} setOptions={setOptions} num={3} />
+        </View>
     )
 }
 
 export default Choices;
-
-const styles = StyleSheet.create({
-    input2: {
-        borderWidth: 1,
-        width: dimensions.width/1.2,
-        height: dimensions.height/25,
-        paddingHorizontal: 10,
-        borderColor: '#DDD',
-        borderRadius: 10,
-    },
-})

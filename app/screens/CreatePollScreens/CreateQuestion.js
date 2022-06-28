@@ -1,27 +1,19 @@
 import React from 'react';
-import {View, Text, TextInput, StyleSheet, Dimensions} from 'react-native';
+import { View, Text, TextInput } from 'react-native';
+import { Question_InputBox, Question_Container, Question_Header } from 'style/Create_Style';
 
-const dimensions = Dimensions.get('screen');
+/*
+    * Component for the question page in create section
+*/
 
-const Question = ({setColors, question}) => {
+const Question = ({setQuestionText, question}) => {
 
     return(
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={[styles.text, {fontSize: 20, textAlign: 'left', color: '#AAA', marginBottom: '5%'}]}>Question</Text>
-        <TextInput onChangeText={newText => setColors(newText)} placeholder='Add question text' style={styles.input}>{question}</TextInput>
+        <View style={Question_Container}>
+            <Text style={Question_Header}>Question</Text>
+            <TextInput onChangeText={newText => setQuestionText(newText)} placeholder='Add question text' style={Question_InputBox}>{question}</TextInput>
         </View>
     )
 }
 
 export default Question;
-
-const styles = StyleSheet.create({
-    input: {
-        borderWidth: 1,
-        width: dimensions.width/1.2,
-        height: dimensions.height/20,
-        paddingHorizontal: 20,
-        borderColor: '#DDD',
-        borderRadius: 15,
-    }
-});

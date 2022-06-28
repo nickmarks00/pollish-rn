@@ -1,29 +1,42 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Dimensions} from 'react-native';
 
+import Screen from '../AppScreen';
 import AppButton from '../../components/AppButton';
+import Wave from '../../components/Wave';
+
+const dimensions = Dimensions.get('screen');
 
 function WelcomeScreen({navigation}) {
   return (
-    <ImageBackground
-      blurRadius={10}
-      style={styles.background}
-      source={require('../../assets/background.jpg')}>
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.logo}
-          source={require('../../assets/pollish-logo.png')}
-        />
-      </View>
-      <View style={styles.buttonsContainer}>
-        <AppButton title="Login" onPress={() => navigation.navigate('Login')} />
-        <AppButton
-          title="Register"
-          color="secondary"
-          onPress={() => navigation.navigate('Register')}
-        />
-      </View>
-    </ImageBackground>
+    <Screen>
+      <Wave>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: dimensions.height,
+          }}>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.logo}
+              source={require('../../assets/logos/jpgs/logo1.png')}
+            />
+          </View>
+          <View style={styles.buttonsContainer}>
+            <AppButton
+              title="Login"
+              onPress={() => navigation.navigate('Login')}
+            />
+            <AppButton
+              title="Register"
+              color="secondary"
+              onPress={() => navigation.navigate('Register')}
+            />
+          </View>
+        </View>
+      </Wave>
+    </Screen>
   );
 }
 
@@ -34,16 +47,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonsContainer: {
+    marginTop: -50,
     padding: 20,
     width: '100%',
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: 400,
+    height: 400,
   },
   logoContainer: {
-    position: 'absolute',
-    top: 70,
+    marginTop: -100,
     alignItems: 'center',
   },
 });

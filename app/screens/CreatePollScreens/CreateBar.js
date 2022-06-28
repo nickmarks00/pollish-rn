@@ -1,45 +1,24 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Option_Buttons, Option_Text } from '../Styling/Create_Style';
+import { View } from 'react-native';
+import PollComponentButton from './PollComponentButton';
+import { Create_Navbar, Create_Navbar_BG } from 'style/Create_Style';
 
-const dimensions = Dimensions.get("window");
+/*
+    * This component shows the navigation bar ontop of the poll creation screen
+    TODO: Remove prop drilling
+*/
+
 const CreateBar = (props) => {
     return(
         <View>
-            <View style={{position: 'absolute', width: dimensions.width, marginTop: dimensions.width/36, height: dimensions.width/18, backgroundColor: 'rgba(31, 113, 235, 0.1)'}}/>
-            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', width: dimensions.width}}>
-                
-                <View style={{width: dimensions.width/7, alignItems: 'center'}}>
-                    <TouchableOpacity onPress={() => props.setSection(0)}>
-                    <View style={[Option_Buttons, {alignItems: 'center', justifyContent: 'center', backgroundColor: props.background}]}>
-                        <Text style={{fontWeight: 'bold', fontSize: 30, color: props.color}}>?</Text>
-                    </View>
-                    </TouchableOpacity>
-                    <Text style={Option_Text}>QUESTION</Text>
-                </View>
-                <View style={{width: dimensions.width/7, alignItems: 'center'}}>
-                    <TouchableOpacity onPress={() => props.setSection(1)}>
-                        <View style={[Option_Buttons, {alignItems: 'center', justifyContent: 'center', backgroundColor: props.background}]}>
-                            <Text style={{fontWeight: 'bold', fontSize: 30, color: props.color}}>C</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <Text style={Option_Text}>CHOICES</Text>
-                </View>
-                <View style={{width: dimensions.width/7, alignItems: 'center'}}>
-                    <TouchableOpacity onPress={() => props.setSection(2)}>
-                        <View style={[Option_Buttons, {alignItems: 'center', justifyContent: 'center', backgroundColor: props.background}]}>
-                            <Text style={{fontWeight: 'bold', fontSize: 30, color: props.color}}>O</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <Text style={Option_Text}>IMAGES</Text>
-                </View>
-                <View style={{width: dimensions.width/7, alignItems: 'center'}}>
-                    <View style={Option_Buttons}/>
-                    <Text style={Option_Text}>SETTINGS</Text>
-                </View>
+            <View style={Create_Navbar_BG}/>
+            <View style={Create_Navbar}>
+                <PollComponentButton { ...props } component={'QUESTION'} num={0} type={'help'} valid={props.ready.q}/>
+                <PollComponentButton { ...props } component={'CHOICES'} num={1} type={'poll'} valid={props.ready.o}/>
+                <PollComponentButton { ...props } component={'IMAGES'} num={2} type={'image-multiple'} valid={props.ready.m}/>
+                <PollComponentButton { ...props } component={'SETTINGS'} num={3} type={'cog'} valid={props.ready.s}/>
             </View>
-            </View>
+        </View>
     );
 }
 

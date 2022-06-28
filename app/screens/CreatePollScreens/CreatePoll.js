@@ -1,54 +1,56 @@
 import { useNavigation } from '@react-navigation/native';
-import * as React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, StatusBar } from "react-native";
-import { useState } from 'react';
+import React, {useState, useEffect} from 'react';
+import {useFonts} from 'expo-font';
+import { View, Text, Dimensions, TouchableOpacity, StatusBar, Button } from "react-native";
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
-import authStorage from '../../auth/storage';
 import { PostPoll } from '../../api/post';
 
-import arrowR from './../PollScreens/arrow.png'
-import arrowL from './../PollScreens/arrowR.png'
-import CreateBar from './CreateBar';
-import NavButton from './NavButton';
-import Question from './CreateQuestion';
-import Choices from './CreateChoices';
-import Media from './CreateMedia';
+import arrowR from './../../assets/arrow.png'
+import arrowL from './../../assets/arrowR.png'
+import { CreateBar, NavButton, Question, Choices, Media } from '.';
 import { Top_Options_BG, Header_Text, Content_Section, Content_Navbar } from 'style/Create_Style';
 
+/* 
+    ! MAKE THIS COMPONENT MUCH NICER
+*/
 const dimensions = Dimensions.get('window');
 
 const STATUS_BAR = StatusBar.statusBarHeight || 34; 
 
-const CreatePoll = () => {
+const CreatePoll = ({setPoll}) => {
     const navigation = useNavigation();
-    const [questionText, setQuestionText] = useState('');
-    const [canPost, setCanPost] = useState(false);
-    const [optionsText, setOptionsText] = useState({o1: '', o2: '', o3: '', o4: ''})
-    const tabBarHeight = useBottomTabBarHeight();
-    const screenHeight = dimensions.height-tabBarHeight-STATUS_BAR;
+    const screenHeight = dimensions.height-useBottomTabBarHeight();-STATUS_BAR;
+
     const [section, setSection] = useState(0);
-    const [backColor, setColor] = useState({color: '#1F71EB', back: '#FFF'});
+    
+    // * Ready for posting variables
+    const [canPost, setCanPost] = useState(false);
+    const [ready, setReady] = useState({q: false, o: false, m: false, s: false});
+     
+    // * Creation elements storage
+    const [questionText, setQuestionText] = useState('');
+    const [optionsText, setOptionsText] = useState({o1: '', o2: '', o3: '', o4: ''})
     const [media, setMedia] = useState({m1: null, m2: null, m3: null, m4: null})
 
-    const setColors = (newText) => {
-        if(newText == '') setColor({color: '#1F71EB', back: '#FFF'});
-        else{ 
-            setColor({color: '#FFF', back: '#1F71EB'})
-        }
-        setQuestionText(newText);
-        if (optionsText.o1 && optionsText.o2 && questionText) setCanPost(true);
-        else setCanPost(false);
-    }
+    useEffect(() => {
+        checkPost();
+      }, [questionText, media, optionsText]);
 
-    const setOptions = (newText, opNum) => {
-        if (opNum == 1) setOptionsText({o1: newText, o2: optionsText.o2, o3: optionsText.o3, o4: optionsText.o4})
-        else if (opNum == 2) setOptionsText({o1: optionsText.o1, o2: newText, o3: optionsText.o3, o4: optionsText.o4})
-        else if (opNum == 3) setOptionsText({o1: optionsText.o1, o2: optionsText.o2, o3: newText, o4: optionsText.o4})
-        else if (opNum == 4) setOptionsText({o1: optionsText.o1, o2: optionsText.o2, o3: optionsText.o3, o4: newText})
+    const checkPost = () => {
+        if(questionText) ready.q = true;
+        else ready.q = false;
 
-        if (optionsText.o1 && optionsText.o2 && questionText) setCanPost(true);
+        if(optionsText.o1 && optionsText.o2) ready.o = true;
+        else ready.o = false;
+
+        if(media.m1) ready.m = true;
+        else ready.m = false;
+
+        if(ready.q && ready.o) setCanPost(true);
         else setCanPost(false);
+
+        setReady({...ready})
     }
 
     const Post_Poll = async () => {
@@ -66,19 +68,29 @@ const CreatePoll = () => {
         setMedia({m1: null, m2: null, m3: null, m4: null});
         setCanPost(false);
 
-        navigation.navigate('Home')
+        setPoll(false)
 
+    }
+
+    // Load Fonts
+    let [fontsLoaded] = useFonts({
+        SFRound: require('./../../assets/fonts/SFRoundBold.ttf'),
+        SFReg: require('./../../assets/fonts/SFRound.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <Text>Loading Fonts</Text>;
     }
 
     return (
         <View style={{alignItems: 'center', marginTop: STATUS_BAR, height: screenHeight}}>
             <View style={Top_Options_BG}>
+            <Button title={'Back'} onPress={() => setPoll(false)}></Button>
             <Text style={Header_Text}>Create a poll, find out what others think!</Text>
-            <CreateBar setSection={setSection} color={backColor.color} background={backColor.back}/>
+            <CreateBar setSection={setSection} ready={ready}/>
             </View>
             <View style={Content_Section}>
-                { section == 0 ? <Question setColors={setColors} question={questionText}/> : 
-                  section == 1 ? <Choices setOptions={setOptions} optionsText={optionsText}/> :
+                { section == 0 ? <Question setQuestionText={setQuestionText} question={questionText}/> : 
+                  section == 1 ? <Choices setOptions={setOptionsText} optionsText={optionsText}/> :
                   section == 2 ?  <Media setMedia={setMedia} media={media}/> :
                 <View/> }
             </View>

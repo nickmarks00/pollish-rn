@@ -1,78 +1,101 @@
 import React, {useState} from 'react';
-import {StyleSheet, Image} from 'react-native';
-
-import * as Yup from 'yup';
+import {StyleSheet, Image, View, Dimensions} from 'react-native';
 
 import authApi from '../../api/authApi';
+import Loader from '../../components/Loader';
 import useAuth from '../../auth/useAuth';
+import useApi from '../../hooks/useApi';
 
-import AppScreen from '../AppScreen';
-import {AppForm, AppFormField, SubmitButton} from '../../components/forms';
+import {
+  AppForm as Form,
+  AppFormField as FormField,
+} from '../../components/forms';
+import AppButton from '../../components/AppButton';
+import {ErrorMessage} from '../../components/forms';
+import Screen from '../AppScreen';
+import Wave from '../../components/Wave';
 
-const validationSchema = Yup.object().shape({
-  username: Yup.string().required().label('Username'),
-  password: Yup.string().required().min(4).label('Password'),
-});
+const dimensions = Dimensions.get('screen');
 
 function LoginScreen({navigation, ...props}) {
-  // const {user, setUser} = useContext(AuthContext);
   const [loginFailed, setLoginFailed] = useState(false);
-
   const auth = useAuth();
+  const loginApi = useApi(authApi.login);
 
   const handleUserLogin = async ({username, password}) => {
-    console.log("rr")
-
-    const response = await authApi.login(username, password);
-    if (response.status === 200) {
-      // access token exists and still valid
+    try {
+      const result = await loginApi.request(username, password);
       setLoginFailed(false);
-      const tokens = await response.json();
-      // console.log(tokens);
-      auth.logIn(tokens);
-    } else {
+      auth.loginWithTokens(result.data);
+    } catch (e) {
       setLoginFailed(true);
     }
-    console.log("redr")
-    console.log(loginFailed);
   };
 
   return (
-    <AppScreen style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require('../../assets/pollish-logo-black.png')}
-      />
-
-      <AppForm
-        initialValues={{username: '', password: ''}}
-        onSubmit={handleUserLogin}
-        validationSchema={validationSchema}>
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="account"
-          name="username"
-          placeholder="Username"
-        />
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="lock"
-          name="password"
-          placeholder="Password"
-          secureTextEntry
-          textContentType="password"
-        />
-        <SubmitButton title="Login" />
-      </AppForm>
-    </AppScreen>
+    <>
+      <Loader visible={loginApi.loading} />
+      <Screen style={styles.container}>
+        <Wave>
+          <View
+            style={{
+              alignItems: 'center',
+              height: dimensions.height,
+              padding: 15,
+            }}>
+            <Image
+              style={styles.logo}
+              source={require('../../assets/logos/jpgs/logo1.png')}
+            />
+            <Form
+              initialValues={{username: '', password: ''}}
+              onSubmit={handleUserLogin}
+              title="Login">
+              <ErrorMessage
+                error="Incorrect username or password. Please try again."
+                visible={loginFailed}
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="account"
+                name="username"
+                placeholder="Username"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="lock"
+                name="password"
+                placeholder="Password"
+                secureTextEntry
+                textContentType="password"
+              />
+            </Form>
+            <AppButton
+              color="dark"
+              buttonStyle={styles.forgotButton}
+              textStyle={styles.forgotButtonText}
+              title="Forgot username or password?"
+              onPress={() => navigation.navigate('ForgotCredentials')}
+            />
+          </View>
+        </Wave>
+      </Screen>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  forgotButton: {
+    width: '100%',
+  },
+  forgotButtonText: {
+    textTransform: 'none',
+    fontSize: 15,
   },
   logo: {
     height: 200,

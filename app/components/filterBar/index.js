@@ -5,8 +5,8 @@ import Styles from './styles';
 const colors = ['#EF946C','#5ED1D0','#DC6BAD','#000','#CCC']
 
 /*
-    * setModalVisible:
-    * selected: 
+    * setModalVisible: should the popup of filters be shown (bool)
+    * selected: which filter option has been selected (array: text, idx, cid)
 */
 
 const FilterBar = ({setModalVisible, selected}) => {

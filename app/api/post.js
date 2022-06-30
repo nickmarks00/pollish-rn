@@ -115,4 +115,4 @@ const RegisterVote = async ({id, cid}) => {
   );
 };
 
-export {CommentAPI, PostPoll, RegisterVote};
+export {CommentAPI, PostPoll, RegisterVote, CheckVote};

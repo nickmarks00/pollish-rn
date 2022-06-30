@@ -4,6 +4,11 @@ import Styles from './styles';
 
 const colors = ['#EF946C','#5ED1D0','#DC6BAD','#000','#CCC']
 
+/*
+    * setModalVisible:
+    * selected: 
+*/
+
 const FilterBar = ({setModalVisible, selected}) => {
     return(
         <View style={Styles.container}>

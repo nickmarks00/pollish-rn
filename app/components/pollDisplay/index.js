@@ -115,7 +115,7 @@ export default PollDisplay;
 
 const Styles = StyleSheet.create({
     cardContainer: {
-        backgroundColor: '#F9F9F9', 
+        backgroundColor: '#FFF', 
         shadowColor: "#000",
         shadowOffset: {
         width: 0,

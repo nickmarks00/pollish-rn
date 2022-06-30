@@ -3,6 +3,9 @@ import { TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import Styles from './styles';
 
+/*
+    * navigateComments: name of the comments screen in the stack (string)
+*/
 
 const CommentsButton = ({navigateComments}) => {
     return (

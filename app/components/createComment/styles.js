@@ -5,18 +5,18 @@ const dimensions = Dimensions.get('window');
 const Styles = StyleSheet.create({
     container: {
         justifyContent: 'center', 
-        padding: 10, 
+        padding: '3%', 
         flexDirection: 'row', 
         alignItems: 'center'
     },
     input: {
-        height: 40,
+        height: dimensions.height/22,
         width: dimensions.width/1.2,
         marginRight: 12,
         borderWidth: 1,
-        borderRadius: 15,
+        borderRadius: dimensions.height/60,
         borderColor: '#BBB',
-        padding: 10,
+        padding: '3%',
     }
 })
 

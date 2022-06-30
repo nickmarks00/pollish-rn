@@ -37,3 +37,18 @@ export function searchUsers(query){
 export function followUser(mid, uid, follow){
     return axiosClient.put(follow ? `${users}/${mid}/?unfollow=True&user_id=${uid}` : `${users}/${mid}/?user_id=${uid}`);
 }
+
+export async function commentAPI(uid, pid, text, voteId, myID){
+    try {
+        const response = await axiosClient.post(`${users}/${uid}/polls/${pid}/comments/`,{
+            choice_id: voteId ? voteId : 1,
+            comment_text: text,
+            user_id: myID,
+        }) 
+        if (response.status === 200) {
+            return response;
+          }
+    } catch (e) {
+        Promise.resolve('Incorrect username or password');
+    }
+};

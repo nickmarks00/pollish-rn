@@ -10,6 +10,12 @@ import Styles from './styles';
 import color from '../../config/colors';
 import { getUser } from 'endpoints/core';
 
+/*
+    * profileScreen: name of the profile screen in the stack (string)
+    * colors: assignment of each color to a choice id (array)
+    * comment: comment element loaded from backend (comment structure)
+*/
+
 
 const Comment = ({profileScreen, colors, comment}) => {
 

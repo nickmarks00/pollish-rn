@@ -5,16 +5,16 @@ const dimensions = Dimensions.get('window');
 const Styles = StyleSheet.create({
     container: {
         flexDirection: 'row', 
-        marginVertical: 5
+        marginVertical: '1.5%'
     },
     content: {
         textAlign: 'left', 
-        fontSize: 12, 
+        fontSize: dimensions.width/32, 
         marginLeft: dimensions.width/50
     },
     username: {
-        marginBottom: 3, 
-        fontSize: 12, 
+        marginBottom: '3%', 
+        fontSize: dimensions.width/32, 
         marginLeft: dimensions.width/50, 
         fontWeight: 'bold'
     },

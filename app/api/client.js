@@ -33,7 +33,8 @@ client.interceptors.response.use(
     // First attempt at refresh
     if (
       error.response.data.code === 'token_not_valid' &&
-      error.response.status === 401
+      error.response.status === 401 &&
+      error.response.statusText === 'Unauthorized'
     ) {
       console.log('Refreshing access token...');
       const refresh = await authStorage.getRefresh();

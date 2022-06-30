@@ -60,7 +60,7 @@ const HomeScreen = ({route, navigation}) => {
   };
 
   return (
-    <View>
+    <View style={{backgroundColor: '#F9F9F9'}}>
       <Modal visible={create} animationType={'slide'}>
         <CreatePoll setPoll={setCreate} />
       </Modal>

@@ -27,6 +27,10 @@ export function searchCommunities(query) {
   return axiosClient.get(`${communities}/?search=${query}`);
 }
 
+export function checkVote(pid) {
+  return axiosClient.get(`${polls}/${pid}/`);
+}
+
 export async function getPollVotes(pid) {
   const data = await getPoll(pid);
   var votes = 0;

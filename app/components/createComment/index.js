@@ -1,15 +1,16 @@
-{
-  /*
-    Component for creating a comment. Type text input and submit to be added to a given post.
-*/
-}
-
 import React, {useContext} from 'react';
 import {View, TextInput, TouchableOpacity, Text, Keyboard} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import {CommentAPI} from '../../api/post';
 import {AuthContext} from '../../auth/context';
 import Styles from './styles';
+import { checkVote } from 'endpoints/pollish';
+import { commentAPI } from 'endpoints/core';
+
+/*
+    reload: function to reload comment section when new one is created
+    (route) post: post structure from api
+*/
+
 const CreateComment = ({reload}) => {
   const route = useRoute();
   const post = route.params.post;
@@ -19,7 +20,8 @@ const CreateComment = ({reload}) => {
 
   // Function for adding new comment
   const Post_Comment = async () => {
-    await CommentAPI({uid: post.user_id, pid: post.id, text: text, user});
+    const vote = await checkVote(post.id);
+    await commentAPI(post.user_id, post.id, text, vote.data.user_vote ? vote.data.user_vote : 1, user.id);
     onChangeText('');
     Keyboard.dismiss();
     reload();

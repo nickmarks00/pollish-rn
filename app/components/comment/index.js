@@ -4,7 +4,7 @@
 */
 
 import React from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Dimensions} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Styles from './styles';
 import color from '../../config/colors';
@@ -48,7 +48,7 @@ const Comment = ({profileScreen, colors, comment}) => {
         <View style={Styles.container}>
             <View style={[Styles.colorbar, {backgroundColor: FindColor()}]}/>
             <TouchableOpacity 
-                style ={{aspectRatio: 1}} 
+                style ={Styles.button} 
                 onPress={() => navigation.push(profileScreen, {user: user})}
             >
                 {(user && noProfilePic) ?
@@ -65,8 +65,9 @@ const Comment = ({profileScreen, colors, comment}) => {
                 }
             </TouchableOpacity>
             <View style={{paddingHorizontal: '2%'}}>
-                <Text style={Styles.username}>{user.username}</Text>
-                <Text style={Styles.content}>{comment.comment_text}</Text>
+                <Text style={Styles.content}><Text style={Styles.username}>{user.username}{' '}</Text>
+                    {comment.comment_text}
+                </Text>
             </View>
         </View>
     )

@@ -7,15 +7,19 @@ const Styles = StyleSheet.create({
         flexDirection: 'row', 
         marginVertical: '1.5%'
     },
+    button: {
+        aspectRatio: 1, 
+        width: dimensions.height/25
+    },
     content: {
         textAlign: 'left', 
-        fontSize: dimensions.width/32, 
-        marginLeft: dimensions.width/50
+        fontSize: dimensions.width/32,
+        marginLeft: dimensions.width/50,
+        width: dimensions.width*0.7,
+        flexWrap: 'wrap'
     },
     username: {
-        marginBottom: '3%', 
         fontSize: dimensions.width/32, 
-        marginLeft: dimensions.width/50, 
         fontWeight: 'bold'
     },
     colorbar: {
@@ -27,15 +31,17 @@ const Styles = StyleSheet.create({
         borderRadius: 1000,
         backgroundColor: '#907AD6',
         aspectRatio: 1,
+        height: dimensions.height/25,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     noProfileInitial: {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: dimensions.height/60
     }
 })
 

@@ -7,25 +7,32 @@ import { getChoice } from 'endpoints/pollish';
 
 const VoteButton = (props) => {
   
-  const [votes, setVotes] = useState(0);
+  // const [votes, setVotes] = useState(props.choice.votes);
+  // const [chosen, setChosen] = useState(0);
 
   useEffect(() => {
-      findVotes();
+    // if(chosen != props.chosen) setChosen(props.chosen);
+    // findVotes();
+    // if(props.unvoted == props.choice.id){
+    //   props.setUnvoted(-1)
+    //   setVotes(votes - 1)
+    // }
   }, []);
 
-  const findVotes = async () => {
-    const choice = await getChoice(props.post.id, props.choice.id)
-    setVotes(choice.data.num_votes)
-  }
+  // const findVotes = async () => {
+  //   const choice = await getChoice(props.post.id, props.choice.id)
+  //   if(choice.data.num_votes != votes)
+  //     setVotes(choice.data.num_votes)
+  // }
 
   // Add a vote to given poll in the backend
   const handleRegisterVote = async () => {
-
-    await RegisterVote({cid: props.choice.id, id: props.post.id})
-    props.checkVote();
-    findVotes();
+    props.offlineVoteUpdate(props.choice.id);
+    // setVotes(votes+1);
+    // await RegisterVote({cid: props.choice.id, id: props.post.id})
+    // props.checkVote();
+    // findVotes();
   };
-
 
   return (
       <TouchableOpacity
@@ -37,7 +44,7 @@ const VoteButton = (props) => {
                 {props.choice.choice_text}
             </Text>
               { props.chosen != 0 &&
-                <Text>{(votes / props.voteCount)*100}%</Text>
+                <Text>{((props.choice.num_votes + (props.chosen == 2 ? 1 : 0)) / props.voteCount)*100}%</Text>
               }
           </View>
       </TouchableOpacity>

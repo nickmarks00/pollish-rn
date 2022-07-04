@@ -2,19 +2,9 @@ import React from 'react';
 import { View, TouchableOpacity, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { getPollVotes } from 'endpoints/pollish';
 
-const PollProfile = ({ user, navigateProfile, pid }) => {
+const PollProfile = ({ user, navigateProfile, pid, voteCount }) => {
 
     const [noProfilePic, setError] = React.useState(false);
-    const [votes, setVotes] = React.useState(0);
-
-    React.useEffect(() => {
-        loadVotes();
-    }, []);
-
-    const loadVotes = async () => {
-        const data = await getPollVotes(pid);
-        setVotes(data);
-    }
 
     return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -31,7 +21,7 @@ const PollProfile = ({ user, navigateProfile, pid }) => {
                 <View style={{justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold'}}>{user.username}</Text>
                     <View style={{height: '5%'}}/>
-                    <Text>{votes} votes</Text>
+                    <Text>{voteCount} votes</Text>
                 </View>
                 <View style={{ width: '2%' }}/>
                 <View style={{justifyContent: 'center'}}>

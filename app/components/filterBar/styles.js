@@ -25,7 +25,8 @@ const Styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderWidth: 1, 
-        marginVertical: '2%'
+        marginVertical: '2%',
+        maxWidth: dimensions.width*0.7
     }
 
 })

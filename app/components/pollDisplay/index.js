@@ -4,6 +4,7 @@ import Lebron from '../../assets/lebron.jpg';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { VoteButton, PollProfile, CommentsButton } from 'components';
 import Styles from './styles';
+import { RegisterVote } from '../../api/post';
 
 import {REACT_APP_BASE_URL} from '@env';
 import { getPoll } from '../../network/lib/pollish';
@@ -20,8 +21,15 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
     const [post, setPost] = useState(null);
     const [user, setUser] = useState(null);
+
+
     const [voteCount, setVoteCount] = useState(0);
     const [userVote, setUserVote] = useState(null);
+
+    const [tempVoteCount, setTempVoteCount] = useState(0);
+    const [tempUserVote, setTempUserVote] = useState(null);
+
+    const [unVoted, setUnvoted] = useState(-1);
 
     useEffect(() => {
         loadPoll();
@@ -31,6 +39,13 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     useEffect(() => {
         loadUser();
     }, [post]);
+
+    useEffect(() => {
+        if(voteCount != tempVoteCount)
+            setTempVoteCount(voteCount)
+        if(userVote != userVote)
+            setTempUserVote(userVote)
+    }, [voteCount, userVote])
 
     const loadPoll = async () => {
         getPoll(route.params?.id ? route.params.id : id).then(function(response){
@@ -48,12 +63,14 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
     const checkVote = async () => {
         const response = await getPoll(route.params?.id ? route.params.id : id);
-        setUserVote(response.data.user_vote);
+        if (userVote != response.data.user_vote)
+            setUserVote(response.data.user_vote);
 
         var count = 0;
         response.data.choices.map((choice, idx) => {
             count += choice.num_votes;
         });
+        console.log('there are ' + count)
         setVoteCount(count);
     };
 
@@ -65,24 +82,41 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
         navigation.push(commentsScreen, {post: post});
     };
 
+    const offlineVoteUpdate = (cid) => {
+        RegisterVote({cid: cid, id: post.id})
+        if(tempUserVote == cid){
+            setTempUserVote(null)
+            setTempVoteCount(voteCount)
+        }
+        else if (tempUserVote != null){
+            setTempUserVote(cid)
+        }
+        else{
+            setTempUserVote(cid)
+            setTempVoteCount(voteCount+1)
+        }
+    }
+
     if (post && user){
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
                 <View style={Styles.container}>
-                    {post?.community ?
-                        <TouchableOpacity 
-                            onPress={() => navigation.push('H_Community', {id: post.community.id})}
-                        >
-                            <Text>{post.community.name}</Text>
-                        </TouchableOpacity>
-                        :
-                        <Text>None</Text>
-                    }
-                    <Text style={Styles.questionText}>{post.question_text}</Text>
+                    <View style={{height: single ? '10%' : null}}>
+                        {post?.community ?
+                            <TouchableOpacity 
+                                onPress={() => navigation.push('H_Community', {id: post.community.id})}
+                            >
+                                <Text>{post.community.name}</Text>
+                            </TouchableOpacity>
+                            :
+                            <Text>None</Text>
+                        }
+                        <Text style={Styles.questionText}>{post.question_text}</Text>
+                    </View>
 
                     {/* Profile Heading and comments navigation button */}
-                    <View style={Styles.profileContainer}>
-                        <PollProfile user={user} navigateProfile={navigateProfile} pid={post.id} voteCount={voteCount}/>
+                    <View style={[Styles.profileContainer, {height: single ? '20%' : null}]}>
+                        <PollProfile user={user} navigateProfile={navigateProfile} pid={post.id} voteCount={tempVoteCount}/>
                         <CommentsButton navigateComments={navigateComments}/>
                     </View>
 
@@ -92,18 +126,22 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
                         </View>
                     } */}
 
-                    <View style={{height: single ? '30%': null, justifyContent: 'center'}}>
+
+                    <View style={{height: single ? '60%': null, justifyContent: 'center'}}>
                     {post.choices.map((choice, idx) => {
                         return (
                             <VoteButton
+                                offlineVoteUpdate={offlineVoteUpdate}
                                 post={post}
-                                chosen={userVote == choice.id ? 2 : userVote ? 1 : 0}
+                                chosen={tempUserVote == choice.id ? 2 : tempUserVote ? 1 : 0}
                                 checkVote={checkVote}
                                 key={idx}
                                 count={post.choices.length}
                                 idx={idx}
                                 choice={choice}
-                                voteCount={voteCount}
+                                voteCount={ tempVoteCount}
+                                unVoted={unVoted}
+                                setUnvoted={setUnvoted}
                             />
                         )
                     })}

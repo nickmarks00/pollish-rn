@@ -33,7 +33,8 @@ const SearchScreen = ({navigation}) => {
     if (toggle === 'user') {
       navigation.push('S_Profile', {user: poll});
     } else if (toggle === 'comm') {
-      console.log('Cam please fix this');
+      console.log(poll.id);
+      // navigation.push('S_Community', {id: post.community.id})
     } else if (toggle === 'poll') {
       navigation.push('S_Poll', {id: poll.id});
     }

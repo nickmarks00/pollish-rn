@@ -18,7 +18,10 @@ const SearchScreen = ({navigation}) => {
   const [content, setContent] = useState([]);
   const [toggle, setToggle] = useState('poll');
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setContent([])
+    setSearch('')
+  }, [toggle]);
 
   const searchFilter = text => {
     if (text) {
@@ -49,7 +52,8 @@ const SearchScreen = ({navigation}) => {
       setContent(data.data);
     } else if (toggle === 'user') {
       const data = await searchUsers(text);
-      setContent(data.data.results);
+      console.log(data.data)
+      setContent(data.data);
     }
   };
 

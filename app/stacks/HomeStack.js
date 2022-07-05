@@ -28,7 +28,10 @@ const MyStack = () => {
           />
           <Stack.Screen name="H_Comments" component={CommentSection} initialParams={{profileScreen: 'H_Profile'}} options={{headerShown: false}} />
           <Stack.Screen name="H_Poll" component={SinglePoll} initialParams={{commentsScreen: 'H_Comments', profileScreen: 'H_Profile'}} />
-          <Stack.Screen name="H_Profile" initialParams={{followScreen: 'H_Follow', pollListScreen: 'H_PollList', communityListScreen: 'H_CommunityList'}} component={TestingSpace} options={{ headerShown: true}}/>
+          <Stack.Screen name="H_Profile" initialParams={{followScreen: 'H_Follow', pollListScreen: 'H_PollList', communityListScreen: 'H_CommunityList'}} component={TestingSpace} options={({route}) => ({
+          title: route.params.title,
+          headerShown: true,
+        })}/>
           <Stack.Screen name="H_Follow" initialParams={{profileScreen: 'H_Profile'}} options={{contentStyle: {backgroundColor: '#FFF'}}} component={FollowersScreen} />
           <Stack.Screen name="H_PollList" component={PollsScreen} initialParams={{pollScreen: 'H_Poll'}} />
           <Stack.Screen name="H_CommunityList" component={CommunityList} initialParams={{communityScreen: 'H_Community'}}  />

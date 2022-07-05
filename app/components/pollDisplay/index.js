@@ -68,7 +68,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     };
 
     const navigateProfile = () => {
-        navigation.push(profileScreen, {user: user});
+        navigation.push(profileScreen, {user: user, title: user.username});
     };
     
     const navigateComments = () => {

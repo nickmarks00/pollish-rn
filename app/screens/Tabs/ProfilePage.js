@@ -102,6 +102,8 @@ const ProfilePage = ({route, navigation}) => {
     }
   };
 
+  console.log(route.params?.user ? route.params.user.votes_registered : 2)
+
   return (
     <View style={{alignItems: 'center'}}>
       {!route.params?.user && (
@@ -172,7 +174,7 @@ const ProfilePage = ({route, navigation}) => {
           <PVV_Text num={polls.length} text={'Polls'} />
         </TouchableOpacity>
 
-        <PVV_Text num={'3,620'} text={'Votes'} />
+        <PVV_Text num={1} text={'Votes'} />
         <PVV_Text num={'2000'} text={'Voted'} />
       </View>
 

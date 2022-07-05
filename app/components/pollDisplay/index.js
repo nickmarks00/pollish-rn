@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
-import Lebron from '../../assets/lebron.jpg';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { VoteButton, PollProfile, CommentsButton } from 'components';
 import Styles from './styles';
 import { RegisterVote } from '../../api/post';
 
-import {REACT_APP_BASE_URL} from '@env';
 import { getPoll } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
-const url = REACT_APP_BASE_URL;
-
-
-const dimensions = Dimensions.get('window');
 
 const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
@@ -70,7 +64,6 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
         response.data.choices.map((choice, idx) => {
             count += choice.num_votes;
         });
-        console.log('there are ' + count)
         setVoteCount(count);
     };
 
@@ -116,7 +109,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
                     {/* Profile Heading and comments navigation button */}
                     <View style={[Styles.profileContainer, {height: single ? '20%' : null}]}>
-                        <PollProfile user={user} navigateProfile={navigateProfile} pid={post.id} voteCount={tempVoteCount}/>
+                        <PollProfile user={user} navigateProfile={navigateProfile} pid={post.id} voteCount={tempVoteCount} postTime={post.created_at}/>
                         <CommentsButton navigateComments={navigateComments}/>
                     </View>
 

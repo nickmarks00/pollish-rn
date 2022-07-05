@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { getPollVotes } from 'endpoints/pollish';
+import moment from 'moment';
 
-const PollProfile = ({ user, navigateProfile, pid, voteCount }) => {
+const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime }) => {
 
     const [noProfilePic, setError] = React.useState(false);
 
@@ -25,7 +26,7 @@ const PollProfile = ({ user, navigateProfile, pid, voteCount }) => {
                 </View>
                 <View style={{ width: '2%' }}/>
                 <View style={{justifyContent: 'center'}}>
-                    <Text style={{ color: '#6c6c6c', fontSize: 10 }}>2min ago</Text>
+                    <Text style={{ color: '#6c6c6c', fontSize: 10 }}>{moment(postTime).fromNow()}</Text>
                     <View style={{height: '5%'}}/>
                     <Text></Text>
                 </View>

@@ -10,7 +10,7 @@ import ProfileStack from '../stacks/ProfileStack';
 import TestingSpace from '../screens/Tabs/ProfilePage';
 import CommunityTab from '../screens/Tabs/CommunityTab';
 import colors from '../config/colors';
-
+import CommuntityStack from '../stacks/CommunityStack'
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = props => {
@@ -33,14 +33,13 @@ const AppNavigator = props => {
               name={'poll'}
               size={30}
               color={focused ? colors.secondary : 'black'}
-              style={{borderTopWidth: 1, borderTopColor: 'red'}}
             />
           ),
         }}
       />
       <Tab.Screen
         name="Community"
-        component={CommunityTab}
+        component={CommuntityStack}
         options={{
           tabBarIcon: ({focused}) => (
             <MaterialCommunityIcons

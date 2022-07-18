@@ -33,7 +33,10 @@ const SearchStack = () => {
           pollListScreen: 'S_PollList',
           communityListScreen: 'S_CommunityList',
         }}
-        options={{headerShown: false, contentStyle: {backgroundColor: '#FFF'}}}
+        options={({route}) => ({
+          title: route.params.title,
+          contentStyle: {backgroundColor: '#FFF'},
+        })}
         component={ProfilePage}
       />
       <Stack.Screen
@@ -55,6 +58,9 @@ const SearchStack = () => {
       <Stack.Screen
         name="S_PollList"
         initialParams={{pollScreen: 'S_Poll'}}
+        options={({route}) => ({
+          title: route.params.title,
+        })}
         component={PollsScreen}
       />
       <Stack.Screen
@@ -63,6 +69,7 @@ const SearchStack = () => {
           commentsScreen: 'S_Comments',
           profileScreen: 'S_Profile',
         }}
+        options={{title: ''}}
         component={SinglePoll}
       />
       <Stack.Screen

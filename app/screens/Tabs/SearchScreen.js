@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import {searchPolls, searchCommunities} from 'endpoints/pollish';
 import {searchUsers} from 'endpoints/core';
+import PollCard from 'components/pollCard';
+import { FlatList } from 'react-native-gesture-handler';
+import UserCard from '../../components/userCard';
+import CommunityCard from '../../components/communityCard';
 
 const dimensions = Dimensions.get('screen');
 
@@ -34,10 +38,10 @@ const SearchScreen = ({navigation}) => {
 
   const nextPage = poll => {
     if (toggle === 'user') {
-      navigation.push('S_Profile', {user: poll});
+      navigation.push('S_Profile', {user: poll, title: poll.username});
     } else if (toggle === 'comm') {
       console.log(poll.id);
-      // navigation.push('S_Community', {id: post.community.id})
+      navigation.push('S_Community', {id: poll.id})
     } else if (toggle === 'poll') {
       navigation.push('S_Poll', {id: poll.id});
     }
@@ -49,13 +53,16 @@ const SearchScreen = ({navigation}) => {
       setContent(data.data.results);
     } else if (toggle === 'comm') {
       const data = await searchCommunities(text);
-      setContent(data.data);
+      setContent(data.data.results);
     } else if (toggle === 'user') {
       const data = await searchUsers(text);
-      console.log(data.data)
-      setContent(data.data);
+      setContent(data.data.results);
     }
   };
+  
+  const navToProfile = (user) => {
+    navigation.push('S_Profile', {user: user, show: true, title: user.username})
+  }
 
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
@@ -88,23 +95,51 @@ const SearchScreen = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{flex: 1, padding: '2%'}}>
-          {content?.map((poll, idx) => {
-            return (
-              <TouchableOpacity key={idx} onPress={() => nextPage(poll)}>
-                <Text style={{padding: '3%', margin: '2%', borderWidth: 1}}>
-                  {toggle === 'poll'
-                    ? poll.question_text
-                    : toggle === 'user'
-                    ? poll.username
-                    : poll.name}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+
+      {toggle == 'poll' ? 
+      
+        <View style={{flex: 1}}>
+          <FlatList
+            data={content}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <View style={{flex: 1}}>
+                <TouchableOpacity onPress={() => nextPage(item)}>
+                  <PollCard id={item.id} qText={item.question_text}/>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
         </View>
-      </ScrollView>
+      : toggle == 'comm' ?
+        <View style={{flex: 1}}>
+          <FlatList
+              data={content}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => (
+                <View style={{flex: 1}}>
+                  <TouchableOpacity onPress={() => nextPage(item)}>
+                    <CommunityCard comm={item}/>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+        </View>
+      :
+        <View style={{flex: 1}}>
+          <FlatList
+            data={content}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <View style={{flex: 1}}>
+                <TouchableOpacity onPress={() => nextPage(item)}>
+                  <UserCard oUser={item} navToProfile={navToProfile}/>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+      }
     </View>
   );
 };

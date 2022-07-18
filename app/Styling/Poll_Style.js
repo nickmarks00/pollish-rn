@@ -16,7 +16,6 @@ const Question_Box = {
     flex: 1,
     paddingVertical: '5%',
     paddingHorizontal: '2%',
-    backgroundColor: '#FAFAFA'
 }
 
 // Question text styling for a post

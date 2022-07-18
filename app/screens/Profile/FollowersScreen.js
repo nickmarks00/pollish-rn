@@ -52,7 +52,7 @@ const FollowersScreen = ({route, navigation}) => {
   const Following = ({route, navigation}) => {
 
     const navToProfile = (user) => {
-      navigation.push(route.params.profileScreen, {user: user, show: true})
+      navigation.push(route.params.profileScreen, {user: user, show: true, title: user.username})
     }
 
     if(route.params.fers)
@@ -60,7 +60,7 @@ const FollowersScreen = ({route, navigation}) => {
         <View style={{flex: 1, marginTop: '3%', alignItems: 'center'}}>
           {followList?.map((user, idx) => {
             return (
-              <UserCard key={idx} user={user} navToProfile={navToProfile}/>
+              <UserCard key={idx} oUser={user} navToProfile={navToProfile}/>
             );
           })}
         </View>
@@ -70,7 +70,7 @@ const FollowersScreen = ({route, navigation}) => {
         <View style={{flex: 1, marginTop: '3%', alignItems: 'center'}}>
           {followerList?.map((user, idx) => {
             return (
-              <UserCard key={idx} user={user} navToProfile={navToProfile}/>
+              <UserCard key={idx} oUser={user} navToProfile={navToProfile}/>
             );
           })}
         </View>

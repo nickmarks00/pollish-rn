@@ -114,20 +114,18 @@ const ProfilePage = ({route, navigation}) => {
 
   return (
     <View style={{alignItems: 'center'}}>
-      {!route.params?.user && (
+      {/* {!route.params?.user && (
         <Ionicons
           name={'settings-outline'}
           size={30}
           color={'black'}
           style={{
-            borderTopWidth: 1,
-            borderTopColor: 'red',
             position: 'absolute',
             top: '8%',
             right: '8%',
           }}
         />
-      )}
+      )} */}
 
       <View style={{height: route.params?.user ? '5%' : '15%'}} />
 
@@ -161,7 +159,7 @@ const ProfilePage = ({route, navigation}) => {
         {route.params?.user ? route.params.user.username : user.username}
       </Text>
 
-      {route.params?.user && (
+      {(route.params?.user && (route.params.user.id != user.id)) && (
         <View>
           <ColoredButton
             fill={!isFollowing}
@@ -186,6 +184,7 @@ const ProfilePage = ({route, navigation}) => {
           onPress={() =>
             navigation.push(route.params.pollListScreen, {
               id: route.params?.user ? route.params.user.id : user.id,
+              title: route.params?.title ? route.params.title : user.username
             })
           }>
           <PVV_Text num={polls.length} text={'Polls'} />
@@ -217,11 +216,13 @@ const ProfilePage = ({route, navigation}) => {
 
       <View style={{height: '6%'}} />
 
+      {!route.params?.user && (
       <ListItem
         title="Log Out"
         IconComponent={<Icon name="logout" backgroundColor={colors.primary} />}
         onPress={() => logOut()}
       />
+      )}
     </View>
   );
 };

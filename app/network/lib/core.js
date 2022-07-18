@@ -6,6 +6,11 @@ export function getUser(uid){
     return axiosClient.get(`${users}/${uid}/`);
 }
 
+export function getCuratedFeed(uid) {
+    return axiosClient.get(`${users}/${uid}/feed/`);
+  }
+  
+
 export function getFollowers(uid){
     return axiosClient.get(`${users}/${uid}/followers/`);
 }
@@ -35,7 +40,6 @@ export function searchUsers(query){
 }
 
 export function followUser(mid, uid, follow){
-    console.log(mid + ' ' + uid + ' ' + follow)
     return axiosClient.put(follow ? `${users}/${mid}/?unfollow=True&user_id=${uid}` : `${users}/${mid}/?user_id=${uid}`);
 }
 

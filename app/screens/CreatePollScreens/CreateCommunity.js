@@ -5,12 +5,13 @@ import MediaContainer from './MediaContainer';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import authStorage from '../../auth/storage';
 import {REACT_APP_BASE_URL} from '@env';
+import { createCommunity } from '../../network/lib/pollish';
 
 const CreateCommunity = ({setCommunity}) => {
   const [title, setTitle] = React.useState('');
   const [media, setMedia] = React.useState(null);
 
-  const createCommunity = async () => {
+  const createComm = async () => {
     const res = await authStorage.getTokens();
     const access = JSON.parse(res).access;
     var myHeaders = new Headers();
@@ -31,10 +32,12 @@ const CreateCommunity = ({setCommunity}) => {
       redirect: 'follow',
     };
 
-    fetch(`${REACT_APP_BASE_URL}/pollish/communities/`, requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+    const data = await createCommunity(formdata);
+
+    // fetch(`${REACT_APP_BASE_URL}/pollish/communities/`, requestOptions)
+    //   .then(response => response.text())
+    //   .then(result => console.log(result))
+    //   .catch(error => console.log('error', error));
     setCommunity(false);
   };
 
@@ -69,7 +72,7 @@ const CreateCommunity = ({setCommunity}) => {
         openImagePickerAsync={openImagePickerAsync}
         media={media}
       />
-      <TouchableOpacity onPress={() => createCommunity()}>
+      <TouchableOpacity onPress={() => createComm()}>
         <Text>CREATE</Text>
       </TouchableOpacity>
     </View>

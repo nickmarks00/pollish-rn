@@ -6,44 +6,34 @@ import {
   RefreshControl,
   Modal,
 } from 'react-native';
-import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import { getCuratedFeed } from 'endpoints/core';
+import PollDisplay from '../components/pollDisplay';
 
-import {REACT_APP_REACT_APP_BASE_URL} from '@env';
-import {PrimaryPollish} from '../../Styling/App_Styles';
-import {getPollFeed} from 'endpoints/pollish';
-import PollDisplay from '../../components/pollDisplay';
-import ColoredButton from '../../components/coloredButton';
-import colors from '../../config/colors';
-import CreatePoll from '../CreatePollScreens/CreatePoll';
 
-const HomeScreen = ({hideHeader, feedType}) => {
+const UserFeed = ({hideHeader, feedType}) => {
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [create, setCreate] = useState(false);
   const [number, setNum] = useState(1);
+  const {user, logOut} = useAuth();
+
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    fetchDataFromApi(1);
+    fetchDataFromApi();
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
-    fetchDataFromApi(1);
+    fetchDataFromApi();
   }, []);
 
-  const fetchDataFromApi = async page => {
-    const polls = await getPollFeed(page);
-    setPosts(polls.data.results);
-  };
-
-  const loadMoreData = async page => {
-    const polls = await getPollFeed(page);
-    const total = [...posts, ...polls.data.results];
-    setPosts(total);
+  const fetchDataFromApi = async () => {
+    const polls = await getCuratedFeed(user.id);
+    setPosts(polls.data[0]);
   };
 
   return (
@@ -68,14 +58,9 @@ const HomeScreen = ({hideHeader, feedType}) => {
           />
         }
         onScroll={(e) => hideHeader(e.nativeEvent.contentOffset.y)}
-        onEndReachedThreshold={0.01}
-        onEndReached={info => {
-          loadMoreData(number + 1);
-          setNum(number + 1);
-        }}
       />
     </View>
   );
 };
 
-export default HomeScreen;
+export default UserFeed;

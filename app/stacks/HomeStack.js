@@ -8,6 +8,7 @@ import CommunityList from '../screens/Profile/UserCommunities';
 import CommunitiesScreen from '../screens/Community';
 import TestingSpace from '../screens/Tabs/ProfilePage';
 import SinglePoll from '../screens/SinglePoll';
+import FeedScreen from '../screens/Tabs/FeedScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,19 +24,30 @@ const MyStack = () => {
         >
           <Stack.Screen
             initialParams={{commentsScreen: 'H_Comments', profileScreen: 'H_Profile'}}
-            options={{headerShown: false}} name="Home" component={HomeScreen}
+            options={{headerShown: false}} name="Home" component={FeedScreen}
             screenOptions={{ transitionSpec: { open: config, close: config } }}
           />
-          <Stack.Screen name="H_Comments" component={CommentSection} initialParams={{profileScreen: 'H_Profile'}} options={{headerShown: false}} />
-          <Stack.Screen name="H_Poll" component={SinglePoll} initialParams={{commentsScreen: 'H_Comments', profileScreen: 'H_Profile'}} />
-          <Stack.Screen name="H_Profile" initialParams={{followScreen: 'H_Follow', pollListScreen: 'H_PollList', communityListScreen: 'H_CommunityList'}} component={TestingSpace} options={({route}) => ({
-          title: route.params.title,
-          headerShown: true,
+          <Stack.Screen name="H_Comments" component={CommentSection} initialParams={{profileScreen: 'H_Profile'}} options={{headerShown: true, title: '', headerBackTitle: 'Poll'}} />
+          <Stack.Screen name="H_Poll" component={SinglePoll} initialParams={{commentsScreen: 'H_Comments', profileScreen: 'H_Profile'}} options={{title: '', headerBackTitle: 'Back'}}/>
+          <Stack.Screen name="H_Profile" initialParams={{followScreen: 'H_Follow', pollListScreen: 'H_PollList', communityListScreen: 'H_CommunityList'}} component={TestingSpace} 
+            options={({route}) => ({
+              title: route.params.title,
+              headerShown: true,
         })}/>
-          <Stack.Screen name="H_Follow" initialParams={{profileScreen: 'H_Profile'}} options={{contentStyle: {backgroundColor: '#FFF'}}} component={FollowersScreen} />
-          <Stack.Screen name="H_PollList" component={PollsScreen} initialParams={{pollScreen: 'H_Poll'}} />
+          <Stack.Screen name="H_Follow" initialParams={{profileScreen: 'H_Profile'}} component={FollowersScreen} options={({route}) => ({
+              title: route.params.title,
+              headerShown: true,
+              contentStyle: {backgroundColor: '#FFF'}
+        })} />
+          <Stack.Screen name="H_PollList" component={PollsScreen} initialParams={{pollScreen: 'H_Poll'}} options={({route}) => ({
+              title: route.params.title,
+              headerShown: true,
+        })}/>
           <Stack.Screen name="H_CommunityList" component={CommunityList} initialParams={{communityScreen: 'H_Community'}}  />
-          <Stack.Screen name="H_Community" component={CommunitiesScreen} initialParams={{pollScreen: 'H_Poll'}}  />
+          <Stack.Screen name="H_Community" component={CommunitiesScreen} initialParams={{pollScreen: 'H_Poll'}} options={({route}) => ({
+              title: route.params.title,
+              headerShown: true,
+        })} />
         </Stack.Navigator>
     );
   };

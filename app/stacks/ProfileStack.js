@@ -33,6 +33,7 @@ const ProfileStack = () => {
         options={({route}) => ({
           headerShown: route.params.show ? true : false,
           contentStyle: {backgroundColor: '#FFF'},
+          title: route.params.title
         })}
         component={TestingSpace}
       />
@@ -49,6 +50,10 @@ const ProfileStack = () => {
         name="P_PollList"
         initialParams={{pollScreen: 'P_Poll'}}
         component={PollsScreen}
+        options={({route}) => ({
+          title: route.params.title,
+          headerShown: true,
+    })}
       />
       <Stack.Screen
         name="P_Poll"
@@ -56,6 +61,7 @@ const ProfileStack = () => {
           commentsScreen: 'P_Comments',
           profileScreen: 'P_Profile',
         }}
+        options={{title: '', headerBackTitle: 'Back'}}
         component={SinglePoll}
       />
       <Stack.Screen

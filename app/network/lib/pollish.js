@@ -15,6 +15,10 @@ export function getCommPolls(id) {
   return axiosClient.get(`${communities}/${id}/`);
 }
 
+export function getCommunities() {
+  return axiosClient.get(`${communities}/`);
+}
+
 export function getPollFeed(num) {
   return axiosClient.get(`${polls}/?page=${num}`);
 }
@@ -29,6 +33,14 @@ export function searchCommunities(query) {
 
 export function checkVote(pid) {
   return axiosClient.get(`${polls}/${pid}/`);
+}
+
+export function followCommunity(cid, uid) {
+  return axiosClient.put(`${communities}/${cid}/?user_id=${uid}`)
+}
+
+export function createCommunity(data) {
+  return axiosClient.post(`${communities}/`, data)
 }
 
 export async function getPollVotes(pid) {

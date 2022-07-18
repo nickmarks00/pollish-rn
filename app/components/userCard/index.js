@@ -2,19 +2,36 @@ import React from 'react';
 import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
 import ColoredButton from '../coloredButton';
 import { getFollowers } from 'endpoints/core';
+import { checkFollowing } from '../../network/lib/core';
+import { followUser } from '../../network/lib/core';
 
-const UserCard = ({user, navToProfile}) => {
+const UserCard = ({oUser, navToProfile}) => {
 
     const [numFollower, setNumFollowers] = React.useState(0);
+    const [isFollowing, setIsFollowing] = React.useState(false);
+    const {user, logOut} = useAuth();
+
 
     React.useEffect(() => {
         loadFollowerCount();
+        checkFollow();
     }, []);
     
     const loadFollowerCount = async () => {
-        const data = await getFollowers(user.id);
+        const data = await getFollowers(oUser.id);
         setNumFollowers(data.data.length);
     }
+
+    const checkFollow = async () => {
+        const data = await checkFollowing(user.id, oUser.id);
+        setIsFollowing(data.data);
+    };
+
+    const follow = async () => {
+        const follow = await checkFollowing(user.id, oUser.id);
+        const data = await followUser(user.id, oUser.id, follow.data);
+        setIsFollowing(!follow.data);
+    };
 
 
     return (
@@ -34,10 +51,10 @@ const UserCard = ({user, navToProfile}) => {
                 }}
                 
                 onPress={() => { 
-                  navToProfile(user)
+                  navToProfile(oUser)
                 }
                 }>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{flexDirection: 'row', alignItems: 'center', width: Dimensions.get('screen').width}}>
                     <View style={{
                       margin: '2%',
                       width: '10%',
@@ -53,7 +70,7 @@ const UserCard = ({user, navToProfile}) => {
                         textAlign: 'center',
                         color: 'white',
                         fontWeight: 'bold'
-                      }}>{user.username.slice(0,1).toUpperCase()}</Text>
+                      }}>{oUser.username.slice(0,1).toUpperCase()}</Text>
                     </View>
                     <View style={{marginHorizontal: '2%'}}>
                     <Text
@@ -62,12 +79,12 @@ const UserCard = ({user, navToProfile}) => {
                         fontSize: 16,
                         fontWeight: 'bold'
                       }}>
-                      {user.username}
+                      {oUser.username}
                     </Text>
                     <Text>{numFollower} Followers</Text>
                     </View>
-                    <View style={{marginVertical: '2%', marginLeft: '25%'}}>
-                      <ColoredButton color={'#907AD6'} text={'Following'}/>
+                    <View style={{position: 'absolute', marginVertical: '2%', right: '5%', width: '30%', justifyContent: 'center'}}>
+                      <ColoredButton fill={!isFollowing} color={'#907AD6'} text={isFollowing ? 'Following' : 'Follow'} whenPressed={follow}/>
                     </View>
                   </View>
               </TouchableOpacity>

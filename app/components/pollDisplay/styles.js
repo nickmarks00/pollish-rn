@@ -4,7 +4,7 @@ const dimensions = Dimensions.get("window");
 
 const Styles = StyleSheet.create({
     questionText: {
-        fontSize: dimensions.height/50
+        fontSize: dimensions.width/22
     },
     container: {
         width: '100%',

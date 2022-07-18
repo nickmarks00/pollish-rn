@@ -6,6 +6,11 @@ export function getUser(uid){
     return axiosClient.get(`${users}/${uid}/`);
 }
 
+export function getCuratedFeed(uid) {
+    return axiosClient.get(`${users}/${uid}/feed/`);
+  }
+  
+
 export function getFollowers(uid){
     return axiosClient.get(`${users}/${uid}/followers/`);
 }

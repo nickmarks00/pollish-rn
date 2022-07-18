@@ -11,6 +11,7 @@ const PollCard = ({color, qText, id}) => {
 
     const [poll, setPoll] = React.useState(null)
     const [votes, setVotes] = React.useState(0)
+    const [noProfilePic, setError] = React.useState(true);
 
     React.useEffect(() => {
         loadPoll();
@@ -28,8 +29,8 @@ const PollCard = ({color, qText, id}) => {
 
     return (
         <View style={Styles.container}>
-            { poll?.images.length > 0 ? 
-                <Image source={{uri: `http://${url}${poll.images[0].image}`}} style={Styles.pollImage}/> 
+            { (poll?.images.length > 0 && noProfilePic)  ? 
+                <Image source={{uri: `http://${url}${poll.images[0].image}`}} style={Styles.pollImage} onError={()=> setError(false)}/> 
             :
                 <View style={Styles.noImage}>
                     <Text style={Styles.noImageText}>{qText.slice(0,1)}</Text>

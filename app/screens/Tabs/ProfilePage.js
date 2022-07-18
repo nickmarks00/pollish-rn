@@ -22,6 +22,7 @@ import {
   checkFollowing,
   followUser,
 } from 'endpoints/core';
+import { useIsFocused } from '@react-navigation/native';
 
 const dimensions = Dimensions.get('screen');
 const url = REACT_APP_BASE_URL;
@@ -46,18 +47,27 @@ const PVV_Text = ({num, text}) => {
 };
 
 const ProfilePage = ({route, navigation}) => {
+
+  const isFocused = useIsFocused();
+
   const {user, logOut} = useAuth();
   const [followers, setFollowers] = React.useState(0);
   const [following, setFollowing] = React.useState(0);
   const [polls, setPolls] = React.useState([]);
   const [isFollowing, setIsFollowing] = React.useState(false);
+  const [noProfilePic, setError] = React.useState(true);
 
   React.useEffect(() => {
+    if(isFocused) 
+      getInitialData();
+  }, [isFocused]);
+
+  const getInitialData = () => {
     findFollowers();
     findFollowing();
     findPolls();
     checkFollow();
-  }, []);
+  }
 
   const checkFollow = async () => {
     if (route.params?.user) {
@@ -97,41 +107,46 @@ const ProfilePage = ({route, navigation}) => {
   const follow = async () => {
     if (route.params?.user) {
       const follow = await checkFollowing(user.id, route.params.user.id);
-      const data = await followUser(user.id, route.params.user.id, follow);
+      const data = await followUser(user.id, route.params.user.id, follow.data);
       setIsFollowing(!follow.data);
     }
   };
 
-  console.log(route.params?.user ? route.params.user.votes_registered : 2)
-
   return (
     <View style={{alignItems: 'center'}}>
-      {!route.params?.user && (
+      {/* {!route.params?.user && (
         <Ionicons
           name={'settings-outline'}
           size={30}
           color={'black'}
           style={{
-            borderTopWidth: 1,
-            borderTopColor: 'red',
             position: 'absolute',
             top: '8%',
             right: '8%',
           }}
         />
-      )}
+      )} */}
 
       <View style={{height: route.params?.user ? '5%' : '15%'}} />
 
       {/* Profile Image */}
-      <Image
-        source={{
-          uri: route.params?.user
-            ? `http://${url}${route.params.user.profile.avatar}`
-            : user.profile.avatar,
-        }}
-        style={Styles.profilePic}
-      />
+      { noProfilePic ?
+        <Image
+          source={{
+            uri: route.params?.user
+              ? `http://${url}${route.params.user.profile.avatar}`
+              : user.profile.avatar,
+          }}
+          style={Styles.profilePic}
+          onError={() => setError(false)}
+        />
+      :
+        <View style={Styles.profilePic}>
+          <Text style={Styles.noProfileInitial}>
+            {user.username.slice(0,1).toUpperCase()}
+          </Text>
+        </View>
+      }
 
       {/* Profile Name */}
       <Text
@@ -144,7 +159,7 @@ const ProfilePage = ({route, navigation}) => {
         {route.params?.user ? route.params.user.username : user.username}
       </Text>
 
-      {route.params?.user && (
+      {(route.params?.user && (route.params.user.id != user.id)) && (
         <View>
           <ColoredButton
             fill={!isFollowing}
@@ -169,6 +184,7 @@ const ProfilePage = ({route, navigation}) => {
           onPress={() =>
             navigation.push(route.params.pollListScreen, {
               id: route.params?.user ? route.params.user.id : user.id,
+              title: route.params?.title ? route.params.title : user.username
             })
           }>
           <PVV_Text num={polls.length} text={'Polls'} />
@@ -200,11 +216,13 @@ const ProfilePage = ({route, navigation}) => {
 
       <View style={{height: '6%'}} />
 
+      {!route.params?.user && (
       <ListItem
         title="Log Out"
         IconComponent={<Icon name="logout" backgroundColor={colors.primary} />}
         onPress={() => logOut()}
       />
+      )}
     </View>
   );
 };
@@ -218,5 +236,13 @@ const Styles = StyleSheet.create({
     resizeMode: 'contain',
     borderColor: '#ffeef7',
     borderWidth: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
+  noProfileInitial: {
+    textAlign: 'center',
+    color: colors.secondary,
+    fontWeight: 'bold',
+    fontSize: dimensions.height/10
+}
 });

@@ -3,14 +3,12 @@
 */
 
 import { Dimensions } from "react-native"
-import { PrimaryPollish } from "./App_Styles";
 const dimensions = Dimensions.get("screen");
 
 // Container displaying question text inside of Question_Container
 const Question_Box = {
     height: dimensions.width/5,
     width: dimensions.width/1.5,
-    backgroundColor: 'black',
     margin: -40,
     zIndex: -1,
     alignContent: 'center',
@@ -141,9 +139,8 @@ const Modal_Position = {
 }
 
 const Question_Container = {
-    marginTop: dimensions.height/30, 
     width: dimensions.width, 
-    height: dimensions.height/7
+    height: dimensions.height/7,
 }
 
 const Comments_DisplayArea = {

@@ -94,10 +94,10 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
                 <View style={Styles.container}>
-                    <View style={{height: single ? '10%' : null}}>
+                    <View style={{height: single ? '10%' : null, marginBottom: '5%'}}>
                         {post?.community ?
                             <TouchableOpacity 
-                                onPress={() => navigation.push('H_Community', {id: post.community.id})}
+                                onPress={() => navigation.push('H_Community', {id: post.community.id, title: post.community.name})}
                             >
                                 <Text>{post.community.name}</Text>
                             </TouchableOpacity>

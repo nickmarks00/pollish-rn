@@ -69,7 +69,10 @@ const PostPoll = async ({text, ch, m}) => {
     .then(response => response.json())
     .then(response => {
       id = response.id;
+      console.log(response)
     });
+
+  console.log('id is ' + id)
 
   if (id !== -1) {
     if (m.m1) Post_Image({m: m.m1, id: id, access: access});
@@ -77,6 +80,9 @@ const PostPoll = async ({text, ch, m}) => {
     if (m.m3) Post_Image({m: m.m3, id: id, access: access});
     if (m.m4) Post_Image({m: m.m4, id: id, access: access});
   }
+
+  console.log(id)
+  return id;
 };
 
 const Post_Image = async ({m, id, access}) => {

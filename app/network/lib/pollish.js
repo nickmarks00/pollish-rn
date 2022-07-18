@@ -43,6 +43,10 @@ export function createCommunity(data) {
   return axiosClient.post(`${communities}/`, data)
 }
 
+export function assignToComm(cid, pid) {
+  return axiosClient.put(`${communities}/${cid}/?poll_id=${pid}`)
+}
+
 export async function getPollVotes(pid) {
   const data = await getPoll(pid);
   var votes = 0;

@@ -3,9 +3,8 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { VoteButton, PollProfile, CommentsButton } from 'components';
 import Styles from './styles';
-import { RegisterVote } from '../../api/post';
 
-import { getPoll } from '../../network/lib/pollish';
+import { getPoll, registerVote } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
 
 const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
@@ -14,7 +13,8 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     const navigation = useNavigation();
 
     const [post, setPost] = useState(null);
-    const [user, setUser] = useState(null);
+    const [oUser, setUser] = useState(null);
+    const {user, logout} = useAuth();
 
 
     const [voteCount, setVoteCount] = useState(0);
@@ -35,10 +35,12 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     }, [post]);
 
     useEffect(() => {
-        if(voteCount != tempVoteCount)
+        if(voteCount != tempVoteCount){
             setTempVoteCount(voteCount)
-        if(userVote != userVote)
+        }
+        if(userVote != tempUserVote){
             setTempUserVote(userVote)
+        }
     }, [voteCount, userVote])
 
     const loadPoll = async () => {
@@ -57,8 +59,11 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
     const checkVote = async () => {
         const response = await getPoll(route.params?.id ? route.params.id : id);
-        if (userVote != response.data.user_vote)
+        console.log(response.data.user_vote)
+        if (userVote != response.data.user_vote){
+            console.log('registering')
             setUserVote(response.data.user_vote);
+        }
 
         var count = 0;
         response.data.choices.map((choice, idx) => {
@@ -68,7 +73,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     };
 
     const navigateProfile = () => {
-        navigation.push(profileScreen, {user: user, title: user.username});
+        navigation.push(profileScreen, {user: oUser, title: oUser.username});
     };
     
     const navigateComments = () => {
@@ -76,21 +81,30 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     };
 
     const offlineVoteUpdate = (cid) => {
-        RegisterVote({cid: cid, id: post.id})
+        
         if(tempUserVote == cid){
+            registerVote(post.id, user.id, cid, null)
             setTempUserVote(null)
-            setTempVoteCount(voteCount)
+            if (userVote)
+                setTempVoteCount(voteCount-1)
+            else
+                setTempVoteCount(voteCount)
         }
         else if (tempUserVote != null){
+            registerVote(post.id, user.id, tempUserVote, cid)
             setTempUserVote(cid)
         }
         else{
+            registerVote(post.id, user.id, null, cid)
             setTempUserVote(cid)
-            setTempVoteCount(voteCount+1)
+            if(userVote)
+                setTempVoteCount(voteCount)
+            else
+                setTempVoteCount(voteCount+1)
         }
     }
 
-    if (post && user){
+    if (post && oUser){
         return (
             <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
                 <View style={Styles.container}>
@@ -109,7 +123,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
                     {/* Profile Heading and comments navigation button */}
                     <View style={[Styles.profileContainer, {height: single ? '20%' : null}]}>
-                        <PollProfile user={user} navigateProfile={navigateProfile} pid={post.id} voteCount={tempVoteCount} postTime={post.created_at}/>
+                        <PollProfile user={oUser} navigateProfile={navigateProfile} pid={post.id} voteCount={tempVoteCount} postTime={post.created_at}/>
                         <CommentsButton navigateComments={navigateComments}/>
                     </View>
 
@@ -134,6 +148,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
                                 choice={choice}
                                 voteCount={ tempVoteCount}
                                 unVoted={unVoted}
+                                userVote={userVote}
                                 setUnvoted={setUnvoted}
                             />
                         )

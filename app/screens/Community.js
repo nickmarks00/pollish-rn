@@ -28,7 +28,11 @@ const Community = ({route, navigation}) => {
   }, []);
 
   const checkIfFollowing = async () => {
-    const data = await getUserComms(user.id)    
+    const data = await getUserComms(user.id);
+    await data.data.results.map(choice => {
+      if(choice.id == route.params.id)
+        setIsFollowing(true);
+    });
   }
 
   const loadCommPolls = async () => {

@@ -23,7 +23,7 @@ const VoteButton = (props) => {
                 <View style={{width: '10%'}}/>
             }
             { props.chosen != 0 &&
-                <Text>{Math.round(((props.choice.num_votes + (props.chosen == 2 ? 1 : 0)) / props.voteCount)*100)}%</Text>
+                <Text>{Math.round(((props.choice.num_votes + ((props.chosen == 2) ? props.userVote != props.choice.id ? 1 : 0 : props.userVote  == props.choice.id ? -1 : 0)) / props.voteCount)*100)}%</Text>
             }
           </View>
       </TouchableOpacity>

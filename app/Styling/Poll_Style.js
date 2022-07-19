@@ -1,5 +1,4 @@
 import {Dimensions} from 'react-native';
-import {PrimaryFont, NavColor} from './App_Styles';
 
 const dimensions = Dimensions.get("screen");
 
@@ -9,35 +8,11 @@ const Post_Image = {
     flex: 1,
 }
 
-// Container for the question area of poll post
-const Question_Box = {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    paddingVertical: '5%',
-    paddingHorizontal: '2%',
-}
-
-// Question text styling for a post
-const Post_Question = {
-    fontFamily: PrimaryFont,
-    textAlign: 'center',
-    paddingHorizontal: '5%',
-}
-
 // Container for storing additional options at base of poll (stats, report, comment)
 const More_Options = {
     marginVertical: '5%',
     flex: 1,
     justifyContent: 'center',
-}
-
-// Circle colour on post option
-const Circle_Option = {
-    borderRadius: dimensions.height/60,
-    justifyContent: 'center',
-    height: '50%',
-    aspectRatio: 1
 }
 
 // Interior elements of an option button (Letter, Text, etc)
@@ -69,7 +44,7 @@ const Post_Option = {
 // Nav Text for comments and more info
 const Nav_Text = {
     fontWeight: 'bold', 
-    color: NavColor, 
+    color: '#1F71EB', 
     fontSize: dimensions.height/70
 }
 
@@ -93,6 +68,5 @@ const Media_DropShadow = {
 
 
 
-export {Post_Image, Question_Box, Post_Question, More_Options, 
-        Circle_Option, Inner_Option_Container, Option_Text,
+export {Post_Image, More_Options, Inner_Option_Container, Option_Text,
         Post_Option, Nav_Text, Media_Container, Media_DropShadow } 

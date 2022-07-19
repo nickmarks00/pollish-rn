@@ -75,7 +75,6 @@ const UserCard = ({oUser, navToProfile}) => {
                     <View style={{marginHorizontal: '2%'}}>
                     <Text
                       style={{
-                        margin: '2%',
                         fontSize: 16,
                         fontWeight: 'bold'
                       }}>

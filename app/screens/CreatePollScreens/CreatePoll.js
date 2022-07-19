@@ -84,7 +84,7 @@ const CreatePoll = ({setPoll}) => {
     const data = await PostPoll({text: questionText, ch: ch, m: media});
     if (data != -1 && comm != null) {
         console.log('id: ' + data + ' comm ' + comm.id)
-        // assignToComm(comm.id, data)
+        assignToComm(comm.id, data)
     }
 
     setQuestionText('');

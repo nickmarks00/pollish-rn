@@ -22,11 +22,6 @@ const SearchScreen = ({navigation}) => {
   const [content, setContent] = useState([]);
   const [toggle, setToggle] = useState('poll');
 
-  useEffect(() => {
-    setContent([])
-    setSearch('')
-  }, [toggle]);
-
   const searchFilter = text => {
     if (text) {
       findContent(text);
@@ -41,7 +36,7 @@ const SearchScreen = ({navigation}) => {
       navigation.push('S_Profile', {user: poll, title: poll.username});
     } else if (toggle === 'comm') {
       console.log(poll.id);
-      navigation.push('S_Community', {id: poll.id})
+      navigation.push('S_Community', {id: poll.id, title: poll.name})
     } else if (toggle === 'poll') {
       navigation.push('S_Poll', {id: poll.id});
     }
@@ -59,6 +54,16 @@ const SearchScreen = ({navigation}) => {
       setContent(data.data.results);
     }
   };
+
+  const clearContent = async () => {
+    setContent([])
+    setSearch('')
+  }
+
+  const onToggle = async (tabType) => {
+    await clearContent()
+    setToggle(tabType)
+  }
   
   const navToProfile = (user) => {
     navigation.push('S_Profile', {user: user, show: true, title: user.username})
@@ -75,21 +80,21 @@ const SearchScreen = ({navigation}) => {
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity
           style={{padding: '3%'}}
-          onPress={() => setToggle('poll')}>
+          onPress={() => onToggle('poll')}>
           <Text style={{color: toggle === 'poll' ? 'blue' : 'black'}}>
             Poll
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{padding: '3%'}}
-          onPress={() => setToggle('comm')}>
+          onPress={() => onToggle('comm')}>
           <Text style={{color: toggle === 'comm' ? 'blue' : 'black'}}>
             Community
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{padding: '3%'}}
-          onPress={() => setToggle('user')}>
+          onPress={() => onToggle('user')}>
           <Text style={{color: toggle === 'user' ? 'blue' : 'black'}}>
             User
           </Text>

@@ -27,10 +27,10 @@ const CommunityStack = () => {
                 <Stack.Screen name="C_Profile" initialParams={{ show: false, followScreen: 'C_Follow', pollListScreen: 'C_PollList', communityListScreen: 'C_CommunityList'}} options={({ route }) => ({headerShown: route.params.show ? true: false, contentStyle: {backgroundColor: '#FFF'}})} component={TestingSpace} />
                 <Stack.Screen name="C_Follow" initialParams={{profileScreen: 'C_Profile'}} options={({ route }) => ({ title: route.params.title, contentStyle: {backgroundColor: '#FFF'}})} component={FollowersScreen} />
                 <Stack.Screen name="C_PollList" initialParams={{pollScreen: 'C_Poll'}} component={PollsScreen}/>
-                <Stack.Screen name="C_Poll" initialParams={{commentsScreen: 'C_Comments', profileScreen: 'C_Profile'}} component={SinglePoll}/>
+                <Stack.Screen name="C_Poll" initialParams={{commentsScreen: 'C_Comments', profileScreen: 'C_Profile'}} component={SinglePoll} options={{title: ''}}/>
                 <Stack.Screen name="C_Comments" initialParams={{profileScreen: 'C_Profile'}} component={CommentSection}/>
                 <Stack.Screen name="C_CommunityList" initialParams={{communityScreen: 'C_Community'}} component={CommunityList} />
-                <Stack.Screen name="C_Community" initialParams={{pollScreen: 'C_Poll'}} component={CommunitiesScreen} />
+                <Stack.Screen name="C_Community" initialParams={{pollScreen: 'C_Poll'}} component={CommunitiesScreen} options={({ route }) => ({ title: route.params.title})}/>
             </Stack.Navigator>
     )
 }

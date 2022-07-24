@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, FlatList } from 'react-native';
 import { getUserPolls } from 'endpoints/core';
 import PollCard from '../../components/pollCard';
 
@@ -15,6 +15,7 @@ const PollsScreen = ({route, navigation}) => {
 
     React.useEffect(() => {
         loadPolls();
+        console.log(polls)
       }, []);
 
     const loadPolls = async () => {
@@ -24,13 +25,15 @@ const PollsScreen = ({route, navigation}) => {
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
-            {polls?.map((poll, idx) => {
-                return(
-                    <TouchableOpacity key={idx} onPress={() => navigation.push(route.params.pollScreen, {id: poll.id})}>
-                        <PollCard color={'#51E0B8'} qText={poll.question_text} id={poll.id}/>
+            <FlatList
+                data={polls}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => (
+                    <TouchableOpacity style={{flex: 1}} onPress={() => navigation.push(route.params.pollScreen, {id: item.id})}>
+                        <PollCard color={'#51E0B8'} qText={item.question_text} id={item.id}/>
                     </TouchableOpacity>
-                )
-            })}
+                )}
+            />
         </View>
     )
 }

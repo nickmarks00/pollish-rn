@@ -6,12 +6,15 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import authStorage from '../../auth/storage';
 import {REACT_APP_BASE_URL} from '@env';
 import { createCommunity } from '../../network/lib/pollish';
+import Loader from '../../components/Loader';
 
 const CreateCommunity = ({setCommunity}) => {
   const [title, setTitle] = React.useState('');
   const [media, setMedia] = React.useState(null);
+  const [creating, setCreating] = React.useState(false);
 
   const createComm = async () => {
+    setCreating(true)
     const res = await authStorage.getTokens();
     const access = JSON.parse(res).access;
     var myHeaders = new Headers();
@@ -34,10 +37,7 @@ const CreateCommunity = ({setCommunity}) => {
 
     const data = await createCommunity(formdata);
 
-    // fetch(`${REACT_APP_BASE_URL}/pollish/communities/`, requestOptions)
-    //   .then(response => response.text())
-    //   .then(result => console.log(result))
-    //   .catch(error => console.log('error', error));
+    setCreating(false);
     setCommunity(false);
   };
 
@@ -62,6 +62,7 @@ const CreateCommunity = ({setCommunity}) => {
   return (
     <View
       style={{flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
+      <Loader visible={creating} />
       <Button onPress={() => setCommunity(false)} title="close" />
       <Text style={{textAlign: 'center'}}>Community Name</Text>
       <TextInput
@@ -72,8 +73,8 @@ const CreateCommunity = ({setCommunity}) => {
         openImagePickerAsync={openImagePickerAsync}
         media={media}
       />
-      <TouchableOpacity onPress={() => createComm()}>
-        <Text>CREATE</Text>
+      <TouchableOpacity disabled={(title && media && !creating) ? false: true} onPress={() => createComm()}>
+        <Text style={{fontWeight: 'bold', color: `rgba(204, 152, 223,${(title && media) ? 1 : 0.3})`}}>CREATE</Text>
       </TouchableOpacity>
     </View>
   );

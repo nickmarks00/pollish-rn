@@ -1,4 +1,9 @@
 {
   "name": "PollishRN",
-  "backgroundColor": "#000000"
+  "backgroundColor": "#000000",
+  "expo": {
+    "name": "Pollish",
+    "slug": "pollishrn",
+    "owner": "pollishpolls"
+  }
 }

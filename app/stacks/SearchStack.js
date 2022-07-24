@@ -43,6 +43,10 @@ const SearchStack = () => {
         name="S_Community"
         initialParams={{pollScreen: 'S_Poll'}}
         component={CommunitiesScreen}
+        options={({route}) => ({
+          title: route.params.title,
+          headerShown: true,
+        })}
       />
       <Stack.Screen
         name="S_Follow"

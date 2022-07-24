@@ -8,7 +8,8 @@ const Styles = StyleSheet.create({
     },
     container: {
         width: '100%',
-        padding: '5%',
+        paddingTop: '2%',
+        paddingBottom: '5%',
         backgroundColor: '#FFF', 
         shadowColor: "#000",
         shadowOffset: {
@@ -23,7 +24,29 @@ const Styles = StyleSheet.create({
         flexDirection: 'row', 
         marginVertical: '2%', 
         alignItems: 'center'
-    }
+    },
+    dotContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        zIndex: 8,
+        elevation: 8,
+        position: 'absolute',
+        alignSelf: 'center',
+        bottom: 10,
+        },
+    dot: {
+        aspectRatio: 1,
+        width: 15,
+        marginHorizontal: 2,
+        marginVertical: 2,
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#007AFF',
+        position: 'relative',
+        zIndex: 8,
+        elevation: 8,
+    },
 })
 
 export default Styles;

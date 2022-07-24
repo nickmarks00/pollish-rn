@@ -6,11 +6,14 @@ import moment from 'moment';
 const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime }) => {
 
     const [noProfilePic, setError] = React.useState(false);
+    console.log(user.profile.avatar)
 
     return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {noProfilePic ? 
-                <Image source={{uri: user.profile.avatar}} style={Styles.profilePic} onError={setError(true)}/>
+            {!noProfilePic ?
+                <TouchableOpacity style={Styles.profilePicContainer} onPress={() => navigateProfile()}>
+                    <Image source={{uri: user.profile.avatar}} style={Styles.profilePic} onError={() => setError(true)}/>
+                </TouchableOpacity> 
                 :
                 <TouchableOpacity onPress={() => navigateProfile()} style={Styles.profilePicAlt}>
                     <Text style={{color: 'white', textAlign: 'center', fontSize: Dimensions.get('window').width/20, fontWeight: 'bold'}} >
@@ -37,14 +40,20 @@ const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime }) => {
 export default PollProfile;
 
 const Styles = StyleSheet.create({
-    profilePic: {
+    profilePicContainer: {
         height: '20%',
         width: '20%',
         aspectRatio: 1,
         borderRadius: 5000,
-        resizeMode: 'contain',
         borderColor: 'black',
         borderWidth: 1,
+    },
+    profilePic: {
+        height: '100%',
+        width: '100%',
+        aspectRatio: 1,
+        borderRadius: 5000,
+        resizeMode: 'cover',
     },
     profilePicAlt: {
         height: '20%',

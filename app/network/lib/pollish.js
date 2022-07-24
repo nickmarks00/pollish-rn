@@ -7,6 +7,11 @@ export function getPoll(pid) {
   return axiosClient.get(`${polls}/${pid}/`);
 }
 
+export function registerVote(id, uid, un_cid, cid) {
+  console.log('id ' + id + ' cid ' + cid)
+  return axiosClient.patch(`${polls}/${id}/vote/?user_id=${uid}`, {"unvote_id": un_cid, "vote_id": cid})
+}
+
 export function getChoice(pid, cid) {
   return axiosClient.get(`${polls}/${pid}/choices/${cid}/`);
 }
@@ -41,6 +46,10 @@ export function followCommunity(cid, uid) {
 
 export function createCommunity(data) {
   return axiosClient.post(`${communities}/`, data)
+}
+
+export function assignToComm(cid, pid) {
+  return axiosClient.put(`${communities}/${cid}/?poll_id=${pid}`)
 }
 
 export async function getPollVotes(pid) {

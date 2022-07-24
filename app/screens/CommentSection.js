@@ -12,9 +12,10 @@ import {Question_Container, Comments_DisplayArea} from 'style/Comments_Style';
 import FilterPopup from 'modals/FilterPopup';
 import {PollQuestion, FilterBar, Comment, CreateComment} from 'components';
 import {getComments} from 'endpoints/core';
-
+import { useHeaderHeight } from '@react-navigation/elements'
 const CommentSection = ({route}) => {
   const post = route.params.post;
+  const headerHeight = useHeaderHeight();
 
   const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([]);
@@ -25,6 +26,7 @@ const CommentSection = ({route}) => {
   useEffect(() => {
     fetchDataFromApi();
     assignColors();
+    console.log(headerHeight)
   }, []);
 
   const assignColors = () => {
@@ -80,7 +82,8 @@ const CommentSection = ({route}) => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior="padding"
-        keyboardVerticalOffset={0}>
+        keyboardVerticalOffset={headerHeight}
+        >
         {/* Section where comments are rendered */}
         <View style={Comments_DisplayArea}>
           <ScrollView>

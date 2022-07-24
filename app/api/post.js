@@ -30,10 +30,10 @@ const PostPoll = async ({text, ch, m}) => {
   console.log('id is ' + id)
 
   if (id !== -1) {
-    if (m.m1) Post_Image({m: m.m1, id: id, access: access});
-    if (m.m2) Post_Image({m: m.m2, id: id, access: access});
-    if (m.m3) Post_Image({m: m.m3, id: id, access: access});
-    if (m.m4) Post_Image({m: m.m4, id: id, access: access});
+    if (m.m1) await Post_Image({m: m.m1, id: id, access: access});
+    if (m.m2) await Post_Image({m: m.m2, id: id, access: access});
+    if (m.m3) await Post_Image({m: m.m3, id: id, access: access});
+    if (m.m4) await Post_Image({m: m.m4, id: id, access: access});
   }
 
   console.log(id)

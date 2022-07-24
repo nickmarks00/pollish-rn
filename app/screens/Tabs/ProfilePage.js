@@ -134,7 +134,7 @@ const ProfilePage = ({route, navigation}) => {
         <Image
           source={{
             uri: route.params?.user
-              ? `http://${url}${route.params.user.profile.avatar}`
+              ? route.params.user.profile.avatar
               : user.profile.avatar,
           }}
           style={Styles.profilePic}
@@ -233,7 +233,7 @@ const Styles = StyleSheet.create({
     height: '30%',
     aspectRatio: 1,
     borderRadius: 5000,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderColor: '#ffeef7',
     borderWidth: 5,
     justifyContent: 'center',

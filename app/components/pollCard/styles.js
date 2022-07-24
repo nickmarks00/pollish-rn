@@ -15,7 +15,7 @@ const Styles = StyleSheet.create({
         width: dimensions.width/5,
         aspectRatio: 1,
         borderRadius: 15,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
         borderColor: '#ffeef7',
     },
     noImage: {

@@ -24,6 +24,7 @@ import {
 } from 'style/Create_Style';
 import AssignComm from './AssignComm';
 import { assignToComm } from '../../network/lib/pollish';
+import Loader from '../../components/Loader';
 
 /* 
     ! MAKE THIS COMPONENT MUCH NICER
@@ -42,6 +43,7 @@ const CreatePoll = ({setPoll}) => {
   // * Ready for posting variables
   const [canPost, setCanPost] = useState(false);
   const [ready, setReady] = useState({q: false, o: false, m: false, s: false});
+  const [creating, setCreating] = React.useState(false);
 
   // * Creation elements storage
   const [questionText, setQuestionText] = useState('');
@@ -75,6 +77,7 @@ const CreatePoll = ({setPoll}) => {
   };
 
   const Post_Poll = async () => {
+    setCreating(true)
     var ch = [];
     if (optionsText.o1) ch = [...ch, {choice_text: optionsText.o1}];
     if (optionsText.o2) ch = [...ch, {choice_text: optionsText.o2}];
@@ -83,7 +86,6 @@ const CreatePoll = ({setPoll}) => {
 
     const data = await PostPoll({text: questionText, ch: ch, m: media});
     if (data != -1 && comm != null) {
-        console.log('id: ' + data + ' comm ' + comm.id)
         assignToComm(comm.id, data)
     }
 
@@ -93,6 +95,7 @@ const CreatePoll = ({setPoll}) => {
     setCanPost(false);
     selectComm(null)
 
+    setCreating(false);
     setPoll(false);
   };
 
@@ -112,6 +115,7 @@ const CreatePoll = ({setPoll}) => {
         marginTop: STATUS_BAR,
         height: screenHeight,
       }}>
+        <Loader visible={creating} />
       <View style={Top_Options_BG}>
         <Button title={'Back'} onPress={() => setPoll(false)}></Button>
         <Text style={Header_Text}>

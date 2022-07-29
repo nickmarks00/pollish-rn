@@ -10,7 +10,7 @@ const CommunityCard = ({comm}) => {
     return (
         <View style={Styles.container}>
             { (!noProfilePic)  ? 
-                <Image source={{uri: `http://thisiswrong.com`}} style={Styles.pollImage} onError={()=> setError(true)}/> 
+                <Image source={{uri: comm.image}} style={Styles.pollImage} onError={()=> setError(true)}/> 
             :
                 <View style={Styles.noImage}>
                     <Text style={Styles.noImageText}>{comm.name.slice(0,1)}</Text>

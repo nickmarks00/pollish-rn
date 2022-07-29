@@ -6,15 +6,20 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  DevSettings
 } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {REACT_APP_BASE_URL} from '@env';
+import * as ImagePicker from 'expo-image-picker';
+import Loader from '../../components/Loader';
+
 
 import colors from '../../config/colors';
 import Icon from '../../components/Icon';
 import {ListItem} from '../../components/lists';
 import ColoredButton from '../../components/coloredButton';
 import PollCard from '../../components/pollCard';
+import { updateProfilePic } from '../../network/lib/pollish';
 import {
   getFollowers,
   getFollowing,
@@ -51,11 +56,13 @@ const ProfilePage = ({route, navigation}) => {
   const isFocused = useIsFocused();
 
   const {user, logOut} = useAuth();
+  const [updatedProfilePic, setUpdatedProfilePic] = React.useState(null);
   const [followers, setFollowers] = React.useState(0);
   const [following, setFollowing] = React.useState(0);
   const [polls, setPolls] = React.useState([]);
   const [isFollowing, setIsFollowing] = React.useState(false);
   const [noProfilePic, setError] = React.useState(true);
+  const [updating, setUpdating] = React.useState(false);
 
   React.useEffect(() => {
     if(isFocused) 
@@ -112,6 +119,38 @@ const ProfilePage = ({route, navigation}) => {
     }
   };
 
+  let openImagePickerAsync = async () => {
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+
+    setUpdating(true);
+
+    var formdata = new FormData();
+    formdata.append('avatar', {
+      uri: pickerResult.uri,
+      name: 'image.jpg',
+      type: 'image/jpg',
+    });
+
+    const data = await updateProfilePic(formdata);
+    setUpdatedProfilePic(pickerResult.uri)
+    setUpdating(false);
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    
+
+  };
+
   return (
     <View style={{alignItems: 'center'}}>
       {/* {!route.params?.user && (
@@ -126,22 +165,25 @@ const ProfilePage = ({route, navigation}) => {
           }}
         />
       )} */}
-
+      <Loader visible={updating} />
       <View style={{height: route.params?.user ? '5%' : '15%'}} />
 
       {/* Profile Image */}
       { noProfilePic ?
-        <Image
-          source={{
-            uri: route.params?.user
-              ? route.params.user.profile.avatar
-              : user.profile.avatar,
-          }}
-          style={Styles.profilePic}
-          onError={() => setError(false)}
-        />
+        <TouchableOpacity onPress={() => openImagePickerAsync()} style={{height: '30%'}}>
+          <Image
+            source={{
+              uri: updatedProfilePic ? updatedProfilePic :
+               route.params?.user
+                ? route.params.user.profile.avatar
+                : user.profile.avatar,
+            }}
+            style={Styles.profilePic}
+            onError={() => setError(false)}
+          />
+        </TouchableOpacity>
       :
-        <View style={Styles.profilePic}>
+        <View style={[Styles.profilePic, {height: '30%'}]}>
           <Text style={Styles.noProfileInitial}>
             {user.username.slice(0,1).toUpperCase()}
           </Text>
@@ -230,7 +272,7 @@ export default ProfilePage;
 
 const Styles = StyleSheet.create({
   profilePic: {
-    height: '30%',
+    height: '100%',
     aspectRatio: 1,
     borderRadius: 5000,
     resizeMode: 'cover',

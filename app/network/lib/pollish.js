@@ -52,6 +52,14 @@ export function assignToComm(cid, pid) {
   return axiosClient.put(`${communities}/${cid}/?poll_id=${pid}`)
 }
 
+export function deleteComment(pid, cid) {
+  return axiosClient.delete(`${polls}/${pid}/comments/${cid}`);
+}
+
+export function updateProfilePic(data) {
+  return axiosClient.patch(`/pollish/profiles/me/`, data);
+}
+
 export async function getPollVotes(pid) {
   const data = await getPoll(pid);
   var votes = 0;

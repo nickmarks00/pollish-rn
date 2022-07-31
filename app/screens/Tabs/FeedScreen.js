@@ -28,23 +28,28 @@ const FeedScreen = () => {
         
     }
 
+    const CreationScreen = () => {
+        return (
+            <View style={{flex: 1, justifyContent: 'center', marginHorizontal: '5%'}}>
+                <ColoredButton
+                    whenPressed={openModel}
+                    color={colors.secondary}
+                    text={'Create Poll'}
+                />
+            </View>
+        )
+    }
+
     return (
         <View style={{flex: 1}}>
         <Modal visible={create} animationType={'slide'}>
         <CreatePoll setPoll={setCreate} />
       </Modal>
       <View style={{height: '5%'}}/>
-        {showCreate && <View style={{padding: '5%'}}>
-            <ColoredButton
-            whenPressed={openModel}
-            color={colors.secondary}
-            text={'Create Poll'}
-            />
-        </View>
-        }
         <Tab.Navigator>
             <Tab.Screen name="My Polls" children={()=><UserFeed hideHeader={hideHeader}/>} />
             <Tab.Screen name="Browse" children={()=><HomeScreen hideHeader={hideHeader}/>} />
+            <Tab.Screen name="Create" children={()=><CreationScreen hideHeader={hideHeader}/>} />
         </Tab.Navigator>
         </View>
     )

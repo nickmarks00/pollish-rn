@@ -8,6 +8,11 @@ import authStorage from './app/auth/storage';
 import AuthNavigator from './app/navigation/AuthNavigator';
 import AppNavigator from './app/navigation/AppNavigator';
 
+import logger from './app/utilities/logger';
+
+// Launch logger
+logger.start();
+
 const MyTheme = {
   ...DefaultTheme,
   colors: {
@@ -17,6 +22,8 @@ const MyTheme = {
 };
 
 export default function App() {
+  logger.log(new Error('Hello from Expo'));
+
   const [user, setUser] = useState(null);
   const [isReady, setIsReady] = useState(false);
 

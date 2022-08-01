@@ -4,6 +4,19 @@
   "expo": {
     "name": "Pollish",
     "slug": "pollishrn",
-    "owner": "pollishpolls"
+    "owner": "pollishpolls",
+    "extra": {
+      "bugsnag": {
+        "apiKey": "628345dce6e7aebc85bc29735bc9fa3e"
+      }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    }
   }
 }

@@ -1,9 +1,12 @@
 import axios from 'axios';
-import {REACT_APP_BASE_URL} from '@env';
 import authStorage from '../auth/storage';
 
+import settings from '../config/settings';
+
+import logger from '../utilities/logger';
+
 const client = axios.create({
-  baseURL: `${REACT_APP_BASE_URL}`,
+  baseURL: settings.apiUrl,
 });
 
 client.interceptors.request.use(async config => {
@@ -21,7 +24,7 @@ client.interceptors.response.use(
   async error => {
     const config = error.config;
 
-    console.log(error.response)
+    logger.log(new Error(error.response));
     // Already attempted refresh
     if (
       error.response.status === 401 &&
@@ -53,6 +56,7 @@ client.interceptors.response.use(
 
       return client(config);
     }
+    logger.log(new Error(error));
     return Promise.reject(error);
   },
 );

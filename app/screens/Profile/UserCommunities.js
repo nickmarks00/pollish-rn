@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { getUserComms } from 'endpoints/core';
+import CommunityCard from '../../components/communityCard';
 
 /**
  * * Show list of communities (requires: id, CommunityScreen)
@@ -18,15 +19,15 @@ const UserCommunities = ({route, navigation}) => {
 
     const loadCommunities = async () => {
         const userComms = await getUserComms(route.params.id);
-        setCommunities(userComms.data);
+        setCommunities(userComms.data.results);
     }
 
     return(
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center'}}>
             {communities?.map((comm, idx) => {
                 return(
-                    <TouchableOpacity key={idx} onPress={() => navigation.push(route.params.communityScreen, {id: comm.id})}>
-                        <Text>{comm.name}</Text>
+                    <TouchableOpacity key={idx} onPress={() => navigation.push(route.params.communityScreen, {id: comm.id, title: comm.name})}>
+                        <CommunityCard comm={comm}/>
                     </TouchableOpacity>
                 )
             })}

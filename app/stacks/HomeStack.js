@@ -43,7 +43,10 @@ const MyStack = () => {
               title: route.params.title,
               headerShown: true,
         })}/>
-          <Stack.Screen name="H_CommunityList" component={CommunityList} initialParams={{communityScreen: 'H_Community'}}  />
+          <Stack.Screen name="H_CommunityList" component={CommunityList} initialParams={{communityScreen: 'H_Community'}}  options={({route}) => ({
+              title: route.params.title,
+              headerShown: true,
+        })} />
           <Stack.Screen name="H_Community" component={CommunitiesScreen} initialParams={{pollScreen: 'H_Poll'}} options={({route}) => ({
               title: route.params.title,
               headerShown: true,

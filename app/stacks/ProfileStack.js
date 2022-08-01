@@ -68,16 +68,28 @@ const ProfileStack = () => {
         name="P_Comments"
         initialParams={{profileScreen: 'P_Profile'}}
         component={CommentSection}
+        options={({route}) => ({
+          title: '',
+          headerShown: true,
+    })}
       />
       <Stack.Screen
         name="P_CommunityList"
         initialParams={{communityScreen: 'P_Community'}}
         component={CommunityList}
+        options={({route}) => ({
+          title: route.params.title,
+          headerShown: true,
+    })}
       />
       <Stack.Screen
         name="P_Community"
         initialParams={{pollScreen: 'P_Poll'}}
         component={CommunitiesScreen}
+        options={({route}) => ({
+          title: route.params.title,
+          headerShown: true,
+    })}
       />
     </Stack.Navigator>
   );

@@ -8,6 +8,11 @@ import authStorage from './app/auth/storage';
 import AuthNavigator from './app/navigation/AuthNavigator';
 import AppNavigator from './app/navigation/AppNavigator';
 
+import logger from './app/utilities/logger';
+
+// Launch logger
+logger.start();
+
 const MyTheme = {
   ...DefaultTheme,
   colors: {

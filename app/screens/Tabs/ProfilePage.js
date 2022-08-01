@@ -120,6 +120,7 @@ const ProfilePage = ({route, navigation}) => {
   };
 
   let openImagePickerAsync = async () => {
+    if(route.params.user) return;
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -129,6 +130,10 @@ const ProfilePage = ({route, navigation}) => {
     }
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
 
     setUpdating(true);
 
@@ -231,9 +236,19 @@ const ProfilePage = ({route, navigation}) => {
           }>
           <PVV_Text num={polls.length} text={'Polls'} />
         </TouchableOpacity>
+        
 
-        <PVV_Text num={1} text={'Votes'} />
-        <PVV_Text num={'2000'} text={'Voted'} />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.push(route.params.communityListScreen, {
+              id: route.params?.user ? route.params.user.id : user.id,
+              title: route.params?.title ? route.params.title : user.username
+            })
+        }>
+          <PVV_Text num={'x'} text={'Communities'} />
+        </TouchableOpacity>
+        
+        <PVV_Text num={'x'} text={'Votes'} />
       </View>
 
       {/* Followers / Following buttons */}

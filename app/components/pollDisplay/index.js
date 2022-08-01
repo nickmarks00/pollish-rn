@@ -79,7 +79,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     };
     
     const navigateComments = () => {
-        navigation.push(commentsScreen, {post: post});
+        navigation.push(commentsScreen, {post: post, title: post.question_text});
     };
 
     const offlineVoteUpdate = (cid) => {

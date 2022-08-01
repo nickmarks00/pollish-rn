@@ -16,7 +16,6 @@ const PollCard = ({color, qText, id, reload}) => {
     const [noProfilePic, setError] = React.useState(true);
 
     React.useEffect(() => {
-        console.log(id)
         loadPoll();
     }, []);
 

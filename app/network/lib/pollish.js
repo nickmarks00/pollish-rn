@@ -8,7 +8,6 @@ export function getPoll(pid) {
 }
 
 export function registerVote(id, uid, un_cid, cid) {
-  console.log('id ' + id + ' cid ' + cid)
   return axiosClient.patch(`${polls}/${id}/vote/?user_id=${uid}`, {"unvote_id": un_cid, "vote_id": cid})
 }
 

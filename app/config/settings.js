@@ -22,7 +22,7 @@ const settings = {
 const getCurrentSettings = () => {
   if (__DEV__) {
     console.log('Running with development settings...');
-    return settings.dev;
+    return settings.prod;
   }
   try {
     if (Constants.manifest.releaseChannel === 'staging')

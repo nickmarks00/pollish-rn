@@ -27,7 +27,6 @@ const Comment = ({profileScreen, colors, comment, pid, reloadComments}) => {
     const {user, logout} = useAuth();
     const [showBox, setShowBox] = React.useState(true);
 
-    console.log(comment)
 
     React.useEffect(() => {
         findUser()

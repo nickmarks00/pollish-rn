@@ -39,8 +39,8 @@ function WelcomeScreen({navigation}) {
               title="Register"
               color="secondary"
               onPress={() => {
-                // SecureStore.deleteItemAsync(key)
-                // navigation.navigate('Register')
+                SecureStore.deleteItemAsync(key)
+                navigation.navigate('Register')
               }}
             />
           </View>

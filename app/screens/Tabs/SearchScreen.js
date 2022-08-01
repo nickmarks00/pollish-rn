@@ -35,7 +35,6 @@ const SearchScreen = ({navigation}) => {
     if (toggle === 'user') {
       navigation.push('S_Profile', {user: poll, title: poll.username});
     } else if (toggle === 'comm') {
-      console.log(poll.id);
       navigation.push('S_Community', {id: poll.id, title: poll.name})
     } else if (toggle === 'poll') {
       navigation.push('S_Poll', {id: poll.id});

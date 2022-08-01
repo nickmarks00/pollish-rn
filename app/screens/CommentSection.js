@@ -26,7 +26,6 @@ const CommentSection = ({route}) => {
   useEffect(() => {
     fetchDataFromApi();
     assignColors();
-    console.log(headerHeight)
   }, []);
 
   const assignColors = () => {

@@ -20,7 +20,6 @@ const FeedScreen = () => {
       };
 
     const hideHeader = (offset) => {
-        console.log(offset)
         if(offset < 60)
             setShown(true)
         else

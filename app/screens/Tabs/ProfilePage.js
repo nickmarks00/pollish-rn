@@ -120,6 +120,7 @@ const ProfilePage = ({route, navigation}) => {
   };
 
   let openImagePickerAsync = async () => {
+    
     if(route.params.user) return;
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -129,7 +130,9 @@ const ProfilePage = ({route, navigation}) => {
       return;
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true
+    });
 
     if (pickerResult.cancelled === true) {
       return;
@@ -146,6 +149,7 @@ const ProfilePage = ({route, navigation}) => {
 
     const data = await updateProfilePic(formdata);
     setUpdatedProfilePic(pickerResult.uri)
+    setError(true)
     setUpdating(false);
 
     if (pickerResult.cancelled === true) {

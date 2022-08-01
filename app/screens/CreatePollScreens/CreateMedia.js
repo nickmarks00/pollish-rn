@@ -18,7 +18,9 @@ const CreateMedia = ({setMedia, media}) => {
           return;
         }
     
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: true
+        });
         
         if (pickerResult.cancelled === true) {
           return;

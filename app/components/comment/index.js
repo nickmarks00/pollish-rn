@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import Styles from './styles';
 import color from '../../config/colors';
 import { getUser } from 'endpoints/core';
-import { deleteComment } from '../../network/lib/pollish';
+import { deleteComment } from 'endpoints/pollish';
 
 /*
     * profileScreen: name of the profile screen in the stack (string)
@@ -18,7 +18,7 @@ import { deleteComment } from '../../network/lib/pollish';
 */
 
 
-const Comment = ({profileScreen, colors, comment}) => {
+const Comment = ({profileScreen, colors, comment, pid, reloadComments}) => {
 
     const navigation = useNavigation();
 
@@ -27,7 +27,6 @@ const Comment = ({profileScreen, colors, comment}) => {
     const {user, logout} = useAuth();
     const [showBox, setShowBox] = React.useState(true);
 
-    console.log(comment)
 
     React.useEffect(() => {
         findUser()
@@ -37,6 +36,11 @@ const Comment = ({profileScreen, colors, comment}) => {
         getUser(comment.user_id).then(function(response){
             setUser(response.data);
         })
+    }
+
+    const removeComment = async () => {
+        await deleteComment(pid, comment.id)
+        reloadComments();
     }
 
     const FindColor = () => {
@@ -52,14 +56,14 @@ const Comment = ({profileScreen, colors, comment}) => {
     const showConfirmDialog = () => {
         return Alert.alert(
           "Are your sure?",
-          "Are you sure you want to remove this beautiful box?",
+          "Are you sure you want to delete this comment?",
           [
             // The "Yes" button
             {
               text: "Yes",
               onPress: () => {
                 setShowBox(false);
-                // deleteComment(,comment.id)
+                removeComment()
               },
             },
             // The "No" button

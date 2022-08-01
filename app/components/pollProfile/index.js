@@ -6,7 +6,6 @@ import moment from 'moment';
 const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime }) => {
 
     const [noProfilePic, setError] = React.useState(false);
-    console.log(user.profile.avatar)
 
     return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

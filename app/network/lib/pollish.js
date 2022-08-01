@@ -8,7 +8,6 @@ export function getPoll(pid) {
 }
 
 export function registerVote(id, uid, un_cid, cid) {
-  console.log('id ' + id + ' cid ' + cid)
   return axiosClient.patch(`${polls}/${id}/vote/?user_id=${uid}`, {"unvote_id": un_cid, "vote_id": cid})
 }
 
@@ -53,7 +52,11 @@ export function assignToComm(cid, pid) {
 }
 
 export function deleteComment(pid, cid) {
-  return axiosClient.delete(`${polls}/${pid}/comments/${cid}`);
+  return axiosClient.delete(`${polls}/${pid}/comments/${cid}/`);
+}
+
+export function deletePoll(pid) {
+  return axiosClient.delete(`${polls}/${pid}/`);
 }
 
 export function updateProfilePic(data) {

@@ -1,20 +1,21 @@
 import React from 'react';
-import { View, Image, Text, Dimensions } from 'react-native';
+import { View, Image, Text, Alert } from 'react-native';
 import {REACT_APP_BASE_URL} from '@env';
 import { getPoll, getPollVotes } from 'endpoints/pollish';
 import Styles from './styles';
+import ColoredButton from '../coloredButton';
+import { deletePoll } from 'endpoints/pollish'
 
 const url = REACT_APP_BASE_URL;
 
 
-const PollCard = ({color, qText, id}) => {
+const PollCard = ({color, qText, id, reload}) => {
 
     const [poll, setPoll] = React.useState(null)
     const [votes, setVotes] = React.useState(0)
     const [noProfilePic, setError] = React.useState(true);
 
     React.useEffect(() => {
-        console.log(id)
         loadPoll();
     }, []);
 
@@ -27,6 +28,32 @@ const PollCard = ({color, qText, id}) => {
             setVotes(data2);
         }
     };
+
+    const removePoll = async () => {
+        await deletePoll(id);
+        reload();
+    }
+
+    const showConfirmDialog = () => {
+        return Alert.alert(
+          "Are your sure?",
+          "Are you sure you want to delete this poll?",
+          [
+            // The "Yes" button
+            {
+              text: "Yes",
+              onPress: () => {
+                removePoll()
+              },
+            },
+            // The "No" button
+            // Does nothing but dismiss the dialog when tapped
+            {
+              text: "No",
+            },
+          ]
+        );
+      };
 
     return (
         <View style={Styles.container}>
@@ -47,6 +74,9 @@ const PollCard = ({color, qText, id}) => {
                         <Text style={Styles.labelText}>VOTES</Text>
                     </View>
                 </View>
+            </View>
+            <View style={{width: '10%', justifyContent: 'center'}}>
+                <ColoredButton color={'red'} text={'del'} whenPressed={showConfirmDialog}/>
             </View>
         </View>
     )

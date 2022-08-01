@@ -61,9 +61,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
     const checkVote = async () => {
         const response = await getPoll(route.params?.id ? route.params.id : id);
-        console.log(response.data.user_vote)
         if (userVote != response.data.user_vote){
-            console.log('registering')
             setUserVote(response.data.user_vote);
         }
 
@@ -127,7 +125,6 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
                                 automaticallyAdjustContentInsets={false}
                                 disableIntervalMomentum={true}
                                 horizontal
-                                onMomentumScrollEnd={(event) => console.log(event.nativeEvent.contentOffset.x)}
                                 onScroll={e => {
                                 let slide = Math.round(
                                 e.nativeEvent.contentOffset.x/ 
@@ -148,7 +145,6 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
                                 <View style={Styles.dotContainer}>
                                 {post.images.slice(0, activeIndexNumber < 5 ? 5 : post.images.length - 5).map((item, index) => {
                                 if (post.images.length !== 1) { // if imagelist array length not 1 
-                                    console.log('number ' + activeIndexNumber)
                                 if (activeIndexNumber < 5) { //if activeindex lower than five 
                                 return (
                                     <View

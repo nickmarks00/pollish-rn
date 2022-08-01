@@ -24,7 +24,6 @@ const CommunityTab = ({route, navigation}) => {
 
   const findCommunities = async () => {
     const data = await getUserComms(user.id);
-    console.log(data.data)
     setCommunities(data.data.results);
   };
 

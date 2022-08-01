@@ -146,6 +146,7 @@ const ProfilePage = ({route, navigation}) => {
 
     const data = await updateProfilePic(formdata);
     setUpdatedProfilePic(pickerResult.uri)
+    noProfilePic(true)
     setUpdating(false);
 
     if (pickerResult.cancelled === true) {

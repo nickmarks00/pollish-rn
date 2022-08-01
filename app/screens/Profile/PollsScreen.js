@@ -15,7 +15,6 @@ const PollsScreen = ({route, navigation}) => {
 
     React.useEffect(() => {
         loadPolls();
-        console.log(polls)
       }, []);
 
     const loadPolls = async () => {
@@ -23,14 +22,16 @@ const PollsScreen = ({route, navigation}) => {
         setPolls(userPolls.data.results);
     }
 
+    
+
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
             <FlatList
                 data={polls}
                 showsVerticalScrollIndicator={false}
                 renderItem={({item}) => (
-                    <TouchableOpacity style={{flex: 1}} onPress={() => navigation.push(route.params.pollScreen, {id: item.id})}>
-                        <PollCard color={'#51E0B8'} qText={item.question_text} id={item.id}/>
+                    <TouchableOpacity style={{flex: 1}} onLongPress={() => showConfirmDialog()} onPress={() => navigation.push(route.params.pollScreen, {id: item.id})}>
+                        <PollCard color={'#51E0B8'} qText={item.question_text} id={item.id} reload={loadPolls}/>
                     </TouchableOpacity>
                 )}
             />

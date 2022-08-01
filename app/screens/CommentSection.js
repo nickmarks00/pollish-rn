@@ -91,6 +91,8 @@ const CommentSection = ({route}) => {
               if (selected.cid == comment.choice_id || selected.cid == 0)
                 return (
                   <Comment
+                    reloadComments={fetchDataFromApi}
+                    pid={post.id}
                     key={index}
                     profileScreen={route.params.profileScreen}
                     colors={colors}

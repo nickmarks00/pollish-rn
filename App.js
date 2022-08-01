@@ -22,8 +22,6 @@ const MyTheme = {
 };
 
 export default function App() {
-  logger.log(new Error('Hello from Expo'));
-
   const [user, setUser] = useState(null);
   const [isReady, setIsReady] = useState(false);
 

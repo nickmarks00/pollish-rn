@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import { getFollowers, getFollowing } from 'endpoints/core';
 import UserCard from '../../components/userCard';
@@ -58,21 +58,25 @@ const FollowersScreen = ({route, navigation}) => {
     if(route.params.fers)
       return (
         <View style={{flex: 1, marginTop: '3%', alignItems: 'center'}}>
-          {followList?.map((user, idx) => {
-            return (
-              <UserCard key={idx} oUser={user} navToProfile={navToProfile}/>
-            );
-          })}
+          <FlatList
+            data={followList}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <UserCard oUser={item} navToProfile={navToProfile}/>
+            )}
+          />
         </View>
       );
     else
       return (
         <View style={{flex: 1, marginTop: '3%', alignItems: 'center'}}>
-          {followerList?.map((user, idx) => {
-            return (
-              <UserCard key={idx} oUser={user} navToProfile={navToProfile}/>
-            );
-          })}
+          <FlatList
+            data={followerList}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <UserCard oUser={item} navToProfile={navToProfile}/>
+            )}
+          />
         </View>
       );
 

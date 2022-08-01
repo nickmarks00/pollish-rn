@@ -5,9 +5,11 @@ import {
   Dimensions,
   RefreshControl,
   Modal,
+  Text
 } from 'react-native';
 import { getCuratedFeed } from 'endpoints/core';
 import PollDisplay from '../components/pollDisplay';
+import ColoredButton from '../components/coloredButton';
 
 
 const UserFeed = ({hideHeader, feedType}) => {
@@ -38,6 +40,7 @@ const UserFeed = ({hideHeader, feedType}) => {
 
   return (
     <View style={{backgroundColor: '#F9F9F9'}}>
+      {posts?.length ? 
       <FlatList
         data={posts}
         showsVerticalScrollIndicator={false}
@@ -59,6 +62,13 @@ const UserFeed = ({hideHeader, feedType}) => {
         }
         onScroll={(e) => hideHeader(e.nativeEvent.contentOffset.y)}
       />
+      :
+      <View style={{height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Follow users or communities to populate this feed</Text>
+        <View style={{height: '5%'}}/>
+        <ColoredButton color={'#CCC'} filled={false} whenPressed={onRefresh} text={'reload'}/>
+      </View>
+}
     </View>
   );
 };

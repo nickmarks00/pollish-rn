@@ -111,7 +111,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
 
                     {/* Profile Heading and comments navigation button */}
                     <View style={[Styles.profileContainer, {height: single ? '20%' : null, paddingHorizontal: '5%'}]}>
-                        <PollProfile user={oUser} navigateProfile={navigateProfile} pid={post.id} voteCount={tempVoteCount} postTime={post.created_at}/>
+                        <PollProfile user={oUser} navigateProfile={navigateProfile} pid={post.id} commentCount={post.comments.length} voteCount={tempVoteCount} postTime={post.created_at}/>
                         <CommentsButton navigateComments={navigateComments}/>
                     </View>
 

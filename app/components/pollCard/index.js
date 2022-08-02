@@ -12,6 +12,7 @@ const url = REACT_APP_BASE_URL;
 const PollCard = ({color, qText, id, reload}) => {
 
     const [poll, setPoll] = React.useState(null)
+    const {user, logOut} = useAuth();
     const [votes, setVotes] = React.useState(0)
     const [noProfilePic, setError] = React.useState(true);
 
@@ -75,9 +76,11 @@ const PollCard = ({color, qText, id, reload}) => {
                     </View>
                 </View>
             </View>
+            { (user.id == id) &&
             <View style={{width: '10%', justifyContent: 'center'}}>
                 <ColoredButton color={'red'} text={'del'} whenPressed={showConfirmDialog}/>
             </View>
+            }
         </View>
     )
 }

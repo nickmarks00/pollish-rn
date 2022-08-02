@@ -91,7 +91,7 @@ const Question_Header = {
 
 const Media_Container = {
     width: '30%', 
-    aspectRatio: 1, 
+    aspectRatio: 4/3, 
     backgroundColor: '#EEE',  
     alignItems: 'center', 
     justifyContent: 'center',

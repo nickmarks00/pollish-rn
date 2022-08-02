@@ -115,7 +115,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }
                     </View>
 
                     {post.images.length > 0 &&
-                        <View style={{marginVertical: '2%', height: Dimensions.get('window').height/3.5}}>
+                        <View style={{marginVertical: '2%', height: Dimensions.get('window').height/2}}>
                             <ScrollView
                                 style={{borderTopWidth: 1, borderTopColor: '#EEE'}}
                                 showsHorizontalScrollIndicator={false}

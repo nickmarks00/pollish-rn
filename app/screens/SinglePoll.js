@@ -108,8 +108,9 @@ const SinglePoll = ({ id, commentsScreen, profileScreen, single }) => {
 
     if (post && oUser){
         return (
-            <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                <View style={[ {height: (post.images.length > 0) ? dimensions.height/1.4 : dimensions.height/2 }, Styles.container]}>
+            <View style={{ alignItems: 'center', flex: 1}}>
+                <ScrollView>
+                <View style={[ {width: dimensions.width, height: (post.images.length > 0) ? '100%' : dimensions.height/2 }, Styles.container]}>
 
                     {/* Profile Heading and comments navigation button */}
                     <View style={[Styles.profileContainer, {height: single ? '20%' : '10%', paddingHorizontal: '5%'}]}>
@@ -118,7 +119,7 @@ const SinglePoll = ({ id, commentsScreen, profileScreen, single }) => {
                     </View>
 
                     {post.images.length > 0 &&
-                        <View style={{marginVertical: '2%', height: Dimensions.get('window').height/3.5}}>
+                        <View style={{marginBottom: '2%', height: Dimensions.get('window').height/2}}>
                             <ScrollView
                                 showsHorizontalScrollIndicator={false}
                                 pagingEnabled
@@ -187,7 +188,7 @@ const SinglePoll = ({ id, commentsScreen, profileScreen, single }) => {
                     
 
 
-                    <View style={{height: post.images.length > 0 ? dimensions.height/4 : dimensions.height/3, justifyContent: 'center', paddingBottom: '2%', paddingHorizontal: '5%'}}>
+                    <View style={{height: post.images.length > 0 ? dimensions.height/4 : dimensions.height/3, justifyContent: 'center', paddingBottom: '6%', paddingHorizontal: '5%'}}>
                     {post.choices.map((choice, idx) => {
                         return (
                             <VoteButton
@@ -209,6 +210,7 @@ const SinglePoll = ({ id, commentsScreen, profileScreen, single }) => {
                     </View>
 
                 </View>
+                </ScrollView>
             </View>
         )
                 }
@@ -223,7 +225,6 @@ const Styles = StyleSheet.create({
     },
     container: {
         width: '100%',
-        paddingTop: '2%',
         paddingBottom: '5%',
         backgroundColor: '#FFF', 
         shadowColor: "#000",

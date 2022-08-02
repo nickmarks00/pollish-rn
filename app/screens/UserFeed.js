@@ -50,6 +50,7 @@ const UserFeed = ({hideHeader, feedType}) => {
         renderItem={({item}) => (
           <View style={{flex: 1, width: '100%', marginVertical: '5%'}}>
             <PollDisplay
+              refreshToken={refreshToken}
               id={item.id}
               commentsScreen={'H_Comments'}
               profileScreen={'H_Profile'}

@@ -23,7 +23,9 @@ const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime, commentC
             <View style={{ width: '4%' }}/>
                 <View style={{justifyContent: 'center'}}>
                     <View style={{flexDirection: 'row'}}>
-                    <Text style={{fontWeight: 'bold'}}>{user.username}</Text>
+                    <TouchableOpacity onPress={() => navigateProfile()}>
+                        <Text style={{fontWeight: 'bold'}}>{user.username}</Text>
+                    </TouchableOpacity>
                     <View style={{width: '5%'}}/>
                     <View style={{justifyContent: 'center'}}>
                         <Text style={{ color: '#6c6c6c', fontSize: 10 }}>{moment(postTime).fromNow()}</Text>

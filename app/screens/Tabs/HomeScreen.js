@@ -21,6 +21,7 @@ const HomeScreen = ({hideHeader, feedType}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [create, setCreate] = useState(false);
   const [number, setNum] = useState(1);
+  const [refreshToken, setRefreshToken] = useState(0)
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -36,6 +37,8 @@ const HomeScreen = ({hideHeader, feedType}) => {
   }, []);
 
   const fetchDataFromApi = async page => {
+    const token = Math.random();
+    setRefreshToken(token)
     const polls = await getPollFeed(page);
     setPosts(polls.data.results);
   };
@@ -54,6 +57,7 @@ const HomeScreen = ({hideHeader, feedType}) => {
         renderItem={({item}) => (
           <View style={{flex: 1, width: '100%', marginVertical: '5%'}}>
             <PollDisplay
+              refreshToken={refreshToken}
               id={item.id}
               commentsScreen={'H_Comments'}
               profileScreen={'H_Profile'}

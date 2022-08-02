@@ -8,7 +8,7 @@ import { getPoll, registerVote } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
 import logo from '../../assets/logos/jpgs/logo1.png';
 
-const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
+const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }) => {
 
     const route = useRoute();
     const navigation = useNavigation();
@@ -16,7 +16,6 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     const [post, setPost] = useState(null);
     const [oUser, setUser] = useState(null);
     const {user, logout} = useAuth();
-
 
     const [voteCount, setVoteCount] = useState(0);
     const [userVote, setUserVote] = useState(null);
@@ -30,7 +29,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
     useEffect(() => {
         loadPoll();
         checkVote();
-    }, []);
+    }, [refreshToken]);
 
     useEffect(() => {
         loadUser();

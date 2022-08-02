@@ -17,6 +17,7 @@ const UserFeed = ({hideHeader, feedType}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [create, setCreate] = useState(false);
   const [number, setNum] = useState(1);
+  const [refreshToken, setRefreshToken] = useState(0)
   const {user, logOut} = useAuth();
 
   const wait = timeout => {
@@ -34,6 +35,8 @@ const UserFeed = ({hideHeader, feedType}) => {
   }, []);
 
   const fetchDataFromApi = async () => {
+    const token = Math.random();
+    setRefreshToken(token)
     const polls = await getCuratedFeed(user.id);
     setPosts(polls.data[0]);
   };

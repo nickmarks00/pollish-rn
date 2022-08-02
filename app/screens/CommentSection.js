@@ -5,7 +5,7 @@
 }
 
 import React, {useState, useEffect} from 'react';
-import {View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
+import {View, Text, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {useFonts} from 'expo-font';
 
 import {Question_Container, Comments_DisplayArea} from 'style/Comments_Style';
@@ -37,6 +37,12 @@ const CommentSection = ({route}) => {
     });
   };
 
+  const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        {children}
+    </TouchableWithoutFeedback>
+  )
+
   const fetchDataFromApi = async () => {
     setLoading(true);
 
@@ -61,6 +67,7 @@ const CommentSection = ({route}) => {
   };
 
   return (
+    <HideKeyboard>
     <View style={{flex: 1}}>
       {/* Modal Popup for chosing filter */}
       <FilterPopup
@@ -106,6 +113,7 @@ const CommentSection = ({route}) => {
         <CreateComment reload={fetchDataFromApi} />
       </KeyboardAvoidingView>
     </View>
+    </HideKeyboard>
   );
 };
 

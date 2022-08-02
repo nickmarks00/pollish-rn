@@ -136,7 +136,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single }) => {
                                 {post.images.map((image, idx) => {
                                     return(
                                         <View key={idx} style={{ width: Dimensions.get('window').width, height: '100%'}}>
-                                        <Image source={{uri: image.image}} defaultSource={logo} style={{flex: 1, resizeMode: 'cover'}}/>
+                                        <Image source={{uri: image.image}} defaultSource={require('../../assets/logos/jpgs/logo1.png')} style={{flex: 1, resizeMode: 'cover'}}/>
                                         </View>
                                     )
                                 })}

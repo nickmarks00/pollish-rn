@@ -95,7 +95,7 @@ const Media_Container = {
     backgroundColor: '#EEE',  
     alignItems: 'center', 
     justifyContent: 'center',
-    borderRadius: '10%'
+    borderRadius: dimensions.width/20
 }
 
 const Media_PlusButton = {

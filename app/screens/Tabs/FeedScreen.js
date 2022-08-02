@@ -46,7 +46,7 @@ const FeedScreen = () => {
       </Modal>
       <View style={{height: '5%'}}/>
         <Tab.Navigator>
-            <Tab.Screen name="My Polls" children={()=><UserFeed hideHeader={hideHeader}/>} />
+            <Tab.Screen name="My Feed" children={()=><UserFeed hideHeader={hideHeader}/>} />
             <Tab.Screen name="Browse" children={()=><HomeScreen hideHeader={hideHeader}/>} />
             <Tab.Screen name="Create" children={()=><CreationScreen hideHeader={hideHeader}/>} />
         </Tab.Navigator>

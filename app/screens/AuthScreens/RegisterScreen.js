@@ -1,5 +1,7 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, View, Dimensions, Image} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, Dimensions, Image} from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements'
+
 
 import authApi from '../../api/authApi';
 import Loader from '../../components/Loader';
@@ -28,6 +30,7 @@ function RegisterScreen() {
   const auth = useAuth();
   const registerApi = useApi(authApi.register);
   const loginApi = useApi(authApi.login);
+  const headerHeight = useHeaderHeight();
 
   const validationSchema = {
     firstName: validateName,
@@ -63,7 +66,9 @@ function RegisterScreen() {
       <Loader visible={registerApi.loading || loginApi.loading} />
       <Screen style={styles.container}>
         <Wave>
-          <View
+          <KeyboardAvoidingView
+          behavior="padding"
+          keyboardVerticalOffset={headerHeight}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -135,7 +140,7 @@ function RegisterScreen() {
                 textContentType="password"
               />
             </Form>
-          </View>
+          </KeyboardAvoidingView>
         </Wave>
       </Screen>
     </>

@@ -1,15 +1,18 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions, Image, StyleSheet } from 'react-native';
 import ColoredButton from '../coloredButton';
 import { getFollowers } from 'endpoints/core';
 import { checkFollowing } from '../../network/lib/core';
 import { followUser } from '../../network/lib/core';
+
+const dimensions = Dimensions.get('window')
 
 const UserCard = ({oUser, navToProfile}) => {
 
     const [numFollower, setNumFollowers] = React.useState(0);
     const [isFollowing, setIsFollowing] = React.useState(false);
     const {user, logOut} = useAuth();
+    const [noProfilePic, setError] = React.useState(false);
 
 
     React.useEffect(() => {
@@ -55,23 +58,13 @@ const UserCard = ({oUser, navToProfile}) => {
                 }
                 }>
                   <View style={{flexDirection: 'row', alignItems: 'center', width: Dimensions.get('screen').width}}>
-                    <View style={{
-                      margin: '2%',
-                      width: '10%',
-                      borderRadius: 1000,
-                      backgroundColor: '#907AD6',
-                      aspectRatio: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                    <Text style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        color: 'white',
-                        fontWeight: 'bold'
-                      }}>{oUser.username.slice(0,1).toUpperCase()}</Text>
-                    </View>
+                  { (!noProfilePic)  ? 
+                      <Image source={{uri: oUser.profile.avatar}} style={Styles.pollImage} onError={()=> setError(true)}/> 
+                  :
+                      <View style={Styles.noImage}>
+                          <Text style={Styles.noImageText}>{oUser.username.slice(0,1)}</Text>
+                      </View>
+                  }
                     <View style={{marginHorizontal: '2%'}}>
                     <Text
                       style={{
@@ -89,5 +82,60 @@ const UserCard = ({oUser, navToProfile}) => {
               </TouchableOpacity>
     )
 }
+
+const Styles = StyleSheet.create({
+  container: {
+      width: dimensions.width, 
+      flexDirection: 'row', 
+      paddingVertical: '4%', 
+      paddingHorizontal: '6%', 
+      justifyContent: 'center'
+  },
+  pollImage: {
+      height: dimensions.width/4,
+      width: dimensions.width/4,
+      aspectRatio: 1,
+      resizeMode: 'cover',
+      borderColor: '#ffeef7',
+  },
+  noImage: {
+      height: dimensions.width/4,
+      width: dimensions.width/4,
+      aspectRatio: 1,
+      resizeMode: 'contain',
+      borderColor: '#ffeef7',
+      backgroundColor: '#907AD6',
+      alignItems: 'center',
+      justifyContent: 'center'
+  },
+  noImageText: {
+      fontWeight: 'bold', 
+      fontSize: dimensions.width/12, 
+      color: 'white'
+  },
+  questionText: {
+      fontWeight: 'bold', 
+      flexWrap: 'wrap', 
+      paddingHorizontal: '7%',
+  },
+  votesText: {
+      fontWeight: 'bold', 
+      flexWrap: 'wrap', 
+      paddingHorizontal: '7%', 
+      color: '#9c9c9c', 
+  },
+  labelContainer: {
+      padding: '1%', 
+      borderRadius: 1000, 
+      justifyContent: 'center'
+  },
+  labelText: {
+      fontWeight: 'bold', 
+      textAlign: 'center', 
+      color: 'white', 
+      fontSize: dimensions.width/30, 
+      paddingHorizontal: '3%'
+  }
+})
 
 export default UserCard;

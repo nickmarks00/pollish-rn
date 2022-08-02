@@ -1,11 +1,14 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, StyleSheet, Dimensions, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { getCommPolls } from 'endpoints/pollish';
 import PollCard from '../components/pollCard';
 import ColoredButton from '../components/coloredButton';
 import { getUserComms } from '../network/lib/core';
 import { followCommunity } from '../network/lib/pollish';
+import CommunityCard from '../components/communityCard';
+
+const dimensions = Dimensions.get('window')
 
 /**
  * * Show individual community and polls it contains (requires: id, pollScreen)
@@ -21,6 +24,7 @@ const Community = ({route, navigation}) => {
   const [isFollowing, setIsFollowing] = React.useState(false);
   const [following, setFollowing] = React.useState(0);
   const {user, logOut} = useAuth();
+  const [noProfilePic, setError] = React.useState(false);
 
   React.useEffect(() => {
     loadCommPolls();
@@ -46,15 +50,33 @@ const Community = ({route, navigation}) => {
     checkIfFollowing();
   };
 
+  console.log(route.params.comm)
+
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: '5%'}}>
-      <ColoredButton
-        fill={!isFollowing}
-        color={'#00a2ed'}
-        text={isFollowing ? 'Following' : 'Follow'}
-        whenPressed={follow}
-      />
-      <View style={{height: '2%'}}/>
+      { (!noProfilePic)  ? 
+                <Image source={{uri: route.params.comm.image}} style={Styles.pollImage} onError={()=> setError(true)}/> 
+            :
+                <View style={Styles.noImage}>
+                    <Text style={Styles.noImageText}>{route.params.comm.name.slice(0,1)}</Text>
+                </View>
+      }
+      <View style={{justifyContent: 'center'}}>
+          <Text style={Styles.questionText}>{route.params.comm.name}</Text>
+          <View style={{height: '5%'}}/>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={Styles.votesText}>{route.params.comm.num_polls} Polls</Text>
+              <Text style={Styles.votesText}>{route.params.comm.num_users} Users</Text>
+          </View>
+          <View style={{height: '5%'}}/>
+          <ColoredButton
+            fill={!isFollowing}
+            color={'#00a2ed'}
+            text={isFollowing ? 'Following' : 'Follow'}
+            whenPressed={follow}
+          />
+      </View>
+      
       <ScrollView>
         <View style={{flex: 1}}>
           {polls?.map((poll, idx) => {
@@ -73,5 +95,62 @@ const Community = ({route, navigation}) => {
     </View>
   );
 };
+
+const Styles = StyleSheet.create({
+  container: {
+      width: dimensions.width, 
+      flexDirection: 'row', 
+      paddingVertical: '4%', 
+      paddingHorizontal: '6%', 
+      justifyContent: 'center'
+  },
+  pollImage: {
+      height: dimensions.width/3,
+      width: dimensions.width/3,
+      aspectRatio: 1,
+      borderRadius: 15,
+      resizeMode: 'cover',
+      borderColor: '#ffeef7',
+  },
+  noImage: {
+      height: dimensions.width/3,
+      width: dimensions.width/3,
+      aspectRatio: 1,
+      borderRadius: 15,
+      resizeMode: 'contain',
+      borderColor: '#ffeef7',
+      backgroundColor: '#907AD6',
+      alignItems: 'center',
+      justifyContent: 'center'
+  },
+  noImageText: {
+      fontWeight: 'bold', 
+      fontSize: dimensions.width/12, 
+      color: 'white'
+  },
+  questionText: {
+      fontWeight: 'bold', 
+      flexWrap: 'wrap', 
+      paddingHorizontal: '7%',
+  },
+  votesText: {
+      fontWeight: 'bold', 
+      flexWrap: 'wrap', 
+      paddingHorizontal: '7%', 
+      color: '#9c9c9c', 
+  },
+  labelContainer: {
+      padding: '1%', 
+      borderRadius: 1000, 
+      justifyContent: 'center'
+  },
+  labelText: {
+      fontWeight: 'bold', 
+      textAlign: 'center', 
+      color: 'white', 
+      fontSize: dimensions.width/30, 
+      paddingHorizontal: '3%'
+  }
+})
 
 export default Community;

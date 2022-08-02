@@ -47,7 +47,7 @@ const CommunityTab = ({route, navigation}) => {
         renderItem={({item}) => (
           <View style={{flex: 1}}>
             <TouchableOpacity
-            onPress={() => navigation.push('C_Community', {id: item.id, title: item.name})}>
+            onPress={() => navigation.push('C_Community', {comm: item, id: item.id, title: item.name})}>
             <CommunityCard comm={item}/>
           </TouchableOpacity>
           </View>

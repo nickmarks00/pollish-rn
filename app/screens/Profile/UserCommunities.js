@@ -26,7 +26,7 @@ const UserCommunities = ({route, navigation}) => {
         <View style={{flex: 1, alignItems: 'center'}}>
             {communities?.map((comm, idx) => {
                 return(
-                    <TouchableOpacity key={idx} onPress={() => navigation.push(route.params.communityScreen, {id: comm.id, title: comm.name})}>
+                    <TouchableOpacity key={idx} onPress={() => navigation.push(route.params.communityScreen, {comm: comm, id: comm.id, title: comm.name})}>
                         <CommunityCard comm={comm}/>
                     </TouchableOpacity>
                 )

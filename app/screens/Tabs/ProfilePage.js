@@ -194,7 +194,7 @@ const ProfilePage = ({route, navigation}) => {
       :
         <TouchableOpacity onPress={() => openImagePickerAsync()} style={[Styles.profilePic, {height: '30%'}]}>
           <Text style={Styles.noProfileInitial}>
-            {user.username.slice(0,1).toUpperCase()}
+            {route.params?.user ? route.params.user.username.slice(0,1).toUpperCase() : user.username.slice(0,1).toUpperCase()}
           </Text>
         </TouchableOpacity>
       }

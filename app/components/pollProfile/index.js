@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image, StyleSheet, Dimensions } from 'rea
 import { getPollVotes } from 'endpoints/pollish';
 import moment from 'moment';
 
-const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime }) => {
+const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime, commentCount }) => {
 
     const [noProfilePic, setError] = React.useState(false);
 
@@ -24,7 +24,11 @@ const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime }) => {
                 <View style={{justifyContent: 'center'}}>
                     <Text style={{fontWeight: 'bold'}}>{user.username}</Text>
                     <View style={{height: '5%'}}/>
+                    <View style={{flexDirection: 'row'}}>
                     <Text>{voteCount} votes</Text>
+                    <View style={{width: '5%'}}/>
+                    <Text>{commentCount} comment</Text>
+                    </View>
                 </View>
                 <View style={{ width: '2%' }}/>
                 <View style={{justifyContent: 'center'}}>

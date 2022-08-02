@@ -11,6 +11,7 @@ const VoteButton = (props) => {
   };
 
   return (
+    <View>
       <TouchableOpacity
           style={[Styles.Post_Option, {borderWidth: props.chosen == 2 ? 2 : 0}]}
           onPress={() => handleRegisterVote()}
@@ -27,6 +28,7 @@ const VoteButton = (props) => {
             }
           </View>
       </TouchableOpacity>
+    </View>
   );
 }
 

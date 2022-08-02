@@ -22,19 +22,19 @@ const PollProfile = ({ user, navigateProfile, pid, voteCount, postTime, commentC
             }
             <View style={{ width: '4%' }}/>
                 <View style={{justifyContent: 'center'}}>
+                    <View style={{flexDirection: 'row'}}>
                     <Text style={{fontWeight: 'bold'}}>{user.username}</Text>
+                    <View style={{width: '5%'}}/>
+                    <View style={{justifyContent: 'center'}}>
+                        <Text style={{ color: '#6c6c6c', fontSize: 10 }}>{moment(postTime).fromNow()}</Text>
+                    </View>
+                    </View>
                     <View style={{height: '5%'}}/>
                     <View style={{flexDirection: 'row'}}>
                     <Text>{voteCount} votes</Text>
                     <View style={{width: '5%'}}/>
                     <Text>{commentCount} comment</Text>
                     </View>
-                </View>
-                <View style={{ width: '2%' }}/>
-                <View style={{justifyContent: 'center'}}>
-                    <Text style={{ color: '#6c6c6c', fontSize: 10 }}>{moment(postTime).fromNow()}</Text>
-                    <View style={{height: '5%'}}/>
-                    <Text></Text>
                 </View>
         </View>
     )

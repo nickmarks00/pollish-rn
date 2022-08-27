@@ -18,6 +18,10 @@ const UserCard = ({oUser, navToProfile}) => {
     React.useEffect(() => {
         loadFollowerCount();
         checkFollow();
+        return () => {
+            setNumFollowers(0);
+            setIsFollowing(false);
+        };
     }, []);
     
     const loadFollowerCount = async () => {

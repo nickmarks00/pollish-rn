@@ -8,6 +8,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   async config => {
+    const url = REACT_APP_BASE_URL;
     const accessToken = await authStorage.getAccess();
     if (accessToken) {
       config.headers['Authorization'] = `JWT ${accessToken}`;

@@ -22,6 +22,7 @@ const settings = {
 const getCurrentSettings = () => {
   if (__DEV__) {
     console.log('Running with development settings...');
+    const url = settings.prod;
     return settings.prod;
   }
   try {

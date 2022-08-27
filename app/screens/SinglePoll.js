@@ -127,6 +127,7 @@ const SinglePoll = ({ id, commentsScreen, profileScreen, single }) => {
                                 automaticallyAdjustContentInsets={false}
                                 disableIntervalMomentum={true}
                                 horizontal
+                                scrollEventThrottle={8}
                                 onScroll={e => {
                                 let slide = Math.round(
                                 e.nativeEvent.contentOffset.x/ 

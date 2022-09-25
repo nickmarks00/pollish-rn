@@ -1,8 +1,12 @@
 import React, {useEffect, useState, useContext} from 'react';
+import { Dimensions } from 'react-native';
 
 import {FormContext} from './formContext';
 
-import AppButton from '../AppButton';
+import Button from '../Button';
+import colors from '../../config/colors';
+
+const { height, width } = Dimensions.get('window');
 
 function SubmitButton({title, onSubmit, errors, touched}) {
   const [disabled, setDisabled] = useState(true);
@@ -24,11 +28,13 @@ function SubmitButton({title, onSubmit, errors, touched}) {
   };
 
   return (
-    <AppButton
-      title={title}
-      onPress={() => onSubmit(formValue)}
+    <Button 
+      text={title.toUpperCase()}
+      action={() => onSubmit(formValue)}
       disabled={disabled}
-      color={disabled ? 'primaryDisabled' : 'primary'}
+      textColor={'white'}
+      textSize={18}
+      style={{height: height*0.07, backgroundColor: disabled ? colors.primaryDisabled : colors.primary, borderRadius: '5%'}}
     />
   );
 }

@@ -2,9 +2,10 @@ import React from 'react';
 import {StyleSheet, View, Image, Dimensions} from 'react-native';
 
 import Screen from '../AppScreen';
-import AppButton from '../../components/AppButton';
 import Wave from '../../components/Wave';
 import * as SecureStore from 'expo-secure-store';
+import Button from '../../components/Button';
+import colors from '../../config/colors';
 
 // TODO Change to a .env secret
 const key = 'pollish_User';
@@ -28,17 +29,31 @@ function WelcomeScreen({navigation}) {
             />
           </View>
           <View style={styles.buttonsContainer}>
-            <AppButton
-              title="Login"
-              onPress={() => {
+            <Button
+              text={'LOGIN'}
+              textSize={18}
+              textColor={'white'}
+              style={{
+                height: dimensions.height*0.06,
+                backgroundColor: colors.primary,
+                borderRadius: '5%'
+              }}
+              action={() => {
                 SecureStore.deleteItemAsync(key)
                 navigation.navigate('Login')
               }}
             />
-            <AppButton
-              title="Register"
-              color="secondary"
-              onPress={() => {
+            <View style={{height: dimensions.height*0.01}}/>
+            <Button
+              text={'REGISTER'}
+              textSize={18}
+              textColor={'white'}
+              style={{
+                height: dimensions.height*0.06,
+                backgroundColor: colors.secondary,
+                borderRadius: '5%'
+              }}
+              action={() => {
                 SecureStore.deleteItemAsync(key)
                 navigation.navigate('Register')
               }}

@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SearchScreen from '../screens/Tabs/SearchScreen';
 import ProfilePage from '../screens/Tabs/ProfilePage';
 import CommunitiesScreen from '../screens/Community';
-import FollowersScreen from '../screens/Profile/FollowersScreen';
+import FollowersScreen from '../screens/FollowersScreen';
 import CommentSection from '../screens/CommentSection';
 import PollsScreen from '../screens/Profile/PollsScreen';
 import CommunityList from '../screens/Profile/UserCommunities';

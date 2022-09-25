@@ -145,9 +145,6 @@ const Question_Container = {
 
 const Comments_DisplayArea = {
     flex: 1, 
-    borderTopWidth: 1, 
-    paddingTop:10, 
-    borderColor: '#EEE'
 }
 
 const Filter_Container = {

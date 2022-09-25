@@ -10,10 +10,11 @@ import {
   AppForm as Form,
   AppFormField as FormField,
 } from '../../components/forms';
-import AppButton from '../../components/AppButton';
 import {ErrorMessage} from '../../components/forms';
 import Screen from '../AppScreen';
 import Wave from '../../components/Wave';
+import Button from '../../components/Button';
+import colors from '../../config/colors';
 
 const dimensions = Dimensions.get('screen');
 
@@ -72,12 +73,13 @@ function LoginScreen({navigation, ...props}) {
                 textContentType="password"
               />
             </Form>
-            <AppButton
-              color="dark"
-              buttonStyle={styles.forgotButton}
-              textStyle={styles.forgotButtonText}
-              title="Forgot username or password?"
-              onPress={() => navigation.navigate('ForgotCredentials')}
+            <View style={{height: dimensions.height*0.015}}/>
+            <Button
+              text={'Forgot username or password?'}
+              textSize={15}
+              textColor={'white'}
+              style={{backgroundColor: colors.dark, width: dimensions.width*0.87, height: dimensions.height*0.055, borderRadius: '5%'}}
+              action={() => navigation.navigate('ForgotCredentials')}
             />
           </View>
         </Wave>

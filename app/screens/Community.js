@@ -3,7 +3,6 @@ import {View, Text, ScrollView, StyleSheet, Dimensions, Image} from 'react-nativ
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { getCommPolls } from 'endpoints/pollish';
 import PollCard from '../components/pollCard';
-import ColoredButton from '../components/coloredButton';
 import { getUserComms } from '../network/lib/core';
 import { followCommunity } from '../network/lib/pollish';
 import CommunityCard from '../components/communityCard';
@@ -69,12 +68,6 @@ const Community = ({route, navigation}) => {
               <Text style={Styles.votesText}>{route.params.comm.num_users} Users</Text>
           </View>
           <View style={{height: '5%'}}/>
-          <ColoredButton
-            fill={!isFollowing}
-            color={'#00a2ed'}
-            text={isFollowing ? 'Following' : 'Follow'}
-            whenPressed={follow}
-          />
       </View>
       
       <ScrollView>

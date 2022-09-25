@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
+import { Text, View, Dimensions, TouchableOpacity, Modal, Image, ImageBackground } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { VoteButton, PollProfile, CommentsButton } from 'components';
-import Styles from './styles';
-
+import { VoteButton } from 'components';
+import Media from './subComponents/Media';
 import { getPoll, registerVote } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
-import logo from '../../assets/logos/jpgs/logo1.png';
+import PollNav from './subComponents/PollNav';
 
-const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }) => {
+const {height, width} = Dimensions.get('window');
+
+const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken }) => {
 
     const route = useRoute();
     const navigation = useNavigation();
@@ -16,6 +17,8 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }
     const [post, setPost] = useState(null);
     const [oUser, setUser] = useState(null);
     const {user, logout} = useAuth();
+    const [imgWidth, setWidth] = useState(1);
+    const [imgHeight, setHeight] = useState(1);
 
     const [voteCount, setVoteCount] = useState(0);
     const [userVote, setUserVote] = useState(null);
@@ -24,7 +27,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }
     const [tempUserVote, setTempUserVote] = useState(null);
 
     const [unVoted, setUnvoted] = useState(-1);
-    const [activeIndexNumber, setActiveIndexNumber] = useState(Number);
+    const [showModel, setShowModel] = useState(false);
 
     useEffect(() => {
         loadPoll();
@@ -49,9 +52,20 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }
 
     const loadPoll = async () => {
         getPoll(route.params?.id ? route.params.id : id).then(function(response){
-            setPost(response.data);
+                setPost(response.data);
         })
     };
+
+    const openModel = async (item) => {
+        console.log(item)
+        await Image.getSize(item, (Width, Height) => {
+            setWidth(Width);
+            setHeight(Height);
+        }, (errorMsg) => {
+            console.log(errorMsg);
+        });
+        setShowModel(true);
+    }
 
     const loadUser = async () => {
         if (post){
@@ -107,94 +121,66 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }
     }
 
     if (post && oUser){
+
+
         return (
-            <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                <View style={Styles.container}>
-
-                    {/* Profile Heading and comments navigation button */}
-                    <View style={[Styles.profileContainer, {height: single ? '20%' : null, paddingHorizontal: '5%'}]}>
-                        <PollProfile user={oUser} navigateProfile={navigateProfile} pid={post.id} commentCount={post.comments.length} voteCount={tempVoteCount} postTime={post.created_at}/>
-                        <CommentsButton navigateComments={navigateComments}/>
-                    </View>
-
-                    {post.images.length > 0 &&
-                        <View style={{marginVertical: '2%', height: Dimensions.get('window').height/2}}>
-                            <ScrollView
-                                style={{borderTopWidth: 1, borderTopColor: '#EEE'}}
-                                showsHorizontalScrollIndicator={false}
-                                pagingEnabled
-                                directionalLockEnabled={true}
-                                automaticallyAdjustContentInsets={false}
-                                disableIntervalMomentum={true}
-                                horizontal
-                                scrollEventThrottle={8}
-                                onScroll={e => {
-                                let slide = Math.round(
-                                e.nativeEvent.contentOffset.x/ 
-                                e.nativeEvent.layoutMeasurement.width,);
-                                if (slide !== activeIndexNumber) {
-                                setActiveIndexNumber(slide); //here we will set our active index num
-                                }}}
-                                >
-                                {post.images.map((image, idx) => {
-                                    return(
-                                        <View key={idx} style={{ width: Dimensions.get('window').width, height: '100%'}}>
-                                        <Image source={{uri: image.image}} defaultSource={require('../../assets/logos/jpgs/logo1.png')} style={{flex: 1, resizeMode: 'cover'}}/>
-                                        </View>
-                                    )
-                                })}
-                            </ScrollView>
-                            <View style={{ flexDirection: 'column' }}>
-                                <View style={Styles.dotContainer}>
-                                {post.images.slice(0, activeIndexNumber < 5 ? 5 : post.images.length - 5).map((item, index) => {
-                                if (post.images.length !== 1) { // if imagelist array length not 1 
-                                if (activeIndexNumber < 5) { //if activeindex lower than five 
-                                return (
-                                    <View
-                                    key={index}
-                                    style={[index == activeIndexNumber ? [Styles.dot,{ backgroundColor: '#147EFB'},] : Styles.dot,]}>
-                                    </View>);
-                                } else { //if activeindex higher than five
-                                return (
-                                <View
-                                    key={index}
-                                    style={[index == activeIndexNumber - 5 ? [Styles.dot,{ backgroundColor: '#147EFB'},]: Styles.dot,]}>
-                                </View>);
-                                }}
-                                else{
-                                    <View/>
-                                }
-                                })}
-                                </View>
-                            </View>
-                        </View>
-                        
-                    }
-
-                    <View style={{height: single ? '10%' : null, marginBottom: '5%', paddingHorizontal: '5%'}}>
-                        {post?.community ?
-                            <TouchableOpacity 
-                                onPress={() => navigation.push('H_Community', {id: post.community.id, title: post.community.name})}
-                            >
-                                <Text>{post.community.name}</Text>
-                            </TouchableOpacity>
-                            :
-                            <Text>None</Text>
+            <View style={{alignItems: 'center', width: '100%'}}>
+                <Modal visible={showModel} transparent>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.8)'}}/>
+                        { post.images.length > 0 &&
+                            <Image source={{uri: post.images[0].image}}  style={{width, aspectRatio: imgHeight/imgWidth}}/>
                         }
-                        <Text style={Styles.questionText}>{post.question_text}</Text>
+                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.8)'}}/>
                     </View>
+                </Modal>
 
-                    
+                {post.images.length == 0 &&
+                    <View>
+                        <View style={{height: height*0.15}}/>
+                        <View style={{width: width+6, height: height*0.022, borderTopWidth: 3, borderColor: '#C6C6C6', borderTopRightRadius: 20, borderRightWidth: 3, borderLeftWidth: 3, borderTopLeftRadius: 20, borderRightColor: '#C6C6C6'}}/>
+                    </View>
+                }
+                
+                {/* Image */}
+                {post.images.length > 0 && 
+                    <Media post={post} img={post.images} user={oUser} navToProfile={navigateProfile}/>
 
-                    
+                    // <TouchableOpacity onPress={() => openModel(post.images[0].image)}>
+                    // </TouchableOpacity> 
+                }
 
+                <View style={{height: height*0.014}}/>
 
-                    <View style={{height: single ? '60%': null, justifyContent: 'center', paddingHorizontal: '5%'}}>
-                    {post.choices.map((choice, idx) => {
+                {/* Question */}
+                <View style={{height: Dimensions.get('window').height*0.084, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{textAlign: 'center', fontSize: 17, fontWeight: 'bold'}}>
+                        {post.question_text}
+                    </Text>
+                </View>
+
+                <View style={{height: height*0.014}}/>
+
+                {/* Choices */}
+                {post.choices.map((choice, idx) => {
+                        const count = post.choices.length
+                        var h = 35;
+                        var margin = height*0.014;
+                        if (count == 4)
+                            h = height*0.041;
+                        else if (count == 3)
+                            h = height*0.053;
+                        else if (count == 2){
+                            margin = height*0.018;
+                            h = height*0.085;
+                        }
+
                         return (
                             <VoteButton
                                 offlineVoteUpdate={offlineVoteUpdate}
                                 post={post}
+                                height={h}
+                                margin={idx == count-1 ? 0 : margin}
                                 chosen={tempUserVote == choice.id ? 2 : tempUserVote ? 1 : 0}
                                 checkVote={checkVote}
                                 key={idx}
@@ -207,10 +193,16 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, single, refreshToken }
                                 setUnvoted={setUnvoted}
                             />
                         )
-                    })}
-                    </View>
+                })}
 
-                </View>
+                <View style={{height: post.choices.length == 4 ? Dimensions.get('window').height*0.014 : Dimensions.get('window').height*0.038, width: '100%'}}/>
+                
+                {/* Poll Buttons */}
+                <PollNav commentCount={post.comments.length} voteCount={tempVoteCount} navComments={navigateComments}/>
+
+                <View style={{width: Dimensions.get('window').width+6, height: Dimensions.get('window').height*0.022, borderBottomWidth: 3, borderColor: '#C6C6C6', borderBottomRightRadius: 20, borderRightWidth: 3, borderLeftWidth: 3, borderBottomLeftRadius: 20, borderRightColor: '#C6C6C6'}}/>
+                <View style={{height: Dimensions.get('window').height*0.014}}/>
+            
             </View>
         )
                 }

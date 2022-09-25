@@ -1,27 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  FlatList,
-  Dimensions,
-  RefreshControl,
-  Modal,
-} from 'react-native';
-import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-
-import {REACT_APP_REACT_APP_BASE_URL} from '@env';
-import {PrimaryPollish} from '../../Styling/App_Styles';
+import { View, FlatList, RefreshControl, Text } from 'react-native';
 import {getPollFeed} from 'endpoints/pollish';
+import { getCuratedFeed } from 'endpoints/core';
 import PollDisplay from '../../components/pollDisplay';
-import ColoredButton from '../../components/coloredButton';
-import colors from '../../config/colors';
-import CreatePoll from '../CreatePollScreens/CreatePoll';
+import Button from '../../components/Button';
 
-const HomeScreen = ({hideHeader, feedType}) => {
+const HomeScreen = (curate) => {
   const [posts, setPosts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [create, setCreate] = useState(false);
   const [number, setNum] = useState(1);
   const [refreshToken, setRefreshToken] = useState(0)
+  const [heightGap, setHeight] = useState(0);
+  const {user, logOut} = useAuth();
+
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -39,8 +31,14 @@ const HomeScreen = ({hideHeader, feedType}) => {
   const fetchDataFromApi = async page => {
     const token = Math.random();
     setRefreshToken(token)
-    const polls = await getPollFeed(page);
-    setPosts(polls.data.results);
+    if (curate) {
+      const polls = await getCuratedFeed(user.id);
+      setPosts(polls.data[0]);
+    }
+    else {
+      const polls = await getPollFeed(page);
+      setPosts(polls.data.results);
+    }
   };
 
   const loadMoreData = async page => {
@@ -50,34 +48,49 @@ const HomeScreen = ({hideHeader, feedType}) => {
   };
 
   return (
-    <View style={{backgroundColor: '#F9F9F9'}}>
-      <FlatList
-        data={posts}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
-          <View style={{flex: 1, width: '100%', marginVertical: '5%'}}>
-            <PollDisplay
-              refreshToken={refreshToken}
-              id={item.id}
-              commentsScreen={'H_Comments'}
-              profileScreen={'H_Profile'}
+    <View onLayout={(event) => {
+      var {x, y, width, height} = event.nativeEvent.layout;
+      setHeight(height)
+      
+    }} style={{flex: 1}}>
+      {posts?.length ?
+        <FlatList
+          initialNumToRender={2}
+          windowSize={3}
+          style={{flex: 1}}
+          data={posts}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => (
+            <View style={{height: heightGap, width: '100%'}}>
+              <PollDisplay
+                refreshToken={refreshToken}
+                id={item.id}
+                commentsScreen={'H_Comments'}
+                profileScreen={'H_Profile'}
+              />
+            </View>
+          )}
+          pagingEnabled={true}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              style={{backgroundColor: 'transparent'}}
             />
-          </View>
-        )}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            style={{backgroundColor: 'transparent'}}
-          />
-        }
-        onScroll={(e) => hideHeader(e.nativeEvent.contentOffset.y)}
-        onEndReachedThreshold={0.01}
-        onEndReached={info => {
-          loadMoreData(number + 1);
-          setNum(number + 1);
-        }}
-      />
+          }
+          // onEndReachedThreshold={0.01}
+          // onEndReached={info => {
+          //   loadMoreData(number + 1);
+          //   setNum(number + 1);
+          // }}
+        />
+      :
+      <View style={{height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Follow users or communities to populate this feed</Text>
+      <View style={{height: '5%'}}/>
+      <Button color={'#CCC'} filled={false} whenPressed={onRefresh} text={'reload'}/>
+      </View>
+      }
     </View>
   );
 };

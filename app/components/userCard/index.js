@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Dimensions, Image, StyleSheet } from 'react-native';
-import ColoredButton from '../coloredButton';
 import { getFollowers } from 'endpoints/core';
 import { checkFollowing } from '../../network/lib/core';
 import { followUser } from '../../network/lib/core';
+import Button from '../Button';
 
 const dimensions = Dimensions.get('window')
+const { height, width } = Dimensions.get('window');
 
 const UserCard = ({oUser, navToProfile}) => {
 
@@ -44,43 +45,49 @@ const UserCard = ({oUser, navToProfile}) => {
     return (
         <TouchableOpacity
                 style={{
-                  marginVertical: '2%',
-                  width: Dimensions.get('window').width,
-                  backgroundColor: '#FFF',
-                  shadowColor: "#000",
-                  shadowOffset: {
-                  width: 0,
-                  height: 0
-                  },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 2,
-                  elevation: 5
+                  height: height*0.071,
+                  width: Dimensions.get('window').width*0.9,
                 }}
                 
                 onPress={() => { 
                   navToProfile(oUser)
                 }
                 }>
-                  <View style={{flexDirection: 'row', alignItems: 'center', width: Dimensions.get('screen').width}}>
+                  <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', width: Dimensions.get('screen').width*0.9}}>
                   { (!noProfilePic)  ? 
                       <Image source={{uri: oUser.profile.avatar}} style={Styles.pollImage} onError={()=> setError(true)}/> 
                   :
-                      <View style={Styles.noImage}>
-                          <Text style={Styles.noImageText}>{oUser.username.slice(0,1)}</Text>
+                      <View style={Styles.pollImage}>
+                          <Text style={Styles.noImageText}>{oUser.username.slice(0,1).toUpperCase()}</Text>
                       </View>
                   }
-                    <View style={{marginHorizontal: '2%'}}>
+                  <View style={{width: width*0.041}}/>
+                    <View>
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: 'bold'
                       }}>
                       {oUser.username}
                     </Text>
-                    <Text>{numFollower} Followers</Text>
+                    <View style={{height: '5%'}}/>
+                    <Text style={{fontSize: 13}}>{numFollower} Followers</Text>
                     </View>
-                    <View style={{position: 'absolute', marginVertical: '2%', right: '5%', width: '30%', justifyContent: 'center'}}>
-                      <ColoredButton fill={!isFollowing} color={'#907AD6'} text={isFollowing ? 'Following' : 'Follow'} whenPressed={follow}/>
+                    <View style={{flex: 1}}/>
+                    <View style={{width: width*0.25, justifyContent: 'center'}}>
+                      <Button style={{
+                        width: width*0.25, 
+                        height: '50%', 
+                        borderColor: '#00AAA9', 
+                        borderWidth: 1, 
+                        borderRadius: height*0.01,
+                        backgroundColor: isFollowing ? '#00AAA9' : 'white'
+                        }} 
+                        text={isFollowing ? 'Following' : 'Follow'} 
+                        textColor={isFollowing ? 'white' : '#00AAA9'} 
+                        textSize={17}
+                        action={follow} 
+                        />
                     </View>
                   </View>
               </TouchableOpacity>
@@ -96,26 +103,19 @@ const Styles = StyleSheet.create({
       justifyContent: 'center'
   },
   pollImage: {
-      height: dimensions.width/4,
-      width: dimensions.width/4,
+      height: '100%',
       aspectRatio: 1,
-      resizeMode: 'cover',
-      borderColor: '#ffeef7',
-  },
-  noImage: {
-      height: dimensions.width/4,
-      width: dimensions.width/4,
-      aspectRatio: 1,
-      resizeMode: 'contain',
-      borderColor: '#ffeef7',
       backgroundColor: '#907AD6',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      resizeMode: 'cover',
+      borderRadius: 1000,
   },
   noImageText: {
       fontWeight: 'bold', 
-      fontSize: dimensions.width/12, 
-      color: 'white'
+      fontSize: 30, 
+      color: 'white',
+      textAlign: 'center'
   },
   questionText: {
       fontWeight: 'bold', 

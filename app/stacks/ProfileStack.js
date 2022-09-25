@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import FollowersScreen from '../screens/Profile/FollowersScreen';
+import FollowersScreen from '../screens/FollowersScreen';
 import PollsScreen from '../screens/Profile/PollsScreen';
 import CommentSection from '../screens/CommentSection';
 import CommunityList from '../screens/Profile/UserCommunities';
@@ -27,6 +27,7 @@ const ProfileStack = () => {
         initialParams={{
           show: false,
           followScreen: 'P_Follow',
+          singlePollScreen: 'P_Poll',
           pollListScreen: 'P_PollList',
           communityListScreen: 'P_CommunityList',
         }}
@@ -51,7 +52,7 @@ const ProfileStack = () => {
         initialParams={{pollScreen: 'P_Poll'}}
         component={PollsScreen}
         options={({route}) => ({
-          title: route.params.title,
+          title: 'Polls',
           headerShown: true,
     })}
       />

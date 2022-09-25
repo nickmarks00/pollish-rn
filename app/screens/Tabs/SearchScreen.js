@@ -4,7 +4,7 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
-  ScrollView,
+  Image,
   TouchableOpacity,
   Text,
 } from 'react-native';
@@ -131,7 +131,10 @@ const SearchScreen = ({navigation}) => {
         </View>
       :
         <View style={{flex: 1}}>
-          <FlatList
+          <Text>hi</Text>
+          <Image style={{width: 300, height: 300}} source={{uri: 'https://pollishorg-media-bucket.s3.amazonaws.com/users/user_1069/poll_300/image.jpg?AWSAccessKeyId=AKIASTTRX3Z4UMI2T35U&Signature=R9D4DlFHY0bFJDJLIPC4SaD2DJo%3D&Expires=1663532750'}}/>
+          <Text>hi</Text>
+          {/* <FlatList
             data={content}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
@@ -141,7 +144,7 @@ const SearchScreen = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             )}
-          />
+          /> */}
         </View>
       }
     </View>

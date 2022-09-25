@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/Tabs/HomeScreen';
 import CommentSection from '../screens/CommentSection';
-import FollowersScreen from '../screens/Profile/FollowersScreen'
+import FollowersScreen from '../screens/FollowersScreen';
 import PollsScreen from '../screens/Profile/PollsScreen';
 import CommunityList from '../screens/Profile/UserCommunities';
 import CommunitiesScreen from '../screens/Community';
@@ -27,7 +27,7 @@ const MyStack = () => {
             options={{headerShown: false}} name="Home" component={FeedScreen}
             screenOptions={{ transitionSpec: { open: config, close: config } }}
           />
-          <Stack.Screen name="H_Comments" component={CommentSection} initialParams={{profileScreen: 'H_Profile'}} options={{headerShown: true, title: '', headerBackTitle: 'Poll'}} />
+          <Stack.Screen name="H_Comments" component={CommentSection} initialParams={{profileScreen: 'H_Profile'}} options={{headerShown: true, title: 'Comments'}} />
           <Stack.Screen name="H_Poll" component={SinglePoll} initialParams={{commentsScreen: 'H_Comments', profileScreen: 'H_Profile'}} options={{title: '', headerBackTitle: 'Back'}}/>
           <Stack.Screen name="H_Profile" initialParams={{followScreen: 'H_Follow', pollListScreen: 'H_PollList', communityListScreen: 'H_CommunityList'}} component={TestingSpace} 
             options={({route}) => ({

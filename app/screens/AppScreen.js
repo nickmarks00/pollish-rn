@@ -3,6 +3,7 @@ import Constants from 'expo-constants';
 import {StyleSheet, SafeAreaView, View} from 'react-native';
 
 function AppScreen({children, style}) {
+  console.log(Constants.statusBarHeight)
   return (
     <SafeAreaView style={[styles.screen, style]}>
       <View style={style}>{children}</View>

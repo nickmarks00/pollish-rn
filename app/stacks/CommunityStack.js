@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import FollowersScreen from '../screens/Profile/FollowersScreen';
+import FollowersScreen from '../screens/FollowersScreen';
 import PollsScreen from '../screens/Profile/PollsScreen';
 import CommentSection from '../screens/CommentSection';
 import CommunityList from '../screens/Profile/UserCommunities';

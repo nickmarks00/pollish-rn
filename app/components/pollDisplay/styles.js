@@ -8,17 +8,7 @@ const Styles = StyleSheet.create({
     },
     container: {
         width: '100%',
-        paddingTop: '2%',
-        paddingBottom: '5%',
-        backgroundColor: '#FFF', 
-        shadowColor: "#000",
-        shadowOffset: {
-        width: 0,
-        height: 0
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 5,
+        alignItems: 'center'
     },
     profileContainer: {
         flexDirection: 'row', 

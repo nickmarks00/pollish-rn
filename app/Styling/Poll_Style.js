@@ -15,19 +15,11 @@ const More_Options = {
     justifyContent: 'center',
 }
 
-// Interior elements of an option button (Letter, Text, etc)
-const Inner_Option_Container = {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    flex: 1,
-}
-
 // Text associated with an option button
 const Option_Text = {
     fontFamily: 'System',
-    textAlign: 'center',
-    fontSize: 15,
+    color: '#6F6F6F',
+    fontSize: 13,
 }
 
 // Container for an individual post option
@@ -68,5 +60,5 @@ const Media_DropShadow = {
 
 
 
-export {Post_Image, More_Options, Inner_Option_Container, Option_Text,
+export {Post_Image, More_Options, Option_Text,
         Post_Option, Nav_Text, Media_Container, Media_DropShadow } 

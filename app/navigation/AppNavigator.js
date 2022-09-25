@@ -1,20 +1,31 @@
 import React from 'react';
+import { Modal, View, Dimensions, Text, TouchableOpacity, TextInput } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {MaterialIcons, Ionicons} from '@expo/vector-icons';
 
 import HomeStack from '../stacks/HomeStack';
 import SearchStack from '../stacks/SearchStack';
-import CreationHub from '../screens/CreatePollScreens/CreationHub';
 import ProfileStack from '../stacks/ProfileStack';
 import TestingSpace from '../screens/Tabs/ProfilePage';
 import CommunityTab from '../screens/Tabs/CommunityTab';
 import colors from '../config/colors';
 import CommuntityStack from '../stacks/CommunityStack'
+import Button from '../components/Button';
+import CreationModal from './CreationModal';
 const Tab = createBottomTabNavigator();
 
+const { height, width } = Dimensions.get('window');
+
 const AppNavigator = props => {
+
+  const [modalVisible, setModalVisible] = React.useState(false);
+
   return (
+    <View style={{flex: 1}}>
+    <Modal  visible={modalVisible} animationType="slide" transparent>
+      <CreationModal setModalVisible={setModalVisible}/>
+    </Modal>
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
@@ -50,6 +61,12 @@ const AppNavigator = props => {
             />
           ),
         }}
+        listeners={() => ({
+          tabPress: event => {
+            event.preventDefault();
+            setModalVisible(true);
+          }
+        })}
       />
       <Tab.Screen
         name="Search"
@@ -80,6 +97,8 @@ const AppNavigator = props => {
         }}
       />
     </Tab.Navigator>
+    {modalVisible && <View style={{backgroundColor: '#00AAA9', opacity: 0.4, position: 'absolute', height, width}}/>}
+    </View>
   );
 };
 

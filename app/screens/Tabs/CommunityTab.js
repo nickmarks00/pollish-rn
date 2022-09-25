@@ -3,9 +3,7 @@ import {View, Text, TouchableOpacity, ScrollView, Modal, FlatList} from 'react-n
 import {getUserComms} from 'endpoints/core';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import { getCommunities } from '../../network/lib/pollish';
-import ColoredButton from '../../components/coloredButton';
 import colors from '../../config/colors';
-import CreateCommunity from '../CreatePollScreens/CreateCommunity';
 import { useNavigation } from '@react-navigation/native';
 import CommunityCard from '../../components/communityCard';
 
@@ -76,16 +74,10 @@ const CommunityTab = ({route, navigation}) => {
   return (
     <View style={{flex: 1}}>
       <Modal visible={create} animationType={'slide'}>
-        <CreateCommunity setCommunity={setCreate}/>
       </Modal>
       <View style={{height: '10%'}} />
       <Text style={{textAlign: 'center'}}>Your Communities</Text>
       <View style={{padding: '5%'}}>
-      <ColoredButton
-          whenPressed={openModel}
-          color={colors.secondary}
-          text={'Create Community'}
-        />
       </View>
       <Tab.Navigator>
         <Tab.Screen name="Following" component={Community} />

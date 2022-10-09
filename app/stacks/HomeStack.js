@@ -9,6 +9,7 @@ import CommunitiesScreen from '../screens/Community';
 import TestingSpace from '../screens/Tabs/ProfilePage';
 import SinglePoll from '../screens/SinglePoll';
 import FeedScreen from '../screens/Tabs/FeedScreen';
+import VoteScreen from '../screens/VoteScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,10 @@ const MyStack = () => {
               headerShown: true,
         })} />
           <Stack.Screen name="H_Community" component={CommunitiesScreen} initialParams={{pollScreen: 'H_Poll'}} options={({route}) => ({
+              title: route.params.title,
+              headerShown: true,
+        })} />
+          <Stack.Screen name="H_Vote" component={VoteScreen} initialParams={{pollScreen: 'H_Poll'}} options={({route}) => ({
               title: route.params.title,
               headerShown: true,
         })} />

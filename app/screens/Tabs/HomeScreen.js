@@ -67,6 +67,7 @@ const HomeScreen = (curate) => {
                 id={item.id}
                 commentsScreen={'H_Comments'}
                 profileScreen={'H_Profile'}
+                voteScreen={'H_Vote'}
               />
             </View>
           )}

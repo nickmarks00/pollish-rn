@@ -9,7 +9,7 @@ import PollNav from './subComponents/PollNav';
 
 const {height, width} = Dimensions.get('window');
 
-const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken }) => {
+const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScreen }) => {
 
     const route = useRoute();
     const navigation = useNavigation();
@@ -96,6 +96,10 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken }) => {
         navigation.push(commentsScreen, {post: post, title: post.question_text});
     };
 
+    const navVotes = () => {
+        navigation.push(voteScreen);
+    }
+
     const offlineVoteUpdate = (cid) => {
         
         if(tempUserVote == cid){
@@ -175,7 +179,16 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken }) => {
                             h = height*0.085;
                         }
 
+                        var v = 0
+
+                        if (isFinite(tempVoteCount)){
+                            v = tempVoteCount
+                        }
+                        
+                        console.log(h)
+
                         return (
+                            // <View/>
                             <VoteButton
                                 offlineVoteUpdate={offlineVoteUpdate}
                                 post={post}
@@ -187,7 +200,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken }) => {
                                 count={post.choices.length}
                                 idx={idx}
                                 choice={choice}
-                                voteCount={ tempVoteCount}
+                                voteCount={ v}
                                 unVoted={unVoted}
                                 userVote={userVote}
                                 setUnvoted={setUnvoted}
@@ -198,7 +211,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken }) => {
                 <View style={{height: post.choices.length == 4 ? Dimensions.get('window').height*0.014 : Dimensions.get('window').height*0.038, width: '100%'}}/>
                 
                 {/* Poll Buttons */}
-                <PollNav commentCount={post.comments.length} voteCount={tempVoteCount} navComments={navigateComments}/>
+                <PollNav commentCount={post.comments.length} voteCount={tempVoteCount} navVotes={navVotes} navComments={navigateComments}/>
 
                 <View style={{width: Dimensions.get('window').width+6, height: Dimensions.get('window').height*0.022, borderBottomWidth: 3, borderColor: '#C6C6C6', borderBottomRightRadius: 20, borderRightWidth: 3, borderLeftWidth: 3, borderBottomLeftRadius: 20, borderRightColor: '#C6C6C6'}}/>
                 <View style={{height: Dimensions.get('window').height*0.014}}/>

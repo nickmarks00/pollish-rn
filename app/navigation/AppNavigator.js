@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, View, Dimensions, Text, TouchableOpacity, TextInput } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {MaterialIcons, Ionicons} from '@expo/vector-icons';
+import {Feather, Ionicons, MaterialIcons} from '@expo/vector-icons';
 
 import HomeStack from '../stacks/HomeStack';
 import SearchStack from '../stacks/SearchStack';
@@ -17,6 +17,27 @@ const Tab = createBottomTabNavigator();
 
 const { height, width } = Dimensions.get('window');
 
+const CustonTabBarButton = ({children, onPress}) => (
+  <TouchableOpacity
+    style={{
+      top: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    onPress={onPress}
+  >
+    <View style={{
+      width: 58,
+      height: 58,
+      borderRadius: 35,
+      backgroundColor: '#0FA3B1'
+    }}>
+      {children}
+    </View>
+
+  </TouchableOpacity>
+)
+
 const AppNavigator = props => {
 
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -27,24 +48,20 @@ const AppNavigator = props => {
       <CreationModal setModalVisible={setModalVisible}/>
     </Modal>
     <Tab.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        headerShown: false,
-        tabBarStyle: {
-          borderTopWidth: 0.5,
-          borderTopColor: '#ccc',
-        },
-      }}>
+      screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: {borderTopWidth: 0.2, borderTopColor: '#EEEEEE'} }}>
       <Tab.Screen
         name="Feed"
         component={HomeStack}
         options={{
           tabBarIcon: ({focused}) => (
-            <MaterialCommunityIcons
+            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
+            <MaterialIcons
               name={'poll'}
-              size={30}
-              color={focused ? colors.secondary : 'black'}
+              size={25}
+              color={focused ? '#0FA3B1' : '#BBBBBB'}
             />
+                        </View>
+
           ),
         }}
       />
@@ -53,13 +70,32 @@ const AppNavigator = props => {
         component={CommuntityStack}
         options={{
           tabBarIcon: ({focused}) => (
-            <MaterialCommunityIcons
-              name={focused ? 'account-group' : 'account-group-outline'}
-              size={30}
-              color={focused ? colors.secondary : 'black'}
+            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
+              <MaterialCommunityIcons
+                name={focused ? 'account-group' : 'account-group-outline'}
+                size={25}
+                color={focused ? '#0FA3B1' : '#BBBBBB'}
+                style={{}}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="Add" 
+        component={CommuntityStack}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <Feather
+              name={focused ? 'plus' : 'plus'}
+              size={40}
+              color={focused ? colors.secondary : 'white'}
               style={{}}
             />
           ),
+          tabBarButton: (props) => (
+            <CustonTabBarButton { ... props} />
+          )
         }}
         listeners={() => ({
           tabPress: event => {
@@ -68,17 +104,20 @@ const AppNavigator = props => {
           }
         })}
       />
+
       <Tab.Screen
         name="Search"
         component={SearchStack}
         options={{
           tabBarIcon: ({focused}) => (
-            <Ionicons
-              name={focused ? 'search' : 'search-outline'}
-              size={30}
-              color={focused ? colors.secondary : 'black'}
+            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
+            <MaterialIcons
+              name={focused ? 'search' : 'search'}
+              size={25}
+              color={focused ? '#0FA3B1' : '#BBBBBB'}
               style={{}}
             />
+            </View>
           ),
         }}
       />
@@ -87,12 +126,15 @@ const AppNavigator = props => {
         component={ProfileStack}
         options={{
           tabBarIcon: ({focused}) => (
+            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
+
             <MaterialCommunityIcons
               name={focused ? 'account' : 'account-outline'}
-              size={30}
-              color={focused ? colors.secondary : 'black'}
+              size={25}
+              color={focused ? '#0FA3B1' : '#BBBBBB'}
               style={{}}
             />
+            </View>
           ),
         }}
       />

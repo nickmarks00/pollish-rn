@@ -13,11 +13,6 @@ const Media = ({post, img, user, navToProfile}) => {
 
   const [activeIndexNumber, setActiveIndexNumber] = React.useState(Number);
 
-  console.log('item is ' + img);
-  React.useEffect(() => {
-    console.log(img[0].image)
-  })
-
   return (
     <View style={{height: height*(43/120), width: '100%'}}>
 

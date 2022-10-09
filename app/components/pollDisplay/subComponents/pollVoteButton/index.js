@@ -18,7 +18,7 @@ const VoteButton = (props) => {
     const animatedValue = React.useRef(new Animated.Value(-1000)).current;
     const reactive = React.useRef(new Animated.Value(-1000)).current;
 
-    console.log(step)
+    console.log('x' + step)
 
     React.useEffect(() => {
       Animated.timing(animatedValue, {
@@ -50,22 +50,22 @@ const VoteButton = (props) => {
 
   return (
       <TouchableOpacity
-          style={[Styles.Post_Option, {overflow: 'hidden', paddingHorizontal: 15, borderWidth: 1, borderColor: props.chosen == 2 ? '#00AAA9' : '#BBBBBB', height: props.height, marginBottom: props.margin, width: dimensions.width*0.9, alignItems: 'left' }]}
+          style={[Styles.Post_Option, {overflow: 'hidden', paddingHorizontal: 15, borderWidth: props.chosen == 2 ? 2 : 1, borderColor: props.chosen == 2 ? '#F6AE2D' : '#656176', backgroundColor: props.chosen == 0 ? '#F7F7F8' : '#FFF', height: props.height, marginBottom: props.margin, width: dimensions.width*0.9, alignItems: 'left' }]}
           onPress={() => handleRegisterVote()}
       >
           { props.chosen != 0 &&
           <View style={{position: 'absolute', height: '100%', borderRadius: 10, overflow: 'hidden'}}>
-          <Progress color={props.chosen == 2 ? '#CCEEEE' : '#F3F3F3' } step={votepercent} steps={100} height={'100%'}/>
+          <Progress color={props.chosen == 2 ? '#FDEFD5' : '#F0F0F2' } step={isFinite(votepercent) ? votepercent : 0} steps={100} height={'100%'}/>
           </View>
           }
           <View>
-            <Text style={[Option_Text, {fontWeight: '500', width: props.chosen == 0 ? dimensions.width*0.9-30 : dimensions.width*0.72-30 , textAlign: 'left', color: props.chosen == 2 ? '#00AAA9' : '#6F6F6F'}]} numberOfLines={1}>
+            <Text style={[Option_Text, {fontWeight: props.chosen == 2 ? 'bold' : '500', width: props.chosen == 0 ? dimensions.width*0.9-30 : dimensions.width*0.72-30 , textAlign: 'left', color: props.chosen == 2 ? '#F6AE2D' : '#6F6F6F'}]} numberOfLines={1}>
                 {props.choice.choice_text}
             </Text>
             { props.chosen != 0 &&
                 <View style={{position: 'absolute', flexDirection: 'row'}}>
                 <View style={{flex: 1}}/>
-                <Text style={{fontWeight: '500', color: props.chosen == 2 ? '#00AAA9' : '#6F6F6F'}}>{Math.round(((props.choice.num_votes + ((props.chosen == 2) ? props.userVote != props.choice.id ? 1 : 0 : props.userVote  == props.choice.id ? -1 : 0)) / props.voteCount)*100)}%</Text>
+                <Text style={{fontWeight: props.chosen == 2 ? 'bold' : '500', color: props.chosen == 2 ? '#F6AE2D' : '#656176'}}>{Math.round(((props.choice.num_votes + ((props.chosen == 2) ? props.userVote != props.choice.id ? 1 : 0 : props.userVote  == props.choice.id ? -1 : 0)) / props.voteCount)*100)}%</Text>
                 </View>
             }
           </View>

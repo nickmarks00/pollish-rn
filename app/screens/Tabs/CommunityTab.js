@@ -76,8 +76,8 @@ const CommunityTab = ({route, navigation}) => {
       <Modal visible={create} animationType={'slide'}>
       </Modal>
       <View style={{height: '10%'}} />
-      <Text style={{textAlign: 'center'}}>Your Communities</Text>
-      <View style={{padding: '5%'}}>
+      <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 17, color:'#0FA3B1'}}>Your Communities</Text>
+      <View style={{padding: '2%'}}>
       </View>
       <Tab.Navigator>
         <Tab.Screen name="Following" component={Community} />

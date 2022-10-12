@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, Alert, Dimensions } from 'react-native';
+import { View, Image, Text, Alert, Dimensions, TouchableOpacity } from 'react-native';
 import { getPoll, getPollVotes } from 'endpoints/pollish';
 import Styles from './styles';
 import { deletePoll } from 'endpoints/pollish'
@@ -42,7 +42,7 @@ const PollCard = ({color, qText, id, reload}) => {
             {
               text: "Yes",
               onPress: () => {
-                removePoll()
+                logOut()
               },
             },
             // The "No" button
@@ -55,9 +55,9 @@ const PollCard = ({color, qText, id, reload}) => {
       };
 
     return (
-        <View style={{height: height*0.154, width: width*0.9, borderRadius: height*0.024, borderWidth: 2, borderColor: '#EEE', overflow: 'hidden'}}>
+        <View style={{height: height*0.154, width: width*0.9, borderColor: '#EEE', overflow: 'hidden', marginBottom: '4%'}}>
             <View style={{height: '80%', flexDirection: 'row'}}>
-                <View style={{height: '100%', aspectRatio: 1, overflow: 'hidden', borderRightWidth: 2, borderColor: '#EEE'}}>
+                <View style={{height: '100%', aspectRatio: 1, overflow: 'hidden', borderRadius: 15, borderColor: '#EEE'}}>
                 { (poll?.images.length > 0 && noProfilePic)  ? 
                     <Image source={{uri: poll.images[0].image}} style={{height: '100%'}} onError={()=> setError(false)}/> 
                 :
@@ -75,7 +75,9 @@ const PollCard = ({color, qText, id, reload}) => {
             </View>
 
             <View style={{height: '20%', width: '100%', borderTopWidth: 2, borderColor: '#EEE', justifyContent: 'center'}}>
-                <Text style={{marginLeft: '5%', fontSize: 12, color: '#7A7A7A'}}>6 months ago</Text>
+                <TouchableOpacity onPress={() => logOut()}>
+                <Text style={{marginLeft: '5%', fontSize: 12, color: '#7A7A7A'}}>1 month ago</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

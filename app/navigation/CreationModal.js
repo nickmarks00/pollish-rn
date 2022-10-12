@@ -1,6 +1,6 @@
 import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Text, View, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, Dimensions, Image, KeyboardAvoidingView } from 'react-native';
 import Button from '../components/Button';
 import IconButton from '../components/iconButton';
 
@@ -104,7 +104,10 @@ const CreationModal = ({setModalVisible}) => {
     return (
         <View style={{flex: 1}}>
             <TouchableOpacity onPress={() => setModalVisible(false)} style={{flex: 1, opacity: 0}}/>
-            <View style={{alignItems: 'center',
+            <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={-20}
+            style={{alignItems: 'center',
             backgroundColor: 'white',
             borderTopLeftRadius: width*0.07,
             borderTopRightRadius: width*0.07,
@@ -180,7 +183,7 @@ const CreationModal = ({setModalVisible}) => {
                     { (stage != 1 || options > 1) && <Button textSize={15} action={() => nextStage()} style={{width: width*0.359, height: height*0.047, backgroundColor: '#414141', borderRadius: height*0.012}} textColor={'white'} text={'Next'}/> }
                 </View>
                 <View style={{height: height*0.076}}/>
-            </View>
+            </KeyboardAvoidingView>
         </View>
     )
 }

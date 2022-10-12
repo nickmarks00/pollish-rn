@@ -97,7 +97,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
     };
 
     const navVotes = () => {
-        navigation.push(voteScreen);
+        navigation.push(voteScreen, {pid: post.id, choices: post.choices});
     }
 
     const offlineVoteUpdate = (cid) => {

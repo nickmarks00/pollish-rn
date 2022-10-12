@@ -54,7 +54,7 @@ const MyStack = () => {
         })} />
           <Stack.Screen name="H_Vote" component={VoteScreen} initialParams={{pollScreen: 'H_Poll'}} options={({route}) => ({
               title: route.params.title,
-              headerShown: true,
+              headerShown: false,
         })} />
         </Stack.Navigator>
     );

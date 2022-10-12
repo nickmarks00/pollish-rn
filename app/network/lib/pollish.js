@@ -19,6 +19,10 @@ export function getCommPolls(id) {
   return axiosClient.get(`${communities}/${id}/`);
 }
 
+export function getEachUserVote(pid) {
+  return axiosClient.get(`${polls}/${pid}/voting/`)
+}
+
 export function getCommunities() {
   return axiosClient.get(`${communities}/`);
 }

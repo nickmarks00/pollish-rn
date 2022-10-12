@@ -55,7 +55,7 @@ const PollCard = ({color, qText, id, reload}) => {
       };
 
     return (
-        <View style={{height: height*0.154, width: width*0.9, borderColor: '#EEE', overflow: 'hidden', marginBottom: '4%'}}>
+        <View style={{height: height*0.154, width: width*0.9, borderColor: '#EEE', overflow: 'hidden'}}>
             <View style={{height: '80%', flexDirection: 'row'}}>
                 <View style={{height: '100%', aspectRatio: 1, overflow: 'hidden', borderRadius: 15, borderColor: '#EEE'}}>
                 { (poll?.images.length > 0 && noProfilePic)  ? 
@@ -67,17 +67,13 @@ const PollCard = ({color, qText, id, reload}) => {
                 }
                 </View>
                 <View style={{flex: 1, height: '100%', justifyContent: 'center', marginLeft: width*0.05}}>
-                    <Text numberOfLines={2} style={{fontSize: 15}}>{qText}</Text>
+                    <Text numberOfLines={2} style={{fontSize: 15, fontWeight: 'bold'}}>{qText}</Text>
                     <Text style={{fontWeight: 'bold', fontSize: 12, color: '#00AAA9'}}>username12
                         <Text style={{fontWeight: 'bold', fontSize: 12, color: '#767676'}}>    10k Votes</Text>
                     </Text>
+                    <View style={{height: height*0.02}}/>
+                    <Text style={{fontSize: 12, color: '#7A7A7A'}}>1 month ago</Text>
                 </View>
-            </View>
-
-            <View style={{height: '20%', width: '100%', borderTopWidth: 2, borderColor: '#EEE', justifyContent: 'center'}}>
-                <TouchableOpacity onPress={() => logOut()}>
-                <Text style={{marginLeft: '5%', fontSize: 12, color: '#7A7A7A'}}>1 month ago</Text>
-                </TouchableOpacity>
             </View>
         </View>
     )

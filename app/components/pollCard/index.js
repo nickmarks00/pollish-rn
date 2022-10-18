@@ -65,6 +65,8 @@ const PollCard = ({color, qText, id, reload}) => {
                         <Text style={Styles.noImageText}>{qText.slice(0,1)}</Text>
                     </View>
                 }
+                <View style={{position: 'absolute', borderColor: 'rgba(0,0,0,0.2)', width: '100%', height: '100%', borderRadius: 15, borderWidth: 1}}/> 
+
                 </View>
                 <View style={{flex: 1, height: '100%', justifyContent: 'center', marginLeft: width*0.05}}>
                     <Text numberOfLines={2} style={{fontSize: 15, fontWeight: 'bold'}}>{qText}</Text>

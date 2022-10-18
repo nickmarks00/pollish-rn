@@ -3,19 +3,21 @@ import { Text, View, Dimensions, TouchableOpacity, Modal, Image, ImageBackground
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { VoteButton } from 'components';
 import Media from './subComponents/Media';
-import { getPoll, registerVote } from '../../network/lib/pollish';
+import { getCommuntiy, getPoll, registerVote } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
 import PollNav from './subComponents/PollNav';
 
 const {height, width} = Dimensions.get('window');
 
-const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScreen }) => {
+const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScreen, communityScreen }) => {
 
     const route = useRoute();
     const navigation = useNavigation();
 
     const [post, setPost] = useState(null);
     const [oUser, setUser] = useState(null);
+    const [comm, setComm] = useState(null);
+
     const {user, logout} = useAuth();
     const [imgWidth, setWidth] = useState(1);
     const [imgHeight, setHeight] = useState(1);
@@ -28,16 +30,21 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
 
     const [unVoted, setUnvoted] = useState(-1);
     const [showModel, setShowModel] = useState(false);
+    const [focusModal, setFocusModal] = useState(false);
 
     useEffect(() => {
+        console.log('rerender')
+        console.log('token is ' + refreshToken)
         loadPoll();
         checkVote();
     }, [refreshToken]);
 
     useEffect(() => {
         loadUser();
+        loadComm();
         return () => {
             setUser()
+            setComm()
         };
     }, [post]);
 
@@ -75,6 +82,16 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
         }
     }
 
+    const loadComm = async () => {
+        if (post){
+            if(post.community){
+            getCommuntiy(post.community.id).then(function(response){
+                setComm(response.data);
+            })
+        }
+        }
+    }
+
     const checkVote = async () => {
         const response = await getPoll(route.params?.id ? route.params.id : id);
         if (userVote != response.data.user_vote){
@@ -95,6 +112,13 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
     const navigateComments = () => {
         navigation.push(commentsScreen, {post: post, title: post.question_text});
     };
+
+    const navigateCommunity = () => {
+        if(post.community){
+            navigation.push(communityScreen, {id: post.community.id, comm: comm})
+            setFocusModal(false);
+        }
+    }
 
     const navVotes = () => {
         navigation.push(voteScreen, {pid: post.id, choices: post.choices});
@@ -130,12 +154,23 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
         return (
             <View style={{alignItems: 'center', width: '100%'}}>
                 <Modal visible={showModel} transparent>
-                    <View style={{flex: 1, justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.8)'}}/>
+                    <View style={{flex: 1, justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.7)'}}>
+                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.7)'}}/>
                         { post.images.length > 0 &&
                             <Image source={{uri: post.images[0].image}}  style={{width, aspectRatio: imgHeight/imgWidth}}/>
                         }
-                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.8)'}}/>
+                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.7)'}}/>
+                    </View>
+                </Modal>
+
+                <Modal visible={focusModal} transparent>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.7)'}}>
+                    <TouchableOpacity style={{position: 'absolute', height: '100%', width: '100%'}} onPress={() => setFocusModal(false)} />
+                        <View style={{width: '80%', height: '60%', backgroundColor: 'white', borderRadius: 10, borderWidth: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <TouchableOpacity onPress={() => navigateCommunity()}>
+                                <Text>{post.community ? post.community.name : 'No Focus'}</Text>
+                            </TouchableOpacity>
+                            </View>
                     </View>
                 </Modal>
 
@@ -148,10 +183,11 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
                 
                 {/* Image */}
                 {post.images.length > 0 && 
+                <TouchableOpacity onPress={() => openModel(post.images[0].image)}>
                     <Media post={post} img={post.images} user={oUser} navToProfile={navigateProfile}/>
 
-                    // <TouchableOpacity onPress={() => openModel(post.images[0].image)}>
-                    // </TouchableOpacity> 
+                    
+                    </TouchableOpacity> 
                 }
 
                 <View style={{height: height*0.014}}/>
@@ -211,7 +247,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
                 <View style={{height: post.choices.length == 4 ? Dimensions.get('window').height*0.014 : Dimensions.get('window').height*0.038, width: '100%'}}/>
                 
                 {/* Poll Buttons */}
-                <PollNav commentCount={post.comments.length} voteCount={tempVoteCount} navVotes={navVotes} navComments={navigateComments}/>
+                <PollNav commentCount={post.comments.length} voteCount={tempVoteCount} infoModal={setFocusModal} navVotes={navVotes} navComments={navigateComments}/>
 
                 <View style={{width: Dimensions.get('window').width+6, height: Dimensions.get('window').height*0.022, borderBottomWidth: 3, borderColor: '#C6C6C6', borderBottomRightRadius: 20, borderRightWidth: 3, borderLeftWidth: 3, borderBottomLeftRadius: 20, borderRightColor: '#C6C6C6'}}/>
                 <View style={{height: Dimensions.get('window').height*0.014}}/>

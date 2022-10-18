@@ -14,13 +14,19 @@ import PollCard from 'components/pollCard';
 import { FlatList } from 'react-native-gesture-handler';
 import UserCard from '../../components/userCard';
 import CommunityCard from '../../components/communityCard';
+import Button from '../../components/Button';
 
 const dimensions = Dimensions.get('screen');
+
+const searchOptions = ['POLLS', 'GROUPS', 'USERS']
+
+const BUTTON_BORDER_WIDTH = dimensions.height*0.012;
 
 const SearchScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [content, setContent] = useState([]);
   const [toggle, setToggle] = useState('poll');
+  const [filter, setFilter] = useState(0);
 
   const searchFilter = text => {
     if (text) {
@@ -31,24 +37,33 @@ const SearchScreen = ({navigation}) => {
     setSearch(text);
   };
 
+  const adjustFilter = async () => {
+    await clearContent()
+    const temp = filter;
+    if(temp >= 2)
+      setFilter(0);
+    else
+      setFilter(temp+1);
+  }
+
   const nextPage = poll => {
-    if (toggle === 'user') {
+    if (filter === 2) {
       navigation.push('S_Profile', {user: poll, title: poll.username});
-    } else if (toggle === 'comm') {
+    } else if (filter === 1) {
       navigation.push('S_Community', {comm: poll, id: poll.id, title: poll.name})
-    } else if (toggle === 'poll') {
+    } else if (filter === 0) {
       navigation.push('S_Poll', {id: poll.id});
     }
   };
 
   const findContent = async text => {
-    if (toggle === 'poll') {
+    if (filter == 0) {
       const data = await searchPolls(text);
       setContent(data.data.results);
-    } else if (toggle === 'comm') {
+    } else if (filter == 1) {
       const data = await searchCommunities(text);
       setContent(data.data.results);
-    } else if (toggle === 'user') {
+    } else if (filter == 2) {
       const data = await searchUsers(text);
       setContent(data.data.results);
     }
@@ -69,38 +84,28 @@ const SearchScreen = ({navigation}) => {
   }
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{flex: 1, alignItems: 'center', marginTop: 60}}>
+      <View style={{flexDirection: 'row', borderBottomWidth: 1, paddingBottom: 10, width: '100%', justifyContent: 'center', borderBottomColor: '#CCCCCC'}}>
       <TextInput
-        style={styles.comment_input}
+        style={{height: 40,
+          width: dimensions.width / 1.5,
+          backgroundColor: '#EEE',
+          borderWidth: 1,
+          borderRadius: BUTTON_BORDER_WIDTH,
+          borderColor: '#BBB',
+          padding: 10,
+          justifyContent: 'center',}}
         onChangeText={text => searchFilter(text)}
         value={search}
         placeholder="What do you want to know?"
       />
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity
-          style={{padding: '3%'}}
-          onPress={() => onToggle('poll')}>
-          <Text style={{color: toggle === 'poll' ? 'blue' : 'black'}}>
-            Poll
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{padding: '3%'}}
-          onPress={() => onToggle('comm')}>
-          <Text style={{color: toggle === 'comm' ? 'blue' : 'black'}}>
-            Community
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{padding: '3%'}}
-          onPress={() => onToggle('user')}>
-          <Text style={{color: toggle === 'user' ? 'blue' : 'black'}}>
-            User
-          </Text>
-        </TouchableOpacity>
+      <View style={{width: '2%'}}/>
+      <Button action={adjustFilter} style={{width: dimensions.width*0.2, height: 40, borderColor: '#00AAA9', borderWidth: 1, borderRadius: BUTTON_BORDER_WIDTH, backgroundColor: 'rgba(15,163,177,0.6)'}} textColor={'#FFF'} 
+                text={searchOptions[filter]}/>
       </View>
+      <View style={{height: dimensions.height*0.021}}/>
 
-      {toggle == 'poll' ? 
+      {filter == 0 ? 
       
         <View style={{flex: 1}}>
           <FlatList
@@ -115,7 +120,7 @@ const SearchScreen = ({navigation}) => {
             )}
           />
         </View>
-      : toggle == 'comm' ?
+      : filter == 1 ?
         <View style={{flex: 1}}>
           <FlatList
               data={content}
@@ -131,10 +136,12 @@ const SearchScreen = ({navigation}) => {
         </View>
       :
         <View style={{flex: 1}}>
-          <Text>hi</Text>
-          <Image style={{width: 300, height: 300}} source={{uri: 'https://pollishorg-media-bucket.s3.amazonaws.com/users/user_1069/poll_300/image.jpg?AWSAccessKeyId=AKIASTTRX3Z4UMI2T35U&Signature=R9D4DlFHY0bFJDJLIPC4SaD2DJo%3D&Expires=1663532750'}}/>
-          <Text>hi</Text>
-          {/* <FlatList
+          <FlatList
+            ItemSeparatorComponent={() => {
+              return (
+                <View style={{height: dimensions.height*0.021}}/>
+              )
+            }}
             data={content}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
@@ -144,7 +151,7 @@ const SearchScreen = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             )}
-          /> */}
+          />
         </View>
       }
     </View>
@@ -156,8 +163,7 @@ export default SearchScreen;
 const styles = StyleSheet.create({
   comment_input: {
     height: 40,
-    width: dimensions.width / 1.1,
-    marginTop: 60,
+    width: dimensions.width / 1.4,
     borderWidth: 1,
     borderRadius: 15,
     borderColor: '#BBB',

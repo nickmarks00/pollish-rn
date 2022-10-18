@@ -1,4 +1,3 @@
-import { transform } from 'lodash';
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, Animated, Easing } from 'react-native';
 import {Option_Text} from 'style/Poll_Style';
@@ -18,7 +17,8 @@ const VoteButton = (props) => {
     const animatedValue = React.useRef(new Animated.Value(-1000)).current;
     const reactive = React.useRef(new Animated.Value(-1000)).current;
 
-    console.log('x' + step)
+    // console.log('x' + step)
+    // console.log('vp ' + votepercent)
 
     React.useEffect(() => {
       Animated.timing(animatedValue, {
@@ -27,7 +27,7 @@ const VoteButton = (props) => {
         useNativeDriver: true,
         easing: Easing.inOut(Easing.quad)
       }).start();
-    }, [])
+    }, [true])
 
     React.useEffect(() => {
       reactive.setValue(-width + (width * step) / steps);

@@ -103,17 +103,20 @@ const CreationModal = ({setModalVisible}) => {
 
     return (
         <View style={{flex: 1}}>
+            {/* Close creation screen on tap out */}
             <TouchableOpacity onPress={() => setModalVisible(false)} style={{flex: 1, opacity: 0}}/>
+
             <KeyboardAvoidingView
             behavior="padding"
-            keyboardVerticalOffset={-20}
+            keyboardVerticalOffset={-120}
             style={{alignItems: 'center',
             backgroundColor: 'white',
             borderTopLeftRadius: width*0.07,
             borderTopRightRadius: width*0.07,
             }}
             >
-
+            
+            {/* Poll Data Section */}
             {stage == 0 ? 
                 <View>
                     <View style={{height: height*0.034}}/>

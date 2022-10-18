@@ -27,6 +27,10 @@ export function getCommunities() {
   return axiosClient.get(`${communities}/`);
 }
 
+export function getCommuntiy(id) {
+  return axiosClient.get(`${communities}/${id}/`);
+}
+
 export function getPollFeed(num) {
   return axiosClient.get(`${polls}/?page=${num}`);
 }

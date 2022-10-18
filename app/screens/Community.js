@@ -6,8 +6,11 @@ import PollCard from '../components/pollCard';
 import { getUserComms } from '../network/lib/core';
 import { followCommunity } from '../network/lib/pollish';
 import CommunityCard from '../components/communityCard';
+import IconButton from '../components/iconButton';
+import Constants from 'expo-constants';
 
-const dimensions = Dimensions.get('window')
+const dimensions = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 /**
  * * Show individual community and polls it contains (requires: id, pollScreen)
@@ -40,6 +43,7 @@ const Community = ({route, navigation}) => {
 
   const loadCommPolls = async () => {
     const commPolls = await getCommPolls(route.params.id);
+    console.log(commPolls)
     setPolls(commPolls.data.polls);
     setCommName(commPolls.data.name);
   };
@@ -49,10 +53,12 @@ const Community = ({route, navigation}) => {
     checkIfFollowing();
   };
 
-  console.log(route.params.comm)
-
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: '5%'}}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: Constants.statusBarHeight}}>
+      <View style={{position: 'absolute', height: height*0.05, marginVertical: height*0.018, width: '100%', top: 0}}>
+                <IconButton action={()=>navigation.goBack()} name={'chevron-back'} iconFill={'#FFF'} style={{position: 'absolute', left: 0, backgroundColor: '#D9D9D9', marginLeft: width*0.07, borderRadius: 1000}} />
+            </View>
+            <View style={{height: '5%'}}/>
       { (!noProfilePic)  ? 
                 <Image source={{uri: route.params.comm.image}} style={Styles.pollImage} onError={()=> setError(true)}/> 
             :
@@ -122,6 +128,7 @@ const Styles = StyleSheet.create({
       color: 'white'
   },
   questionText: {
+    fontSize: 17,
       fontWeight: 'bold', 
       flexWrap: 'wrap', 
       paddingHorizontal: '7%',

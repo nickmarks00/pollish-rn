@@ -14,7 +14,7 @@ const Media = ({post, img, user, navToProfile}) => {
   const [activeIndexNumber, setActiveIndexNumber] = React.useState(Number);
 
   return (
-    <View style={{height: height*(43/120), width: '100%'}}>
+    <View style={{height: height*(42/120), width: '100%'}}>
 
       {/* <View style={{width, height: height*(43/120)}}/> */}
       {/* <FlatList
@@ -57,17 +57,18 @@ const Media = ({post, img, user, navToProfile}) => {
                 <Image 
                   source={{uri: image.image, cache: "force-cache"}} 
                   style={{flex: 1, borderTopRightRadius: width*0.05, borderTopLeftRadius: width*0.05}}/>
+                  <View style={{position: 'absolute', borderColor: 'rgba(0,0,0,0.2)', width: '100%', height: '100%', borderTopRightRadius: width*0.05, borderTopLeftRadius: width*0.05, borderWidth: 2}}/> 
             </View>
           )
         })}
       </ScrollView>
 
-      <TouchableOpacity onPress={navToProfile} style={{position: 'absolute', top: 20, left: 20, backgroundColor: 'rgba(255,255,255,0.4)', height: width*0.140, aspectRatio: 1, borderRadius: 1000, justifyContent: 'center', alignItems: 'center'}}>
-        <ProfilePic user={user} profileHeight={width*0.120}/>
+      <TouchableOpacity onPress={navToProfile} style={{position: 'absolute', top: 10, left: 10, backgroundColor: 'rgba(255,255,255,0.4)', height: width*0.105, aspectRatio: 1, borderRadius: 1000, justifyContent: 'center', alignItems: 'center'}}>
+        <ProfilePic user={user} profileHeight={width*0.090}/>
       </TouchableOpacity>
 
       {/* Image Slide Indicator */}
-      {/* <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'column' }}>
         <View style={Styles.slideContainer}>
           {post.images.slice(0, activeIndexNumber < 5 ? 5 : post.images.length - 5).map((item, index) => {
                                 if (post.images.length !== 1) { // if imagelist array length not 1 
@@ -89,7 +90,7 @@ const Media = ({post, img, user, navToProfile}) => {
                                 }
                                 })}
                                 </View>
-                            </View> */}
+                            </View>
         </View>
   );
 };

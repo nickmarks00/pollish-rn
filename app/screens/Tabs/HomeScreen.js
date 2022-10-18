@@ -30,6 +30,7 @@ const HomeScreen = (curate) => {
 
   const fetchDataFromApi = async page => {
     const token = Math.random();
+    console.log('refresh token')
     setRefreshToken(token)
     if (curate) {
       const polls = await getCuratedFeed(user.id);
@@ -59,7 +60,9 @@ const HomeScreen = (curate) => {
           windowSize={3}
           style={{flex: 1}}
           data={posts}
+          keyExtractor={({item}) => item}
           showsVerticalScrollIndicator={false}
+          // Passing heightGap and refreshToken causes constant rerenders
           renderItem={({item}) => (
             <View style={{height: heightGap, width: '100%'}}>
               <PollDisplay
@@ -68,6 +71,7 @@ const HomeScreen = (curate) => {
                 commentsScreen={'H_Comments'}
                 profileScreen={'H_Profile'}
                 voteScreen={'H_Vote'}
+                communityScreen={'H_Community'}
               />
             </View>
           )}

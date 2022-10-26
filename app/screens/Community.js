@@ -8,6 +8,7 @@ import { followCommunity } from '../network/lib/pollish';
 import CommunityCard from '../components/communityCard';
 import IconButton from '../components/iconButton';
 import Constants from 'expo-constants';
+import Button from '../components/Button';
 
 const dimensions = Dimensions.get('window');
 const { height, width } = Dimensions.get('window');
@@ -39,6 +40,8 @@ const Community = ({route, navigation}) => {
       if(choice.id == route.params.id)
         setIsFollowing(true);
     });
+    return false;
+    
   }
 
   const loadCommPolls = async () => {
@@ -49,8 +52,10 @@ const Community = ({route, navigation}) => {
   };
 
   const follow = async () => {
+    const follow = await checkIfFollowing();
     const data = await followCommunity(route.params.id, user.id);
     checkIfFollowing();
+    setIsFollowing(follow.data);
   };
 
   return (
@@ -74,6 +79,19 @@ const Community = ({route, navigation}) => {
               <Text style={Styles.votesText}>{route.params.comm.num_users} Users</Text>
           </View>
           <View style={{height: '5%'}}/>
+          <Button style={{
+                  width: width*0.9, 
+                  height: height*0.057, 
+                  borderColor: '#00AAA9', 
+                  borderWidth: 1, 
+                  borderRadius: height*0.015,
+                  backgroundColor: isFollowing ? '#00AAA9' : 'white'
+                }} 
+                text={isFollowing ? 'Following' : 'Follow'} 
+                textColor={isFollowing ? 'white' : '#00AAA9'} 
+                textSize={17}
+                action={follow} 
+        />
       </View>
       
       <ScrollView>

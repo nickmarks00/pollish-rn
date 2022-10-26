@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Dimensions, ScrollView, Text } from 'react-native';
 import Loader from '../../components/Loader';
 import Constants from 'expo-constants';
 import SectionHeader from '../../components/sectionHeader';
@@ -128,7 +128,10 @@ const ProfilePage = ({route, navigation}) => {
       </View>
       
 
-      <TouchableOpacity onPress={() => logOut()} style={{height: height*0.02, width}}/>
+      <View style={{height: height*0.02, width}}/>
+
+      <Text>{route.params?.user ? route.params.user.bio : user.profile.bio}</Text>
+      <View style={{height: height*0.02, width}}/>
 
       {/* Follow / Following Buttons */}
       <FollowButtons followers={followers} following={following} navToFollowers={navToFollowers}/>

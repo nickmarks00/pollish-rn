@@ -6,6 +6,7 @@ import Media from './subComponents/Media';
 import { getCommuntiy, getPoll, registerVote } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
 import PollNav from './subComponents/PollNav';
+import ProfilePic from '../profilePic';
 
 const {height, width} = Dimensions.get('window');
 
@@ -17,6 +18,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
     const [post, setPost] = useState(null);
     const [oUser, setUser] = useState(null);
     const [comm, setComm] = useState(null);
+    const [currImgIdx, setImgIdx] = useState(0);
 
     const {user, logout} = useAuth();
     const [imgWidth, setWidth] = useState(1);
@@ -63,8 +65,10 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
         })
     };
 
-    const openModel = async (item) => {
+    const openModel = async (item, index) => {
+        setImgIdx(index)
         console.log(item)
+        console.log('in ' + index)
         await Image.getSize(item, (Width, Height) => {
             setWidth(Width);
             setHeight(Height);
@@ -155,11 +159,10 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
             <View style={{alignItems: 'center', width: '100%'}}>
                 <Modal visible={showModel} transparent>
                     <View style={{flex: 1, justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.7)'}}>
-                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.7)'}}/>
+                        <TouchableOpacity onPress={() => setShowModel(false)} style={{position: 'absolute', height: height, width: width, backgroundColor: 'rgba(255,255,255,0.7)'}}/>
                         { post.images.length > 0 &&
-                            <Image source={{uri: post.images[0].image}}  style={{width, aspectRatio: imgHeight/imgWidth}}/>
+                            <Image source={{uri: post.images[currImgIdx].image}}  style={{ resizeMode: 'cover', width, aspectRatio: imgHeight/imgWidth}}/>
                         }
-                        <TouchableOpacity onPress={() => setShowModel(false)} style={{flex: 1, backgroundColor: 'rgba(255,255,255,0.7)'}}/>
                     </View>
                 </Modal>
 
@@ -175,19 +178,18 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
                 </Modal>
 
                 {post.images.length == 0 &&
-                    <View>
+                    <View style={{marginHorizontal: 20, width: width, justifyContent: 'center', alignItems: 'center'}}>
                         <View style={{height: height*0.15}}/>
                         <View style={{width: width+6, height: height*0.022, borderTopWidth: 3, borderColor: '#C6C6C6', borderTopRightRadius: 20, borderRightWidth: 3, borderLeftWidth: 3, borderTopLeftRadius: 20, borderRightColor: '#C6C6C6'}}/>
+                        <TouchableOpacity onPress={navigateProfile}>
+                        <ProfilePic user={oUser} profileHeight={width*0.090}/>
+                        </TouchableOpacity>
                     </View>
                 }
                 
                 {/* Image */}
                 {post.images.length > 0 && 
-                <TouchableOpacity onPress={() => openModel(post.images[0].image)}>
-                    <Media post={post} img={post.images} user={oUser} navToProfile={navigateProfile}/>
-
-                    
-                    </TouchableOpacity> 
+                    <Media fullScreenImage={openModel} post={post} img={post.images} user={oUser} navToProfile={navigateProfile}/>                    
                 }
 
                 <View style={{height: height*0.014}}/>

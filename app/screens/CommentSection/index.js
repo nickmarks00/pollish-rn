@@ -75,8 +75,6 @@ const CommentSection = ({route}) => {
       <View style={{height: height*0.047, width: width*0.9, flexDirection: 'row', justifyContent: 'center'}}>
         <Button action={adjustFilter} style={{flex: 1, borderColor: '#00AAA9', borderWidth: 1, borderRadius: BUTTON_BORDER_WIDTH}} textColor={'#00AAA9'} 
                 text={filter == -1 ? 'Showing All' : '"' + route.params.post.choices[filter].choice_text + '"'}/>
-        <View style={{width: '4%'}}/>
-        <Button style={{flex: 1, borderColor: '#000', borderWidth: 1, borderRadius: BUTTON_BORDER_WIDTH, backgroundColor: 'black'}} textColor={'#FFF'} text={'Most Recent'}/>
       </View>
 
       <View style={{height: height*0.024}}/>

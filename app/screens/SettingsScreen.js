@@ -21,7 +21,6 @@ import {
   AppFormField as FormField,
   SubmitButton,
 } from '../components/forms';
-import Screen from './AppScreen';
 
 const SettingsScreen = ({navigation}) => {
   const {user, profile, logOut} = useAuth();
@@ -41,7 +40,7 @@ const SettingsScreen = ({navigation}) => {
   });
 
   return (
-    <Screen style={styles.screen}>
+    <View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.titleBar}>
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
@@ -114,7 +113,7 @@ const SettingsScreen = ({navigation}) => {
           </Form>
         </View>
       </ScrollView>
-    </Screen>
+    </View>
   );
 };
 

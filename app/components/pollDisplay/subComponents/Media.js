@@ -9,7 +9,7 @@ const {height, width} = Dimensions.get('window');
     ! Requires images from post be supplied to component
 */
 
-const Media = ({post, img, user, navToProfile}) => {
+const Media = ({post, img, user, navToProfile, fullScreenImage}) => {
 
   const [activeIndexNumber, setActiveIndexNumber] = React.useState(Number);
 
@@ -53,12 +53,12 @@ const Media = ({post, img, user, navToProfile}) => {
       >
         {post.images.map((image, idx) => {
           return(
-            <View key={idx} style={{ width, height: height*(43/120)}}>
+            <TouchableOpacity onPress={() => fullScreenImage(image, activeIndexNumber)} key={idx} style={{ width, height: height*(43/120)}}>
                 <Image 
                   source={{uri: image.image, cache: "force-cache"}} 
                   style={{flex: 1, borderTopRightRadius: width*0.05, borderTopLeftRadius: width*0.05}}/>
                   <View style={{position: 'absolute', borderColor: 'rgba(0,0,0,0.2)', width: '100%', height: '100%', borderTopRightRadius: width*0.05, borderTopLeftRadius: width*0.05, borderWidth: 2}}/> 
-            </View>
+            </TouchableOpacity>
           )
         })}
       </ScrollView>

@@ -1,18 +1,142 @@
 import React from 'react';
-import { Modal, View, Dimensions, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Modal, View, Dimensions, TouchableOpacity } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {Feather, Ionicons, MaterialIcons} from '@expo/vector-icons';
-
-import HomeStack from '../stacks/HomeStack';
-import SearchStack from '../stacks/SearchStack';
-import ProfileStack from '../stacks/ProfileStack';
-import TestingSpace from '../screens/Tabs/ProfilePage';
-import CommunityTab from '../screens/Tabs/CommunityTab';
+import {Feather, MaterialIcons} from '@expo/vector-icons';
 import colors from '../config/colors';
-import CommuntityStack from '../stacks/CommunityStack'
-import Button from '../components/Button';
 import CreationModal from './CreationModal';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+// App Screens
+import FollowersScreen from '../screens/FollowersScreen';
+import PollsScreen from '../screens/Profile/PollsScreen';
+import CommentSection from '../screens/CommentSection';
+import CommunityList from '../screens/Profile/UserCommunities';
+import CommunitiesScreen from '../screens/Community';
+import ProfilePage from '../screens/Tabs/ProfilePage';
+import SinglePoll from '../screens/SinglePoll';
+import CommunityTab from '../screens/Tabs/CommunityTab';
+import SearchScreen from '../screens/Tabs/SearchScreen';
+import FeedScreen from '../screens/Tabs/FeedScreen';
+import VoteScreen from '../screens/VoteScreen';
+
+// Names associated with each screen
+const SCREEN_NAMES = {
+  COMMUNITY_HOME: 'CommunityHome',
+  PROFILE: 'Profile',
+  POLL_LIST: 'PollList',
+  FOLLOW: 'Follow',
+  COMMUNITY_LIST: 'CommunityList',
+  COMMUNITY: 'Community',
+  POLL: 'Poll',
+  COMMENTS: 'Comments',
+  SEARCH_HOME: 'SearchHome',
+  VOTE_LIST: 'Vote',
+  FEED: 'Feed'
+}
+
+// Screen is first letter of stack follow by screen name
+const generateName = (id, name) => (id + '_' + name)
+
+const Stack = createNativeStackNavigator();
+
+// All Available Screens
+const CommunityHome = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMUNITY_HOME)} initialParams={{communityScreen: generateName(id, SCREEN_NAMES.COMMUNITY)}} component={CommunityTab} options={{headerShown: false}}/>
+const Profile = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.PROFILE)} initialParams={{ show: false, singlePollScreen: generateName(id, SCREEN_NAMES.POLL), followScreen: generateName(id, SCREEN_NAMES.FOLLOW), pollListScreen: generateName(id, SCREEN_NAMES.POLL_LIST), communityListScreen: generateName(id, SCREEN_NAMES.COMMUNITY_LIST)}} options={({ route }) => ({headerShown: route.params.show ? true: false, contentStyle: {backgroundColor: '#FFF'}, title: route.params.title})} component={ProfilePage} />
+const Follow = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.FOLLOW)} initialParams={{profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} options={({ route }) => ({ title: route.params.title, contentStyle: {backgroundColor: '#FFF'}, headerShown: true })} component={FollowersScreen} />
+const PollList = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.POLL_LIST)} initialParams={{pollScreen: generateName(id, SCREEN_NAMES.POLL)}} component={PollsScreen} options={({route}) => ({ title: 'Polls', headerShown: true, })}/>
+const Poll = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.POLL)} initialParams={{commentsScreen: generateName(id, SCREEN_NAMES.COMMENTS), profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} component={SinglePoll} options={{title: '', headerBackTitle: 'Back'}}/>
+const Comments = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMENTS)} initialParams={{profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} component={CommentSection} options={({route}) => ({ title: '', headerShown: true, })}/>
+const UserCommunities = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMUNITY_LIST)} initialParams={{communityScreen: generateName(id, SCREEN_NAMES.COMMUNITY)}} component={CommunityList} options={({route}) => ({ title: route.params.title, headerShown: true, })} />
+const Community = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMUNITY)} initialParams={{pollScreen: generateName(id, SCREEN_NAMES.POLL)}} component={CommunitiesScreen} options={({ route }) => ({ title: route.params.title, headerShown: false})}/>
+const SearchHome = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.SEARCH_HOME)} options={{headerShown: false}} component={SearchScreen} screenOptions={{ }} />
+const VoteList = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.VOTE_LIST)} component={VoteScreen} initialParams={{pollScreen: generateName(id, SCREEN_NAMES.POLL)}} options={({route}) => ({ title: route.params.title, headerShown: false })} />
+const Feed = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.FEED)} initialParams={{commentsScreen: generateName(id, SCREEN_NAMES.COMMENTS), profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} options={{headerShown: false}}  component={FeedScreen}/>
+
+// Community Tab Stack
+const CommunityStack = () => {
+
+  const IDENTIFIER = "C";
+
+  return (
+    <Stack.Navigator initialRouteName='C_CommunityHome'
+      screenOptions={{ gestureEnabled: true, gestureDirection: "horizontal" }}
+    >
+      { CommunityHome(IDENTIFIER) }
+      { Profile(IDENTIFIER) }
+      { Follow(IDENTIFIER) }
+      { PollList(IDENTIFIER) }
+      { Poll(IDENTIFIER) }
+      { Comments(IDENTIFIER) }
+      { UserCommunities(IDENTIFIER) }
+      { Community(IDENTIFIER) } 
+    </Stack.Navigator>
+  )
+}
+
+// Profile Tab Stack
+const ProfileStack = () => {
+
+  const IDENTIFIER = "P";
+
+  return (
+    <Stack.Navigator initialRouteName='P_Profile'
+      screenOptions={{ gestureEnabled: true, gestureDirection: "horizontal" }}
+    >
+      { Profile(IDENTIFIER) }    
+      { Follow(IDENTIFIER) }
+      { PollList(IDENTIFIER) }
+      { Poll(IDENTIFIER) }
+      { Comments(IDENTIFIER) }
+      { UserCommunities(IDENTIFIER) }
+      { Community(IDENTIFIER) }
+    </Stack.Navigator>
+  )
+}
+
+// Search Tab Stack
+const SearchStack = () => {
+
+  const IDENTIFIER = "S";
+
+  return (
+    <Stack.Navigator initialRouteName='S_HomeSearch'
+      screenOptions={{ gestureEnabled: true, gestureDirection: "horizontal" }}
+    >
+      { SearchHome(IDENTIFIER) }
+      { Profile(IDENTIFIER) }
+      { Community(IDENTIFIER) }
+      { Follow(IDENTIFIER) }
+      { Comments(IDENTIFIER) }
+      { PollList(IDENTIFIER) }
+      { Poll(IDENTIFIER) }
+      { UserCommunities(IDENTIFIER) }
+    </Stack.Navigator>
+  )
+}
+
+// Home Tab Stack
+const HomeStack = () => {
+
+  const IDENTIFIER = "H";
+
+  return (
+    <Stack.Navigator initialRouteName='H_Feed'
+      screenOptions={{ gestureEnabled: true, gestureDirection: "horizontal" }}
+    >
+      { Feed(IDENTIFIER) }
+      { Comments(IDENTIFIER) }
+      { Poll(IDENTIFIER) }
+      { Profile(IDENTIFIER) }
+      { Follow(IDENTIFIER) }
+      { PollList(IDENTIFIER) }
+      { UserCommunities(IDENTIFIER) }
+      { Community(IDENTIFIER) }
+      { VoteList(IDENTIFIER) }
+    </Stack.Navigator>
+  )
+}
+
 const Tab = createBottomTabNavigator();
 
 const { height, width } = Dimensions.get('window');
@@ -60,14 +184,14 @@ const AppNavigator = props => {
               size={25}
               color={focused ? '#0FA3B1' : '#BBBBBB'}
             />
-                        </View>
+            </View>
 
           ),
         }}
       />
       <Tab.Screen
         name="Community"
-        component={CommuntityStack}
+        component={CommunityStack}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
@@ -83,7 +207,7 @@ const AppNavigator = props => {
       />
       <Tab.Screen 
         name="Add" 
-        component={CommuntityStack}
+        component={CommunityStack}
         options={{
           tabBarIcon: ({focused}) => (
             <Feather

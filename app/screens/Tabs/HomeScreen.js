@@ -60,7 +60,6 @@ const HomeScreen = (curate) => {
           windowSize={3}
           style={{flex: 1}}
           data={posts}
-          keyExtractor={({item}) => item}
           showsVerticalScrollIndicator={false}
           // Passing heightGap and refreshToken causes constant rerenders
           renderItem={({item}) => (

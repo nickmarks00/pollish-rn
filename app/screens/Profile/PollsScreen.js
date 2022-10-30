@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { View, TouchableOpacity, FlatList, Dimensions, Alert } from 'react-native';
 import { getUserPolls } from 'endpoints/core';
 import PollCard from '../../components/pollCard';
+import { deletePoll } from 'endpoints/pollish'
 
 const { height, width } = Dimensions.get('window');
 
@@ -24,6 +25,32 @@ const PollsScreen = ({route, navigation}) => {
         setPolls(userPolls.data.results);
     }
 
+    const removePoll = async (id) => {
+        await deletePoll(id);
+        loadPolls();
+    }
+
+    const showConfirmDialog = (id) => {
+        return Alert.alert(
+          "Are your sure?",
+          "Are you sure you want to delete this poll?",
+          [
+            // The "Yes" button
+            {
+              text: "Yes",
+              onPress: () => {
+                removePoll(id)
+              },
+            },
+            // The "No" button
+            // Does nothing but dismiss the dialog when tapped
+            {
+              text: "No",
+            },
+          ]
+        );
+      };
+
     
 
     return (
@@ -38,7 +65,7 @@ const PollsScreen = ({route, navigation}) => {
                     )
                 }}
                 renderItem={({item}) => (
-                    <TouchableOpacity style={{flex: 1}} onLongPress={() => showConfirmDialog()} onPress={() => navigation.push(route.params.pollScreen, {id: item.id})}>
+                    <TouchableOpacity style={{flex: 1}} onLongPress={() => showConfirmDialog(item.id)} onPress={() => navigation.push(route.params.pollScreen, {id: item.id})}>
                         <PollCard color={'#51E0B8'} qText={item.question_text} id={item.id} reload={loadPolls}/>
                     </TouchableOpacity>
                 )}

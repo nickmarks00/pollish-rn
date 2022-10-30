@@ -7,6 +7,7 @@ import { getCommuntiy, getPoll, registerVote } from '../../network/lib/pollish';
 import { getUser } from '../../network/lib/core';
 import PollNav from './subComponents/PollNav';
 import ProfilePic from '../profilePic';
+import moment from 'moment';
 
 const {height, width} = Dimensions.get('window');
 
@@ -125,6 +126,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
     }
 
     const navVotes = () => {
+        console.log(voteScreen)
         navigation.push(voteScreen, {pid: post.id, choices: post.choices});
     }
 
@@ -170,6 +172,7 @@ const PollDisplay = ({ id, commentsScreen, profileScreen, refreshToken, voteScre
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.7)'}}>
                     <TouchableOpacity style={{position: 'absolute', height: '100%', width: '100%'}} onPress={() => setFocusModal(false)} />
                         <View style={{width: '80%', height: '60%', backgroundColor: 'white', borderRadius: 10, borderWidth: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text>{moment(post.created_at).fromNow()}</Text>
                             <TouchableOpacity onPress={() => navigateCommunity()}>
                                 <Text>{post.community ? post.community.name : 'No Focus'}</Text>
                             </TouchableOpacity>

@@ -6,16 +6,19 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import HomeScreen from './HomeScreen';
 import IconButton from '../../components/iconButton';
 
+
 const dimensions = Dimensions.get('screen');
 
 const Tab = createMaterialTopTabNavigator();
 
-const FeedScreen = () => {
+const FeedScreen = ({route, navigation}) => {
 
     const [create, setCreate] = React.useState(false);
     const [showCreate, setShown] = React.useState(true)
     const [focus, setFocus] = React.useState(0);
     const [nav, setNav] = React.useState(1);
+
+    const NOTIFICATIONS_SCREEN = route.params.notificationsScreen;
 
     const openModel = () => {
         setCreate(true);
@@ -33,6 +36,10 @@ const FeedScreen = () => {
         console.log(num)
         console.log('h')
         setNav(num)
+    }
+
+    const navToNotifications = () => {
+        navigation.push(NOTIFICATIONS_SCREEN)
     }
 
     
@@ -53,7 +60,7 @@ const FeedScreen = () => {
             </View>
         </View>
         <View style={{flex: 1}}/>
-        <IconButton name={'notifications-outline'} style={{ borderWidth: 1, borderColor: '#D9D9D9', borderRadius: 1000}}/>
+        <IconButton action={navToNotifications} name={'notifications-outline'} style={{ borderWidth: 1, borderColor: '#D9D9D9', borderRadius: 1000}}/>
       </View>
       {/* <View style={{height: dimensions.height*0.047, justifyContent: 'center', flexDirection: 'row'}}>
         <View style={{height: '100%', width: '35%', borderWidth: 1, borderColor: '#00AAA9', borderRadius: 1000, justifyContent: 'center', alignItems: 'center'}}>

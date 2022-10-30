@@ -26,6 +26,10 @@ const VoteScreen = ({route}) => {
         
     }
 
+    const navToProfile = (user) => {
+        navigation.push(route.params.profileScreen, {user: user, title: user.username})
+    }
+
     const navigation = useNavigation();
     return (
         <View style={{marginTop: Constants.statusBarHeight, alignItems: 'center'}}>
@@ -52,7 +56,7 @@ const VoteScreen = ({route}) => {
                 return(
                 item.users.map((user, idy) => {
                     return (
-                        <UserVote key={idy} oUser={user} voteText={choiceText}/>
+                        <UserVote navToProfile={navToProfile} key={idy} oUser={user} voteText={choiceText}/>
                     )
                 })
                 )

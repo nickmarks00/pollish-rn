@@ -24,6 +24,7 @@ import {
 
 const SettingsScreen = ({navigation}) => {
   const {user, profile, logOut} = useAuth();
+  console.log(user)
 
   const userValidationSchema = Yup.object().shape({
     firstName: Yup.string().label('First name'),
@@ -99,7 +100,7 @@ const SettingsScreen = ({navigation}) => {
           </Form>
           <Form
             initialValues={{
-              bio: profile.bio,
+              bio: 'profile.bio',
             }}
             onSubmit={values => handleProfileUpdate(values)}
             validationSchema={userValidationSchema}>
@@ -107,7 +108,7 @@ const SettingsScreen = ({navigation}) => {
               autoCorrect={false}
               icon="bio"
               name="bio"
-              placeholder={profile.bio}
+              placeholder={'profile.bio'}
             />
             <SubmitButton title="Update profile" />
           </Form>

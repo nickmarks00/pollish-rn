@@ -10,6 +10,7 @@ import {
   getUserPolls,
   checkFollowing,
   followUser,
+  getUser
 } from 'endpoints/core';
 import { useIsFocused } from '@react-navigation/native';
 import Poll from '../ProfilePage/subComponents/Poll';
@@ -34,23 +35,28 @@ const ProfilePage = ({route, navigation}) => {
   const [updating, setUpdating] = React.useState(false);
 
   const currentUser = route.params?.user ? route.params.user : user;
+  const [newProfilePic, setProfilepic] = React.useState();
   const home = route.params?.user ? false : true;
   
   const POLL_LIST = route.params.pollListScreen;
   const SINGLE_POLL = route.params.singlePollScreen;
+  const FOCUS_LIST = route.params.communityListScreen;
+  const SETTINGS_PAGE = route.params.settingsScreen;
 
   React.useEffect(() => {
+    console.log('ss')
     if(isFocused) 
       getInitialData();
   }, [isFocused]);
 
-  const getInitialData = () => {
+  const getInitialData = async () => {
+    const profile = await getUser(user.id);
+    setProfilepic(profile.data);
     findFollowers();
     findFollowing();
     findPolls();
     checkFollow();
   }
-
   const checkFollow = async () => {
     if (route.params?.user) {
       const data = await checkFollowing(user.id, route.params.user.id);
@@ -87,6 +93,15 @@ const ProfilePage = ({route, navigation}) => {
     });
   };
 
+  const navToCommList = () => {
+    navigation.push(FOCUS_LIST, {id: route.params?.user ? route.params.user.id : user.id})
+  }
+
+  const navToSettings = () => {
+    console.log(SETTINGS_PAGE)
+    navigation.push(SETTINGS_PAGE);
+  }
+
   const navToPoll = (id) => {
     console.log(id)
     console.log(SINGLE_POLL)
@@ -122,7 +137,7 @@ const ProfilePage = ({route, navigation}) => {
 
       {/* Profile Image */}
       <View style={{flexDirection: 'row', height: height*0.167, width: width*0.9, justifyContent: 'center'}}>
-        <View style={{flex: 1, alignItems: 'center'}}><ProfilePic user={currentUser}/></View>
+        <View style={{flex: 1, alignItems: 'center'}}><ProfilePic user={newProfilePic ?? currentUser}/></View>
         <View style={{width: width*0.042}}/>
         <View style={{flex: 1, alignItems: 'center'}}><View style={{height: height*0.167, aspectRatio: 1, borderRadius: 10000, borderWidth: 5, borderColor: '#00AAA9' }}/></View>
       </View>
@@ -140,7 +155,7 @@ const ProfilePage = ({route, navigation}) => {
       
       {/* Profile Buttons / Follow User Button */}
       {currentUser.id == user.id ? 
-        <ProfileButtons />
+        <ProfileButtons navToCommList={navToCommList} navToSettings={navToSettings} />
         :
         <Button style={{
                   width: width*0.9, 
@@ -161,7 +176,7 @@ const ProfilePage = ({route, navigation}) => {
     
       {/* Polls / Votes / Voted */}
 
-      <PVV votes={0} votesOn={0} pollNum={polls.length} navToScreen={navToScreen}/>
+      <PVV votes={0} votesOn={currentUser.profile.votes_registered} pollNum={polls.length} navToScreen={navToScreen}/>
 
       <View style={{height: dimensions.height*0.028, width: '100%'}}/>
 

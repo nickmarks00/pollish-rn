@@ -60,40 +60,52 @@ const Community = ({route, navigation}) => {
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: Constants.statusBarHeight}}>
+
+      {/* Back Navigation Button */}
       <View style={{position: 'absolute', height: height*0.05, marginVertical: height*0.018, width: '100%', top: 0}}>
-                <IconButton action={()=>navigation.goBack()} name={'chevron-back'} iconFill={'#FFF'} style={{position: 'absolute', left: 0, backgroundColor: '#D9D9D9', marginLeft: width*0.07, borderRadius: 1000}} />
-            </View>
-            <View style={{height: '5%'}}/>
+        <IconButton 
+          action={()=>navigation.goBack()} 
+          name={'chevron-back'} 
+          iconFill={'#FFF'} 
+          style={{position: 'absolute', left: 0, backgroundColor: '#D9D9D9', marginLeft: width*0.07, borderRadius: 1000}} />
+      </View>
+
+      <View style={{height: '5%'}}/>
+      
+      
       { (!noProfilePic)  ? 
-                <Image source={{uri: route.params.comm.image}} style={Styles.pollImage} onError={()=> setError(true)}/> 
-            :
-                <View style={Styles.noImage}>
-                    <Text style={Styles.noImageText}>{route.params.comm.name.slice(0,1)}</Text>
-                </View>
+        <Image source={{uri: route.params.comm.image}} style={Styles.pollImage} onError={()=> setError(true)}/> 
+        :
+        <View style={Styles.noImage}>
+          <Text style={Styles.noImageText}>{route.params.comm.name.slice(0,1)}</Text>
+        </View>
       }
+
+      {/* Community Content (Image / Name / Users / Following Button) */}
       <View style={{justifyContent: 'center'}}>
-          <Text style={Styles.questionText}>{route.params.comm.name}</Text>
-          <View style={{height: '5%'}}/>
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-              <Text style={Styles.votesText}>{route.params.comm.num_polls} Polls</Text>
-              <Text style={Styles.votesText}>{route.params.comm.num_users} Users</Text>
-          </View>
-          <View style={{height: '5%'}}/>
-          <Button style={{
-                  width: width*0.9, 
-                  height: height*0.057, 
-                  borderColor: '#00AAA9', 
-                  borderWidth: 1, 
-                  borderRadius: height*0.015,
-                  backgroundColor: isFollowing ? '#00AAA9' : 'white'
-                }} 
-                text={isFollowing ? 'Following' : 'Follow'} 
-                textColor={isFollowing ? 'white' : '#00AAA9'} 
-                textSize={17}
-                action={follow} 
+        <Text style={Styles.questionText}>{route.params.comm.name}</Text>
+        <View style={{height: '5%'}}/>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={Styles.votesText}>{route.params.comm.num_polls} Polls</Text>
+            <Text style={Styles.votesText}>{route.params.comm.num_users} Users</Text>
+        </View>
+        <View style={{height: '5%'}}/>
+        <Button style={{
+                width: width*0.9, 
+                height: height*0.057, 
+                borderColor: '#00AAA9', 
+                borderWidth: 1, 
+                borderRadius: height*0.015,
+                backgroundColor: isFollowing ? '#00AAA9' : 'white'
+              }} 
+              text={isFollowing ? 'Following' : 'Follow'} 
+              textColor={isFollowing ? 'white' : '#00AAA9'} 
+              textSize={17}
+              action={follow} 
         />
       </View>
       
+      {/* List of polls in community */}
       <ScrollView>
         <View style={{flex: 1}}>
           {polls?.map((poll, idx) => {
@@ -150,6 +162,7 @@ const Styles = StyleSheet.create({
       fontWeight: 'bold', 
       flexWrap: 'wrap', 
       paddingHorizontal: '7%',
+      textAlign: 'center'
   },
   votesText: {
       fontWeight: 'bold', 

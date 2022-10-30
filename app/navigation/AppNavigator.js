@@ -19,6 +19,8 @@ import CommunityTab from '../screens/Tabs/CommunityTab';
 import SearchScreen from '../screens/Tabs/SearchScreen';
 import FeedScreen from '../screens/Tabs/FeedScreen';
 import VoteScreen from '../screens/VoteScreen';
+import SettingsScreen from '../screens/Settings';
+import NotificationsScreen from '../screens/Notifications';
 
 // Names associated with each screen
 const SCREEN_NAMES = {
@@ -32,7 +34,9 @@ const SCREEN_NAMES = {
   COMMENTS: 'Comments',
   SEARCH_HOME: 'SearchHome',
   VOTE_LIST: 'Vote',
-  FEED: 'Feed'
+  FEED: 'Feed',
+  SETTINGS: 'Settings',
+  NOTIFICATIONS: 'Notifications'
 }
 
 // Screen is first letter of stack follow by screen name
@@ -41,17 +45,19 @@ const generateName = (id, name) => (id + '_' + name)
 const Stack = createNativeStackNavigator();
 
 // All Available Screens
+const Notifications = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.NOTIFICATIONS)} component={NotificationsScreen} />
+const Settings = (id) => <Stack.Screen name={generateName(id, 'Settings')} component={SettingsScreen}/>
 const CommunityHome = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMUNITY_HOME)} initialParams={{communityScreen: generateName(id, SCREEN_NAMES.COMMUNITY)}} component={CommunityTab} options={{headerShown: false}}/>
-const Profile = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.PROFILE)} initialParams={{ show: false, singlePollScreen: generateName(id, SCREEN_NAMES.POLL), followScreen: generateName(id, SCREEN_NAMES.FOLLOW), pollListScreen: generateName(id, SCREEN_NAMES.POLL_LIST), communityListScreen: generateName(id, SCREEN_NAMES.COMMUNITY_LIST)}} options={({ route }) => ({headerShown: route.params.show ? true: false, contentStyle: {backgroundColor: '#FFF'}, title: route.params.title})} component={ProfilePage} />
+const Profile = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.PROFILE)} initialParams={{ show: false, settingsScreen: generateName(id, SCREEN_NAMES.SETTINGS), singlePollScreen: generateName(id, SCREEN_NAMES.POLL), followScreen: generateName(id, SCREEN_NAMES.FOLLOW), pollListScreen: generateName(id, SCREEN_NAMES.POLL_LIST), communityListScreen: generateName(id, SCREEN_NAMES.COMMUNITY_LIST)}} options={({ route }) => ({headerShown: route.params.show ? true: false, contentStyle: {backgroundColor: '#FFF'}, title: route.params.title})} component={ProfilePage} />
 const Follow = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.FOLLOW)} initialParams={{profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} options={({ route }) => ({ title: route.params.title, contentStyle: {backgroundColor: '#FFF'}, headerShown: true })} component={FollowersScreen} />
 const PollList = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.POLL_LIST)} initialParams={{pollScreen: generateName(id, SCREEN_NAMES.POLL)}} component={PollsScreen} options={({route}) => ({ title: 'Polls', headerShown: true, })}/>
-const Poll = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.POLL)} initialParams={{commentsScreen: generateName(id, SCREEN_NAMES.COMMENTS), profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} component={SinglePoll} options={{title: '', headerBackTitle: 'Back'}}/>
+const Poll = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.POLL)} initialParams={{commentsScreen: generateName(id, SCREEN_NAMES.COMMENTS), profileScreen: generateName(id, SCREEN_NAMES.PROFILE), voteScreen: generateName(id, SCREEN_NAMES.VOTE_LIST)}} component={SinglePoll} options={{title: '', headerBackTitle: 'Back'}}/>
 const Comments = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMENTS)} initialParams={{profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} component={CommentSection} options={({route}) => ({ title: '', headerShown: true, })}/>
 const UserCommunities = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMUNITY_LIST)} initialParams={{communityScreen: generateName(id, SCREEN_NAMES.COMMUNITY)}} component={CommunityList} options={({route}) => ({ title: route.params.title, headerShown: true, })} />
 const Community = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.COMMUNITY)} initialParams={{pollScreen: generateName(id, SCREEN_NAMES.POLL)}} component={CommunitiesScreen} options={({ route }) => ({ title: route.params.title, headerShown: false})}/>
 const SearchHome = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.SEARCH_HOME)} options={{headerShown: false}} component={SearchScreen} screenOptions={{ }} />
-const VoteList = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.VOTE_LIST)} component={VoteScreen} initialParams={{pollScreen: generateName(id, SCREEN_NAMES.POLL)}} options={({route}) => ({ title: route.params.title, headerShown: false })} />
-const Feed = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.FEED)} initialParams={{commentsScreen: generateName(id, SCREEN_NAMES.COMMENTS), profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} options={{headerShown: false}}  component={FeedScreen}/>
+const VoteList = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.VOTE_LIST)} component={VoteScreen} initialParams={{pollScreen: generateName(id, SCREEN_NAMES.POLL), profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} options={({route}) => ({ title: route.params.title, headerShown: false })} />
+const Feed = (id) => <Stack.Screen name={generateName(id, SCREEN_NAMES.FEED)} initialParams={{notificationsScreen: generateName(id, SCREEN_NAMES.NOTIFICATIONS), commentsScreen: generateName(id, SCREEN_NAMES.COMMENTS), profileScreen: generateName(id, SCREEN_NAMES.PROFILE)}} options={{headerShown: false}}  component={FeedScreen}/>
 
 // Community Tab Stack
 const CommunityStack = () => {
@@ -90,6 +96,8 @@ const ProfileStack = () => {
       { Comments(IDENTIFIER) }
       { UserCommunities(IDENTIFIER) }
       { Community(IDENTIFIER) }
+      { VoteList(IDENTIFIER) }
+      { Settings(IDENTIFIER) }
     </Stack.Navigator>
   )
 }
@@ -133,6 +141,7 @@ const HomeStack = () => {
       { UserCommunities(IDENTIFIER) }
       { Community(IDENTIFIER) }
       { VoteList(IDENTIFIER) }
+      { Notifications(IDENTIFIER) }
     </Stack.Navigator>
   )
 }
@@ -162,108 +171,64 @@ const CustonTabBarButton = ({children, onPress}) => (
   </TouchableOpacity>
 )
 
-const AppNavigator = props => {
+const tabOptions = (iconName) => ({
+  tabBarIcon: ({focused}) => (
+    <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
+    <MaterialCommunityIcons
+      name={iconName}
+      size={25}
+      color={focused ? '#0FA3B1' : '#BBBBBB'}
+    />
+    </View>
+
+  ),
+})
+
+const AppNavigator = () => {
 
   const [modalVisible, setModalVisible] = React.useState(false);
 
   return (
     <View style={{flex: 1}}>
-    <Modal  visible={modalVisible} animationType="slide" transparent>
-      <CreationModal setModalVisible={setModalVisible}/>
-    </Modal>
-    <Tab.Navigator
-      screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: {borderTopWidth: 0.2, borderTopColor: '#EEEEEE'} }}>
-      <Tab.Screen
-        name="Feed"
-        component={HomeStack}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
-            <MaterialIcons
-              name={'poll'}
-              size={25}
-              color={focused ? '#0FA3B1' : '#BBBBBB'}
-            />
-            </View>
+    
+      {/* Create a Poll popup */}
+      <Modal visible={modalVisible} animationType="slide" transparent> 
+        <CreationModal setModalVisible={setModalVisible}/> 
+      </Modal>
+      
+      {modalVisible && <View style={{backgroundColor: '#00AAA9', opacity: 0.4, position: 'absolute', height, width, zIndex: 2}}/>}
 
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Community"
-        component={CommunityStack}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
-              <MaterialCommunityIcons
-                name={focused ? 'account-group' : 'account-group-outline'}
-                size={25}
-                color={focused ? '#0FA3B1' : '#BBBBBB'}
+      {/* Screens in Bottom Navigation Bar */}
+      <Tab.Navigator
+        screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: {borderTopWidth: 0.2, borderTopColor: '#EEEEEE'} }}
+      >
+        <Tab.Screen name="Feed" component={HomeStack} options={tabOptions('poll')} />
+        <Tab.Screen name="Community" component={CommunityStack} options={tabOptions('account-group')} />
+        <Tab.Screen name="Add" component={CommunityStack}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <Feather
+                name={focused ? 'plus' : 'plus'}
+                size={40}
+                color={focused ? colors.secondary : 'white'}
                 style={{}}
               />
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen 
-        name="Add" 
-        component={CommunityStack}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Feather
-              name={focused ? 'plus' : 'plus'}
-              size={40}
-              color={focused ? colors.secondary : 'white'}
-              style={{}}
-            />
-          ),
-          tabBarButton: (props) => (
-            <CustonTabBarButton { ... props} />
-          )
-        }}
-        listeners={() => ({
-          tabPress: event => {
-            event.preventDefault();
-            setModalVisible(true);
-          }
-        })}
-      />
-
-      <Tab.Screen
-        name="Search"
-        component={SearchStack}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
-            <MaterialIcons
-              name={focused ? 'search' : 'search'}
-              size={25}
-              color={focused ? '#0FA3B1' : '#BBBBBB'}
-              style={{}}
-            />
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileStack}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={focused ? {backgroundColor: '#CFEDEF', width: 40, aspectRatio: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 1000,} : {}}>
-
-            <MaterialCommunityIcons
-              name={focused ? 'account' : 'account-outline'}
-              size={25}
-              color={focused ? '#0FA3B1' : '#BBBBBB'}
-              style={{}}
-            />
-            </View>
-          ),
-        }}
-      />
-    </Tab.Navigator>
-    {modalVisible && <View style={{backgroundColor: '#00AAA9', opacity: 0.4, position: 'absolute', height, width}}/>}
+            ),
+            tabBarButton: (props) => (
+              <CustonTabBarButton { ... props} />
+            )
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setModalVisible(true);
+            }
+          })}
+        />
+        <Tab.Screen name="Search" component={SearchStack} options={tabOptions('database-search')} />
+        <Tab.Screen name="Profile" component={ProfileStack} options={tabOptions('account')}/>
+      </Tab.Navigator>
+    
     </View>
   );
 };

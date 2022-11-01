@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Dimensions, ScrollView, Text } from 'react-native';
+import { useEffect } from 'react';
 import Loader from '../../components/Loader';
 import Constants from 'expo-constants';
 import SectionHeader from '../../components/sectionHeader';
@@ -27,6 +28,7 @@ const ProfilePage = ({route, navigation}) => {
 
   const isFocused = useIsFocused();
 
+  // @ts-ignore
   const {user, logOut} = useAuth();
   const [followers, setFollowers] = React.useState(0);
   const [following, setFollowing] = React.useState(0);
@@ -34,62 +36,60 @@ const ProfilePage = ({route, navigation}) => {
   const [isFollowing, setIsFollowing] = React.useState(false);
   const [updating, setUpdating] = React.useState(false);
 
-  const currentUser = route.params?.user ? route.params.user : user;
+  const isMe: boolean = route.params?.user ? false : true
+  const currentUser = route.params?.user ?? user;
+
   const [newProfilePic, setProfilepic] = React.useState();
-  const home = route.params?.user ? false : true;
   
+  // Navigation Screen Names
   const POLL_LIST = route.params.pollListScreen;
   const SINGLE_POLL = route.params.singlePollScreen;
   const FOCUS_LIST = route.params.communityListScreen;
   const SETTINGS_PAGE = route.params.settingsScreen;
+  const FOLLOW_SCREEN = route.params.followScreen;
 
-  React.useEffect(() => {
-    console.log('ss')
-    if(isFocused) 
-      getInitialData();
-  }, [isFocused]);
 
-  const getInitialData = async () => {
-    const profile = await getUser(user.id);
-    setProfilepic(profile.data);
-    findFollowers();
-    findFollowing();
-    findPolls();
-    checkFollow();
-  }
-  const checkFollow = async () => {
-    if (route.params?.user) {
-      const data = await checkFollowing(user.id, route.params.user.id);
-      setIsFollowing(data.data);
+  // Load User Information
+  useEffect(() => {
+    const getInitialData = async () => {
+      const profile = await getUser(user.id);
+      setProfilepic(profile.data);
+      findFollowers();
+      findFollowing();
+      findPolls();
+
+      if(!isMe) checkFollow();
     }
+
+    if(isFocused) getInitialData();
+
+  }, [isFocused])
+
+
+  const checkFollow = async () => {
+      const data = await checkFollowing(user.id, currentUser.id);
+      setIsFollowing(data.data);
   };
 
   const findFollowers = async () => {
-    const data = await getFollowers(
-      route.params?.user ? route.params.user.id : user.id,
-    );
+    const data = await getFollowers(currentUser.id);
     setFollowers(data.data.length);
   };
 
   const findFollowing = async () => {
-    const data = await getFollowing(
-      route.params?.user ? route.params.user.id : user.id,
-    );
+    const data = await getFollowing(currentUser.id);
     setFollowing(data.data.length);
   };
 
   const findPolls = async () => {
-    const data = await getUserPolls(
-      route.params?.user ? route.params.user.id : user.id,
-    );
+    const data = await getUserPolls(currentUser.id);
     setPolls(data.data.results);
   };
 
-  const navToFollowers = (name) => {
-    navigation.push(route.params.followScreen, {
-      id: route.params?.user ? route.params.user.id : user.id,
+  const navToFollowers = (name: string) => {
+    navigation.push(FOLLOW_SCREEN, {
+      id: currentUser.id,
       title: name,
-      name: name == 'Followers' ? false : true
     });
   };
 
@@ -102,7 +102,7 @@ const ProfilePage = ({route, navigation}) => {
     navigation.push(SETTINGS_PAGE);
   }
 
-  const navToPoll = (id) => {
+  const navToPoll = (id: number) => {
     console.log(id)
     console.log(SINGLE_POLL)
     navigation.push(SINGLE_POLL, {
@@ -128,16 +128,16 @@ const ProfilePage = ({route, navigation}) => {
     <View style={{alignItems: 'center', flex: 1}}>
       <Loader visible={updating} />
 
-      { home && <View style={{height: Constants.statusBarHeight}}/> }
+      { isMe && <View style={{height: Constants.statusBarHeight}}/> }
 
       {/* Header */}
-      { home && <SectionHeader name={route.params?.user ? route.params.user.username : 'My Profile'}/> }
+      { isMe && <SectionHeader name={route.params?.user ? route.params.user.username : 'My Profile'}/> }
 
       <View style={{height: height*0.02 }}/>
 
       {/* Profile Image */}
       <View style={{flexDirection: 'row', height: height*0.167, width: width*0.9, justifyContent: 'center'}}>
-        <View style={{flex: 1, alignItems: 'center'}}><ProfilePic user={newProfilePic ?? currentUser}/></View>
+        <View style={{flex: 1, alignItems: 'center'}}><ProfilePic profileHeight={null} user={newProfilePic ?? currentUser}/></View>
         <View style={{width: width*0.042}}/>
         <View style={{flex: 1, alignItems: 'center'}}><View style={{height: height*0.167, aspectRatio: 1, borderRadius: 10000, borderWidth: 5, borderColor: '#00AAA9' }}/></View>
       </View>
@@ -190,38 +190,8 @@ const ProfilePage = ({route, navigation}) => {
           })}
         </ScrollView>
       </View>
-
-
-      {/* Followers / Following buttons */}
-
-      {/* <View
-        style={{
-          flexDirection: 'row',
-          width: dimensions.width,
-          justifyContent: 'space-evenly',
-        }}>
-        <ColoredButton
-          color={'#51E0B8'}
-          text={followers + ' Followers'}
-          whenPressed={navToFollowers}
-        />
-        <ColoredButton
-          color={'#907AD6'}
-          text={following + ' Following'}
-          whenPressed={navToFollowers}
-        />
-      </View>
-
-      <View style={{height: '6%'}} /> */}
-
-      {/* {!route.params?.user && (
-      <ListItem
-        title="Log Out"
-        IconComponent={<Icon name="logout" backgroundColor={colors.primary} />}
-        onPress={() => logOut()}
-      />
-      )} */}
     </View>
   );
 };
 export default ProfilePage;
+

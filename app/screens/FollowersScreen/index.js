@@ -33,7 +33,7 @@ const FollowersScreen = ({route, navigation}) => {
     navigation.push(route.params.profileScreen, {user: user, show: true, title: user.username})
   }
 
-  const userList = route.params.name ? followList : followerList;
+  const userList = route.params.title ? followList : followerList;
 
   return (
     <View style={{flex: 1, alignItems: 'center'}}>

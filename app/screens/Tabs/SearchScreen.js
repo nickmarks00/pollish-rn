@@ -10,17 +10,17 @@ import {
 } from 'react-native';
 import {searchPolls, searchCommunities} from 'endpoints/pollish';
 import {searchUsers} from 'endpoints/core';
-import PollCard from 'components/pollCard';
-import { FlatList } from 'react-native-gesture-handler';
+import PollCard from 'components/PollCard';
+import {FlatList} from 'react-native-gesture-handler';
 import UserCard from '../../components/userCard';
-import CommunityCard from '../../components/communityCard';
+import CommunityCard from 'components/CommunityCard';
 import Button from '../../components/Button';
 
 const dimensions = Dimensions.get('screen');
 
-const searchOptions = ['POLLS', 'GROUPS', 'USERS']
+const searchOptions = ['POLLS', 'GROUPS', 'USERS'];
 
-const BUTTON_BORDER_WIDTH = dimensions.height*0.012;
+const BUTTON_BORDER_WIDTH = dimensions.height * 0.012;
 
 const SearchScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -38,19 +38,21 @@ const SearchScreen = ({navigation}) => {
   };
 
   const adjustFilter = async () => {
-    await clearContent()
+    await clearContent();
     const temp = filter;
-    if(temp >= 2)
-      setFilter(0);
-    else
-      setFilter(temp+1);
-  }
+    if (temp >= 2) setFilter(0);
+    else setFilter(temp + 1);
+  };
 
   const nextPage = poll => {
     if (filter === 2) {
       navigation.push('S_Profile', {user: poll, title: poll.username});
     } else if (filter === 1) {
-      navigation.push('S_Community', {comm: poll, id: poll.id, title: poll.name})
+      navigation.push('S_Community', {
+        comm: poll,
+        id: poll.id,
+        title: poll.name,
+      });
     } else if (filter === 0) {
       navigation.push('S_Poll', {id: poll.id});
     }
@@ -70,43 +72,67 @@ const SearchScreen = ({navigation}) => {
   };
 
   const clearContent = async () => {
-    setContent([])
-    setSearch('')
-  }
+    setContent([]);
+    setSearch('');
+  };
 
-  const onToggle = async (tabType) => {
-    await clearContent()
-    setToggle(tabType)
-  }
-  
-  const navToProfile = (user) => {
-    navigation.push('S_Profile', {user: user, show: true, title: user.username})
-  }
+  const onToggle = async tabType => {
+    await clearContent();
+    setToggle(tabType);
+  };
+
+  const navToProfile = user => {
+    navigation.push('S_Profile', {
+      user: user,
+      show: true,
+      title: user.username,
+    });
+  };
 
   return (
     <View style={{flex: 1, alignItems: 'center', marginTop: 60}}>
-      <View style={{flexDirection: 'row', borderBottomWidth: 1, paddingBottom: 10, width: '100%', justifyContent: 'center', borderBottomColor: '#CCCCCC'}}>
-      <TextInput
-        style={{height: 40,
-          width: dimensions.width / 1.5,
-          backgroundColor: '#EEE',
-          borderWidth: 1,
-          borderRadius: BUTTON_BORDER_WIDTH,
-          borderColor: '#BBB',
-          padding: 10,
-          justifyContent: 'center',}}
-        onChangeText={text => searchFilter(text)}
-        value={search}
-        placeholder="What do you want to know?"
-      />
-      <View style={{width: '2%'}}/>
-      <Button action={adjustFilter} style={{width: dimensions.width*0.2, height: 40, borderColor: '#00AAA9', borderWidth: 1, borderRadius: BUTTON_BORDER_WIDTH, backgroundColor: 'rgba(15,163,177,0.6)'}} textColor={'#FFF'} 
-                text={searchOptions[filter]}/>
+      <View
+        style={{
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          paddingBottom: 10,
+          width: '100%',
+          justifyContent: 'center',
+          borderBottomColor: '#CCCCCC',
+        }}>
+        <TextInput
+          style={{
+            height: 40,
+            width: dimensions.width / 1.5,
+            backgroundColor: '#EEE',
+            borderWidth: 1,
+            borderRadius: BUTTON_BORDER_WIDTH,
+            borderColor: '#BBB',
+            padding: 10,
+            justifyContent: 'center',
+          }}
+          onChangeText={text => searchFilter(text)}
+          value={search}
+          placeholder="What do you want to know?"
+        />
+        <View style={{width: '2%'}} />
+        <Button
+          action={adjustFilter}
+          style={{
+            width: dimensions.width * 0.2,
+            height: 40,
+            borderColor: '#00AAA9',
+            borderWidth: 1,
+            borderRadius: BUTTON_BORDER_WIDTH,
+            backgroundColor: 'rgba(15,163,177,0.6)',
+          }}
+          textColor={'#FFF'}
+          text={searchOptions[filter]}
+        />
       </View>
-      <View style={{height: dimensions.height*0.021}}/>
+      <View style={{height: dimensions.height * 0.021}} />
 
-      {filter == 0 ? 
-      
+      {filter == 0 ? (
         <View style={{flex: 1}}>
           <FlatList
             data={content}
@@ -114,46 +140,44 @@ const SearchScreen = ({navigation}) => {
             renderItem={({item}) => (
               <View style={{flex: 1}}>
                 <TouchableOpacity onPress={() => nextPage(item)}>
-                  <PollCard id={item.id} qText={item.question_text}/>
+                  <PollCard id={item.id} qText={item.question_text} />
                 </TouchableOpacity>
               </View>
             )}
           />
         </View>
-      : filter == 1 ?
+      ) : filter == 1 ? (
         <View style={{flex: 1}}>
           <FlatList
-              data={content}
-              showsVerticalScrollIndicator={false}
-              renderItem={({item}) => (
-                <View style={{flex: 1}}>
-                  <TouchableOpacity onPress={() => nextPage(item)}>
-                    <CommunityCard comm={item}/>
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
+            data={content}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => (
+              <View style={{flex: 1}}>
+                <TouchableOpacity onPress={() => nextPage(item)}>
+                  <CommunityCard comm={item} />
+                </TouchableOpacity>
+              </View>
+            )}
+          />
         </View>
-      :
+      ) : (
         <View style={{flex: 1}}>
           <FlatList
             ItemSeparatorComponent={() => {
-              return (
-                <View style={{height: dimensions.height*0.021}}/>
-              )
+              return <View style={{height: dimensions.height * 0.021}} />;
             }}
             data={content}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
               <View style={{flex: 1}}>
                 <TouchableOpacity onPress={() => nextPage(item)}>
-                  <UserCard oUser={item} navToProfile={navToProfile}/>
+                  <UserCard oUser={item} navToProfile={navToProfile} />
                 </TouchableOpacity>
               </View>
             )}
           />
         </View>
-      }
+      )}
     </View>
   );
 };

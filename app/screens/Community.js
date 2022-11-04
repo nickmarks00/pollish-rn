@@ -1,17 +1,24 @@
 import React from 'react';
-import {View, Text, ScrollView, StyleSheet, Dimensions, Image} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  Image,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import { getCommPolls } from 'endpoints/pollish';
-import PollCard from '../components/pollCard';
-import { getUserComms } from '../network/lib/core';
-import { followCommunity } from '../network/lib/pollish';
-import CommunityCard from '../components/communityCard';
-import IconButton from '../components/iconButton';
+import {getCommPolls} from 'endpoints/pollish';
+import PollCard from '../components/PollCard';
+import {getUserComms} from '../network/lib/core';
+import {followCommunity} from '../network/lib/pollish';
+import CommunityCard from 'components/CommunityCard';
+import IconButton from '../components/IconButton';
 import Constants from 'expo-constants';
 import Button from '../components/Button';
 
 const dimensions = Dimensions.get('window');
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 /**
  * * Show individual community and polls it contains (requires: id, pollScreen)
@@ -21,7 +28,6 @@ const { height, width } = Dimensions.get('window');
  */
 
 const Community = ({route, navigation}) => {
-
   const [polls, setPolls] = React.useState();
   const [commName, setCommName] = React.useState('');
   const [isFollowing, setIsFollowing] = React.useState(false);
@@ -37,16 +43,14 @@ const Community = ({route, navigation}) => {
   const checkIfFollowing = async () => {
     const data = await getUserComms(user.id);
     await data.data.results.map(choice => {
-      if(choice.id == route.params.id)
-        setIsFollowing(true);
+      if (choice.id == route.params.id) setIsFollowing(true);
     });
     return false;
-    
-  }
+  };
 
   const loadCommPolls = async () => {
     const commPolls = await getCommPolls(route.params.id);
-    console.log(commPolls)
+    console.log(commPolls);
     setPolls(commPolls.data.polls);
     setCommName(commPolls.data.name);
   };
@@ -59,52 +63,86 @@ const Community = ({route, navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: Constants.statusBarHeight}}>
-
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: Constants.statusBarHeight,
+      }}>
       {/* Back Navigation Button */}
-      <View style={{position: 'absolute', height: height*0.05, marginVertical: height*0.018, width: '100%', top: 0}}>
-        <IconButton 
-          action={()=>navigation.goBack()} 
-          name={'chevron-back'} 
-          iconFill={'#FFF'} 
-          style={{position: 'absolute', left: 0, backgroundColor: '#D9D9D9', marginLeft: width*0.07, borderRadius: 1000}} />
+      <View
+        style={{
+          position: 'absolute',
+          height: height * 0.05,
+          marginVertical: height * 0.018,
+          width: '100%',
+          top: 0,
+        }}>
+        <IconButton
+          action={() => navigation.goBack()}
+          name={'chevron-back'}
+          iconFill={'#FFF'}
+          style={{
+            position: 'absolute',
+            left: 0,
+            backgroundColor: '#D9D9D9',
+            marginLeft: width * 0.07,
+            borderRadius: 1000,
+          }}
+        />
       </View>
 
-      <View style={{height: '5%'}}/>
-      
-      
-      { (!noProfilePic)  ? 
-        <Image source={{uri: route.params.comm.image}} style={Styles.pollImage} onError={()=> setError(true)}/> 
-        :
+      <View style={{height: '5%'}} />
+
+      {!noProfilePic ? (
+        <Image
+          source={{uri: route.params.comm.image}}
+          style={Styles.pollImage}
+          onError={() => setError(true)}
+        />
+      ) : (
         <View style={Styles.noImage}>
-          <Text style={Styles.noImageText}>{route.params.comm.name.slice(0,1)}</Text>
+          <Text style={Styles.noImageText}>
+            {route.params.comm.name.slice(0, 1)}
+          </Text>
         </View>
-      }
+      )}
 
       {/* Community Content (Image / Name / Users / Following Button) */}
       <View style={{justifyContent: 'center'}}>
         <Text style={Styles.questionText}>{route.params.comm.name}</Text>
-        <View style={{height: '5%'}}/>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={Styles.votesText}>{route.params.comm.num_polls} Polls</Text>
-            <Text style={Styles.votesText}>{route.params.comm.num_users} Users</Text>
+        <View style={{height: '5%'}} />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={Styles.votesText}>
+            {route.params.comm.num_polls} Polls
+          </Text>
+          <Text style={Styles.votesText}>
+            {route.params.comm.num_users} Users
+          </Text>
         </View>
-        <View style={{height: '5%'}}/>
-        <Button style={{
-                width: width*0.9, 
-                height: height*0.057, 
-                borderColor: '#00AAA9', 
-                borderWidth: 1, 
-                borderRadius: height*0.015,
-                backgroundColor: isFollowing ? '#00AAA9' : 'white'
-              }} 
-              text={isFollowing ? 'Following' : 'Follow'} 
-              textColor={isFollowing ? 'white' : '#00AAA9'} 
-              textSize={17}
-              action={follow} 
+        <View style={{height: '5%'}} />
+        <Button
+          style={{
+            width: width * 0.9,
+            height: height * 0.057,
+            borderColor: '#00AAA9',
+            borderWidth: 1,
+            borderRadius: height * 0.015,
+            backgroundColor: isFollowing ? '#00AAA9' : 'white',
+          }}
+          text={isFollowing ? 'Following' : 'Follow'}
+          textColor={isFollowing ? 'white' : '#00AAA9'}
+          textSize={17}
+          action={follow}
         />
       </View>
-      
+
       {/* List of polls in community */}
       <ScrollView>
         <View style={{flex: 1}}>
@@ -115,7 +153,12 @@ const Community = ({route, navigation}) => {
                 onPress={() =>
                   navigation.push(route.params.pollScreen, {id: poll.id})
                 }>
-                <PollCard key={idx} color={'#51E0B8'} qText={poll.question_text} id={poll.id}/>
+                <PollCard
+                  key={idx}
+                  color={'#51E0B8'}
+                  qText={poll.question_text}
+                  id={poll.id}
+                />
               </TouchableOpacity>
             );
           })}
@@ -127,61 +170,61 @@ const Community = ({route, navigation}) => {
 
 const Styles = StyleSheet.create({
   container: {
-      width: dimensions.width, 
-      flexDirection: 'row', 
-      paddingVertical: '4%', 
-      paddingHorizontal: '6%', 
-      justifyContent: 'center'
+    width: dimensions.width,
+    flexDirection: 'row',
+    paddingVertical: '4%',
+    paddingHorizontal: '6%',
+    justifyContent: 'center',
   },
   pollImage: {
-      height: dimensions.width/3,
-      width: dimensions.width/3,
-      aspectRatio: 1,
-      borderRadius: 15,
-      resizeMode: 'cover',
-      borderColor: '#ffeef7',
+    height: dimensions.width / 3,
+    width: dimensions.width / 3,
+    aspectRatio: 1,
+    borderRadius: 15,
+    resizeMode: 'cover',
+    borderColor: '#ffeef7',
   },
   noImage: {
-      height: dimensions.width/3,
-      width: dimensions.width/3,
-      aspectRatio: 1,
-      borderRadius: 15,
-      resizeMode: 'contain',
-      borderColor: '#ffeef7',
-      backgroundColor: '#907AD6',
-      alignItems: 'center',
-      justifyContent: 'center'
+    height: dimensions.width / 3,
+    width: dimensions.width / 3,
+    aspectRatio: 1,
+    borderRadius: 15,
+    resizeMode: 'contain',
+    borderColor: '#ffeef7',
+    backgroundColor: '#907AD6',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   noImageText: {
-      fontWeight: 'bold', 
-      fontSize: dimensions.width/12, 
-      color: 'white'
+    fontWeight: 'bold',
+    fontSize: dimensions.width / 12,
+    color: 'white',
   },
   questionText: {
     fontSize: 17,
-      fontWeight: 'bold', 
-      flexWrap: 'wrap', 
-      paddingHorizontal: '7%',
-      textAlign: 'center'
+    fontWeight: 'bold',
+    flexWrap: 'wrap',
+    paddingHorizontal: '7%',
+    textAlign: 'center',
   },
   votesText: {
-      fontWeight: 'bold', 
-      flexWrap: 'wrap', 
-      paddingHorizontal: '7%', 
-      color: '#9c9c9c', 
+    fontWeight: 'bold',
+    flexWrap: 'wrap',
+    paddingHorizontal: '7%',
+    color: '#9c9c9c',
   },
   labelContainer: {
-      padding: '1%', 
-      borderRadius: 1000, 
-      justifyContent: 'center'
+    padding: '1%',
+    borderRadius: 1000,
+    justifyContent: 'center',
   },
   labelText: {
-      fontWeight: 'bold', 
-      textAlign: 'center', 
-      color: 'white', 
-      fontSize: dimensions.width/30, 
-      paddingHorizontal: '3%'
-  }
-})
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: dimensions.width / 30,
+    paddingHorizontal: '3%',
+  },
+});
 
 export default Community;

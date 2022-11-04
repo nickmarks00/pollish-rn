@@ -1,4 +1,4 @@
-import VoteButton from "./pollDisplay/subComponents/pollVoteButton";
-import CreateComment from "./createComment";
+import VoteButton from './pollDisplay/subComponents/pollVoteButton';
+import CreateComment from './CreateComment';
 
-export { VoteButton, CreateComment }
+export {VoteButton, CreateComment};

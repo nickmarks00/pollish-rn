@@ -7,44 +7,18 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {getFollowers} from 'endpoints/core';
-import {checkFollowing} from '../../network/lib/core';
-import {followUser} from '../../network/lib/core';
-import Button from '../Button';
 
 const dimensions = Dimensions.get('window');
 const {height, width} = Dimensions.get('window');
 
-const UserVote = ({oUser, navToProfile, voteText}) => {
-  const [numFollower, setNumFollowers] = React.useState(0);
-  const [isFollowing, setIsFollowing] = React.useState(false);
-  const {user, logOut} = useAuth();
+type UserVoteProps = {
+  oUser: any;
+  navToProfile: (user: any) => void;
+  voteText: string;
+};
+
+const UserVote = ({oUser, navToProfile, voteText}: UserVoteProps) => {
   const [noProfilePic, setError] = React.useState(false);
-
-  React.useEffect(() => {
-    loadFollowerCount();
-    checkFollow();
-    return () => {
-      setNumFollowers(0);
-      setIsFollowing(false);
-    };
-  }, []);
-
-  const loadFollowerCount = async () => {
-    const data = await getFollowers(oUser.id);
-    setNumFollowers(data.data.length);
-  };
-
-  const checkFollow = async () => {
-    const data = await checkFollowing(user.id, oUser.id);
-    setIsFollowing(data.data);
-  };
-
-  const follow = async () => {
-    const follow = await checkFollowing(user.id, oUser.id);
-    const data = await followUser(user.id, oUser.id, follow.data);
-    setIsFollowing(!follow.data);
-  };
 
   return (
     <TouchableOpacity
@@ -116,29 +90,6 @@ const Styles = StyleSheet.create({
     fontSize: 30,
     color: 'white',
     textAlign: 'center',
-  },
-  questionText: {
-    fontWeight: 'bold',
-    flexWrap: 'wrap',
-    paddingHorizontal: '7%',
-  },
-  votesText: {
-    fontWeight: 'bold',
-    flexWrap: 'wrap',
-    paddingHorizontal: '7%',
-    color: '#9c9c9c',
-  },
-  labelContainer: {
-    padding: '1%',
-    borderRadius: 1000,
-    justifyContent: 'center',
-  },
-  labelText: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'white',
-    fontSize: dimensions.width / 30,
-    paddingHorizontal: '3%',
   },
 });
 

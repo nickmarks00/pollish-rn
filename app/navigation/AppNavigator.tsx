@@ -66,7 +66,6 @@ const Follow = () => (
 const PollList = () => (
   <Stack.Screen
     name={SCREEN_NAMES.POLL_LIST}
-    initialParams={{pollScreen: SCREEN_NAMES.POLL}}
     component={PollsScreen}
     options={({route}) => ({title: 'Polls', headerShown: true})}
   />

@@ -17,7 +17,7 @@ import {
 import {useFonts} from 'expo-font';
 
 import {Comments_DisplayArea} from 'style/Comments_Style';
-import {CreateComment} from 'components';
+import CreateComment from 'components/CreateComment';
 import Comment from './subComponents/comment';
 import {getComments} from 'endpoints/core';
 import {useHeaderHeight} from '@react-navigation/elements';

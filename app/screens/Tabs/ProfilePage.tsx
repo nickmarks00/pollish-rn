@@ -20,14 +20,10 @@ import ProfilePic from '../../components/ProfilePic';
 import ProfileButtons from '../ProfilePage/subComponents/ProfileButtons';
 import Button from '../../components/Button';
 import PVV from '../ProfilePage/subComponents/PVV';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParams} from '../../navigation/AppNavigator';
 import {SCREEN_NAMES} from '../../constants/keys';
 
 const dimensions = Dimensions.get('screen');
 const {height, width} = Dimensions.get('screen');
-
-// type Props = NativeStackScreenProps<RootStackParams, 'Profile'>;
 
 const ProfilePage = ({route}) => {
   const navigation = useNavigation();

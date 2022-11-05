@@ -1,23 +1,18 @@
 import * as React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Modal,
-  FlatList,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Modal, FlatList} from 'react-native';
+// @ts-ignore
 import {getUserComms} from 'endpoints/core';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {getCommunities} from '../../network/lib/pollish';
-import colors from '../../config/colors';
 import {useNavigation} from '@react-navigation/native';
 import CommunityCard from 'components/CommunityCard';
-import {SCREEN_NAMES} from '../../constants/keys';
+import {NavProps, SCREEN_NAMES} from '../../constants/keys';
 
 const Tab = createMaterialTopTabNavigator();
 
-const CommunityTab = ({navigation}) => {
+const CommunityTab = () => {
+  const navigation = useNavigation<NavProps>();
+  // @ts-ignore
   const {user, logOut} = useAuth();
   const [communities, setCommunities] = React.useState([]);
   const [allComms, setAllComms] = React.useState([]);
@@ -43,8 +38,6 @@ const CommunityTab = ({navigation}) => {
   };
 
   const Community = () => {
-    const navigation = useNavigation();
-
     return (
       <FlatList
         data={communities}
@@ -55,8 +48,6 @@ const CommunityTab = ({navigation}) => {
               onPress={() =>
                 navigation.push(SCREEN_NAMES.COMMUNITY, {
                   comm: item,
-                  id: item.id,
-                  title: item.name,
                 })
               }>
               <CommunityCard comm={item} />
@@ -77,8 +68,7 @@ const CommunityTab = ({navigation}) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.push(SCREEN_NAMES.COMMUNITY, {
-                  id: item.id,
-                  title: item.name,
+                  comm: item,
                 })
               }>
               <CommunityCard comm={item} />

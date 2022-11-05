@@ -6,19 +6,26 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
+// @ts-ignore
 import {getUserPolls} from 'endpoints/core';
 import PollCard from '../../components/PollCard';
+// @ts-ignore
 import {deletePoll} from 'endpoints/pollish';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NavProps, RootStackParams, SCREEN_NAMES} from '../../constants/keys';
+import {useNavigation} from '@react-navigation/native';
+
+type PollsScreenProps = NativeStackScreenProps<RootStackParams, 'PollsScreen'>;
 
 const {height, width} = Dimensions.get('window');
 
 /**
  * * Shows list of polls a user owns (requires: id, pollScreen)
  * @param id - The id of the user
- * @param pollScreen - The name of poll stack screen to navigate to
  */
 
-const PollsScreen = ({route, navigation}) => {
+const PollsScreen = ({route}: PollsScreenProps) => {
+  const navigation = useNavigation<NavProps>();
   const [polls, setPolls] = React.useState();
 
   React.useEffect(() => {
@@ -30,12 +37,12 @@ const PollsScreen = ({route, navigation}) => {
     setPolls(userPolls.data.results);
   };
 
-  const removePoll = async id => {
+  const removePoll = async (id: number) => {
     await deletePoll(id);
     loadPolls();
   };
 
-  const showConfirmDialog = id => {
+  const showConfirmDialog = (id: number) => {
     return Alert.alert(
       'Are your sure?',
       'Are you sure you want to delete this poll?',
@@ -69,15 +76,8 @@ const PollsScreen = ({route, navigation}) => {
           <TouchableOpacity
             style={{flex: 1}}
             onLongPress={() => showConfirmDialog(item.id)}
-            onPress={() =>
-              navigation.push(route.params.pollScreen, {id: item.id})
-            }>
-            <PollCard
-              color={'#51E0B8'}
-              qText={item.question_text}
-              id={item.id}
-              reload={loadPolls}
-            />
+            onPress={() => navigation.push(SCREEN_NAMES.POLL, {id: item.id})}>
+            <PollCard qText={item.question_text} id={item.id} />
           </TouchableOpacity>
         )}
       />

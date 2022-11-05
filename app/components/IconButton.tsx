@@ -7,11 +7,11 @@ const {height, width} = Dimensions.get('window');
 type IconButtonProps = {
   action: () => any;
   name: string;
-  backgroundColor: string;
-  outlineColor: string;
-  outlineWidth: number;
+  backgroundColor?: string;
+  outlineColor?: string;
+  outlineWidth?: number;
   style: any;
-  iconFill: string;
+  iconFill?: string;
 };
 
 const IconButton = ({

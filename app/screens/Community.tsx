@@ -8,6 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+// @ts-ignore
 import {getCommPolls} from 'endpoints/pollish';
 import PollCard from '../components/PollCard';
 import {getUserComms} from '../network/lib/core';
@@ -29,9 +30,7 @@ const {height, width} = Dimensions.get('window');
 
 const Community = ({route, navigation}) => {
   const [polls, setPolls] = React.useState();
-  const [commName, setCommName] = React.useState('');
   const [isFollowing, setIsFollowing] = React.useState(false);
-  const [following, setFollowing] = React.useState(0);
   const {user, logOut} = useAuth();
   const [noProfilePic, setError] = React.useState(false);
 
@@ -43,21 +42,20 @@ const Community = ({route, navigation}) => {
   const checkIfFollowing = async () => {
     const data = await getUserComms(user.id);
     await data.data.results.map(choice => {
-      if (choice.id == route.params.id) setIsFollowing(true);
+      if (choice.id == route.params.comm.id) setIsFollowing(true);
     });
     return false;
   };
 
   const loadCommPolls = async () => {
-    const commPolls = await getCommPolls(route.params.id);
+    const commPolls = await getCommPolls(route.params.comm.id);
     console.log(commPolls);
     setPolls(commPolls.data.polls);
-    setCommName(commPolls.data.name);
   };
 
   const follow = async () => {
     const follow = await checkIfFollowing();
-    const data = await followCommunity(route.params.id, user.id);
+    const data = await followCommunity(route.params.comm.id, user.id);
     checkIfFollowing();
     setIsFollowing(follow.data);
   };

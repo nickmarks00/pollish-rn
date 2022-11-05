@@ -5,7 +5,11 @@ import colors from '../config/colors';
 
 const dimensions = Dimensions.get('screen');
 
-export default function Wave({children}) {
+type WaveProps = {
+  children: React.AbstractView;
+};
+
+export default function Wave({children}: WaveProps) {
   return (
     <>
       <View style={[styles.wave, styles.waveTop]} />

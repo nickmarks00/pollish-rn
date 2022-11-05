@@ -1,16 +1,22 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
+// @ts-ignore
 import {getUserComms} from 'endpoints/core';
 import CommunityCard from 'components/CommunityCard';
+import {NavProps, RootStackParams, SCREEN_NAMES} from '../../constants/keys';
+import {useNavigation} from '@react-navigation/native';
 
 /**
  * * Show list of communities (requires: id, CommunityScreen)
  * @param id - The id of the user whom follows the communities
- * @param CommunityScreen - The name of community stack screen to navigate to
  */
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-const UserCommunities = ({route, navigation}) => {
-  const [communities, setCommunities] = React.useState();
+type UserFocusProps = NativeStackScreenProps<RootStackParams, 'UserFocus'>;
+
+const UserCommunities = ({route}: UserFocusProps) => {
+  const navigation = useNavigation<NavProps>();
+  const [communities, setCommunities] = React.useState([]);
 
   React.useEffect(() => {
     loadCommunities();
@@ -28,10 +34,8 @@ const UserCommunities = ({route, navigation}) => {
           <TouchableOpacity
             key={idx}
             onPress={() =>
-              navigation.push(route.params.communityScreen, {
+              navigation.push(SCREEN_NAMES.COMMUNITY, {
                 comm: comm,
-                id: comm.id,
-                title: comm.name,
               })
             }>
             <CommunityCard comm={comm} />

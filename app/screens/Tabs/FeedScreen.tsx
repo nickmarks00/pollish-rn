@@ -5,36 +5,18 @@ import Constants from 'expo-constants';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import HomeScreen from './HomeScreen';
 import IconButton from '../../components/IconButton';
+import {NavProps, SCREEN_NAMES} from '../../constants/keys';
+import {useNavigation} from '@react-navigation/native';
 
 const dimensions = Dimensions.get('screen');
 
 const Tab = createMaterialTopTabNavigator();
 
-const FeedScreen = ({route, navigation}) => {
-  const [create, setCreate] = React.useState(false);
-  const [showCreate, setShown] = React.useState(true);
-  const [focus, setFocus] = React.useState(0);
-  const [nav, setNav] = React.useState(1);
-
-  const NOTIFICATIONS_SCREEN = route.params.notificationsScreen;
-
-  const openModel = () => {
-    setCreate(true);
-  };
-
-  const hideHeader = offset => {
-    if (offset < 60) setShown(true);
-    else setShown(false);
-  };
-
-  const changeNav = num => {
-    console.log(num);
-    console.log('h');
-    setNav(num);
-  };
+const FeedScreen = () => {
+  const navigation = useNavigation<NavProps>();
 
   const navToNotifications = () => {
-    navigation.push(NOTIFICATIONS_SCREEN);
+    navigation.push(SCREEN_NAMES.NOTIFICATIONS);
   };
 
   return (
@@ -111,17 +93,11 @@ const FeedScreen = ({route, navigation}) => {
         })}>
         <Tab.Screen
           name="My Feed"
-          children={() => (
-            <HomeScreen
-              curate={true}
-              hideHeader={hideHeader}
-              setNav={changeNav}
-            />
-          )}
+          children={() => <HomeScreen curate={true} />}
         />
         <Tab.Screen
           name="-----"
-          children={() => <HomeScreen curate={false} hideHeader={hideHeader} />}
+          children={() => <HomeScreen curate={false} />}
         />
       </Tab.Navigator>
     </View>

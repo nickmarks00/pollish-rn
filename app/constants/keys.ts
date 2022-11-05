@@ -26,9 +26,23 @@ export type RootStackParams = {
     id: number;
     title: string;
   };
+  PollsScreen: {
+    id: number;
+  };
+  UserFocus: {
+    id: number;
+  };
+  Community: {
+    comm: any;
+  };
 };
 
 export type NavProps = {
   push(arg0: SCREEN_NAMES.PROFILE, arg1: RootStackParams['Profile']): unknown;
-  push(commentsScreen: string, arg1: {user: null; title: any}): unknown;
+  push(arg0: SCREEN_NAMES.POLL, arg1: RootStackParams['PollsScreen']): unknown;
+  push(arg0: SCREEN_NAMES.NOTIFICATIONS): unknown;
+  push(
+    arg0: SCREEN_NAMES.COMMUNITY,
+    arg1: RootStackParams['Community'],
+  ): unknown;
 };

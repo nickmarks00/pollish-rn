@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {VoteButton} from 'components';
+import VoteButton from './subComponents/pollVoteButton';
 import Media from './subComponents/Media';
 import {getCommuntiy, getPoll, registerVote} from '../../network/lib/pollish';
 import {getUser} from '../../network/lib/core';

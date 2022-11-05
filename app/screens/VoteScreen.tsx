@@ -5,7 +5,7 @@ import Constants from 'expo-constants';
 import IconButton from '../components/IconButton';
 import {useNavigation} from '@react-navigation/native';
 import {getEachUserVote} from '../network/lib/pollish';
-import UserVote from '../components/userVote';
+import UserVote from '../components/UserVote';
 const {width, height} = Dimensions.get('window');
 
 const VoteScreen = ({route}) => {

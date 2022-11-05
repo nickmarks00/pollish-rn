@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import {useFonts} from 'expo-font';
 
-import {Comments_DisplayArea} from 'style/Comments_Style';
 import CreateComment from 'components/CreateComment';
 import Comment from './subComponents/comment';
 import {getComments} from 'endpoints/core';
@@ -107,7 +106,7 @@ const CommentSection = ({route}) => {
           behavior="padding"
           keyboardVerticalOffset={headerHeight}>
           {/* Section where comments are rendered */}
-          <View style={Comments_DisplayArea}>
+          <View style={{flex: 1}}>
             <ScrollView contentContainerStyle={{alignItems: 'center'}}>
               {comments.map((comment, index) => {
                 if (

@@ -12,7 +12,7 @@ import {searchPolls, searchCommunities} from 'endpoints/pollish';
 import {searchUsers} from 'endpoints/core';
 import PollCard from 'components/PollCard';
 import {FlatList} from 'react-native-gesture-handler';
-import UserCard from '../../components/userCard';
+import UserCard from '../../components/UserCard';
 import CommunityCard from 'components/CommunityCard';
 import Button from '../../components/Button';
 

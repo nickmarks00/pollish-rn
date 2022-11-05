@@ -7,17 +7,24 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
+// @ts-ignore
 import {getFollowers} from 'endpoints/core';
-import {checkFollowing} from '../../network/lib/core';
-import {followUser} from '../../network/lib/core';
-import Button from '../Button';
+import {checkFollowing} from '../network/lib/core';
+import {followUser} from '../network/lib/core';
+import Button from './Button';
 
 const dimensions = Dimensions.get('window');
 const {height, width} = Dimensions.get('window');
 
-const UserCard = ({oUser, navToProfile}) => {
+type UserCardProps = {
+  oUser: any;
+  navToProfile: (user: any) => void;
+};
+
+const UserCard = ({oUser, navToProfile}: UserCardProps) => {
   const [numFollower, setNumFollowers] = React.useState(0);
   const [isFollowing, setIsFollowing] = React.useState(false);
+  // @ts-ignore
   const {user, logOut} = useAuth();
   const [noProfilePic, setError] = React.useState(false);
 

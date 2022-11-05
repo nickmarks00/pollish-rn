@@ -20,12 +20,15 @@ import ProfilePic from '../../components/ProfilePic';
 import ProfileButtons from '../ProfilePage/subComponents/ProfileButtons';
 import Button from '../../components/Button';
 import PVV from '../ProfilePage/subComponents/PVV';
-import {SCREEN_NAMES} from '../../constants/keys';
+import {RootStackParams, SCREEN_NAMES} from '../../constants/keys';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+type ProfileProps = NativeStackScreenProps<RootStackParams, 'Profile'>;
 
 const dimensions = Dimensions.get('screen');
 const {height, width} = Dimensions.get('screen');
 
-const ProfilePage = ({route}) => {
+const ProfilePage = ({route}: ProfileProps) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
@@ -86,7 +89,7 @@ const ProfilePage = ({route}) => {
 
   const navToCommList = () => {
     navigation.push(SCREEN_NAMES.FOCUS_LIST, {
-      id: route.params?.user ? route.params.user.id : user.id,
+      id: currentUser.id,
     });
   };
 

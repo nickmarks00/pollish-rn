@@ -2,7 +2,7 @@ import React from 'react';
 import {View, FlatList, Dimensions, TextInput} from 'react-native';
 // @ts-ignore
 import {getFollowers, getFollowing} from 'endpoints/core';
-import UserCard from '../components/userCard';
+import UserCard from '../components/UserCard';
 import {NavProps, SCREEN_NAMES, RootStackParams} from '../constants/keys';
 import {useNavigation} from '@react-navigation/native';
 

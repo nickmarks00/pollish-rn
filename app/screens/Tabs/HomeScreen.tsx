@@ -1,20 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import { View, FlatList, RefreshControl, Text } from 'react-native';
+import {View, FlatList, RefreshControl, Text} from 'react-native';
+// @ts-ignore
 import {getPollFeed} from 'endpoints/pollish';
-import { getCuratedFeed } from 'endpoints/core';
+// @ts-ignore
+import {getCuratedFeed} from 'endpoints/core';
 import PollDisplay from '../../components/pollDisplay';
 import Button from '../../components/Button';
 
-const HomeScreen = (curate) => {
-  const [posts, setPosts] = useState([]);
+const HomeScreen = (curate: boolean) => {
+  const [posts, setPosts] = useState<any[]>([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [create, setCreate] = useState(false);
-  const [number, setNum] = useState(1);
-  const [refreshToken, setRefreshToken] = useState(0)
+  const [refreshToken, setRefreshToken] = useState(0);
   const [heightGap, setHeight] = useState(0);
+  // @ts-ignore
   const {user, logOut} = useAuth();
 
-  const wait = timeout => {
+  const wait = (timeout: number) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
@@ -28,33 +29,33 @@ const HomeScreen = (curate) => {
     fetchDataFromApi(1);
   }, []);
 
-  const fetchDataFromApi = async page => {
+  const fetchDataFromApi = async (page: number) => {
     const token = Math.random();
-    console.log('refresh token')
-    setRefreshToken(token)
+    console.log('refresh token');
+    setRefreshToken(token);
     if (curate) {
       const polls = await getCuratedFeed(user.id);
       setPosts(polls.data[0]);
-    }
-    else {
+    } else {
       const polls = await getPollFeed(page);
       setPosts(polls.data.results);
     }
   };
 
-  const loadMoreData = async page => {
+  const loadMoreData = async (page: number) => {
     const polls = await getPollFeed(page);
     const total = [...posts, ...polls.data.results];
     setPosts(total);
   };
 
   return (
-    <View onLayout={(event) => {
-      var {x, y, width, height} = event.nativeEvent.layout;
-      setHeight(height)
-      
-    }} style={{flex: 1}}>
-      {posts?.length ?
+    <View
+      onLayout={event => {
+        var {x, y, width, height} = event.nativeEvent.layout;
+        setHeight(height);
+      }}
+      style={{flex: 1}}>
+      {posts?.length ? (
         <FlatList
           initialNumToRender={2}
           windowSize={3}
@@ -64,14 +65,7 @@ const HomeScreen = (curate) => {
           // Passing heightGap and refreshToken causes constant rerenders
           renderItem={({item}) => (
             <View style={{height: heightGap, width: '100%'}}>
-              <PollDisplay
-                refreshToken={refreshToken}
-                id={item.id}
-                commentsScreen={'H_Comments'}
-                profileScreen={'H_Profile'}
-                voteScreen={'H_Vote'}
-                communityScreen={'H_Community'}
-              />
+              <PollDisplay refreshToken={refreshToken} id={item.id} />
             </View>
           )}
           pagingEnabled={true}
@@ -88,13 +82,18 @@ const HomeScreen = (curate) => {
           //   setNum(number + 1);
           // }}
         />
-      :
-      <View style={{height: '100%', justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Follow users or communities to populate this feed</Text>
-      <View style={{height: '5%'}}/>
-      <Button color={'#CCC'} filled={false} whenPressed={onRefresh} text={'reload'}/>
-      </View>
-      }
+      ) : (
+        <View
+          style={{
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text>Follow users or communities to populate this feed</Text>
+          <View style={{height: '5%'}} />
+          <Button textColor="black" action={onRefresh} text={'reload'} />
+        </View>
+      )}
     </View>
   );
 };

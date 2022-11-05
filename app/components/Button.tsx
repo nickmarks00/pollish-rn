@@ -12,18 +12,24 @@ type ButtonProps = {
   textColor: string;
   text: string;
   action: () => void;
-  style: any;
-  textSize: number;
+  style?: any;
+  textSize?: number;
 };
 
-const Button = ({textColor, text, action, style, textSize}: ButtonProps) => {
+const Button = ({
+  textColor,
+  text,
+  action,
+  style,
+  textSize = 13,
+}: ButtonProps) => {
   const size = textSize ? textSize : 13;
 
   return (
     <TouchableOpacity
       onPress={action}
       style={{alignItems: 'center', justifyContent: 'center', ...style}}>
-      <Text style={{color: textColor, fontWeight: 'bold', fontSize: size}}>
+      <Text style={{color: textColor, fontWeight: 'bold', fontSize: textSize}}>
         {text}
       </Text>
     </TouchableOpacity>

@@ -7,13 +7,21 @@ const {height, width} = Dimensions.get('window');
 const BUTTON_WIDTH = (width * 0.9 - 24 - height * 0.047) / 2;
 const BUTTON_BORDER_WIDTH = height * 0.012;
 
+type PollNavProps = {
+  voteCount: number;
+  commentCount: number;
+  navComments: () => void;
+  navVotes: () => void;
+  infoModal: (open: boolean) => void;
+};
+
 const PollNav = ({
   voteCount,
   navComments,
   commentCount,
   navVotes,
   infoModal,
-}) => {
+}: PollNavProps) => {
   return (
     <View
       style={{
@@ -45,8 +53,6 @@ const PollNav = ({
           backgroundColor: 'white',
           borderRadius: BUTTON_BORDER_WIDTH,
         }}
-        textColor={'white'}
-        text={commentCount + ' Comments'}
       />
       <View style={{width: 12}} />
       <Button

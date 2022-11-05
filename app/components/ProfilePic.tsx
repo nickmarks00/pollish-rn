@@ -5,7 +5,7 @@ const {height, width} = Dimensions.get('window');
 
 type ProfilePicProps = {
   user: any;
-  profileHeight: number;
+  profileHeight: number | null;
 };
 
 // ! Need user type

@@ -14,7 +14,7 @@ import PollsScreen from '../screens/Profile/PollsScreen';
 import CommentSection from '../screens/CommentSection';
 import CommunityList from '../screens/Profile/UserCommunities';
 import CommunitiesScreen from '../screens/Community';
-import ProfilePage from '../screens/Tabs/ProfilePage';
+import ProfilePage from '../screens/ProfilePage';
 import SinglePoll from '../screens/SinglePoll';
 import CommunityTab from '../screens/Tabs/CommunityTab';
 import SearchScreen from '../screens/Tabs/SearchScreen';

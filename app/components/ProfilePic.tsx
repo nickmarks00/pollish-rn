@@ -1,24 +1,23 @@
 import React from 'react';
-import {View, Image, Text, Dimensions, StyleSheet} from 'react-native';
+import {View, Image, Text, Dimensions} from 'react-native';
 
 const {height, width} = Dimensions.get('window');
 
 type ProfilePicProps = {
-  user: any;
+  avatar: string;
   profileHeight: number | null;
+  username: string;
 };
 
-// ! Need user type
-
-const ProfilePic = ({user, profileHeight}: ProfilePicProps) => {
+const ProfilePic = ({avatar, profileHeight, username}: ProfilePicProps) => {
   const [noProfilePic, setError] = React.useState(true);
 
-  if (noProfilePic)
+  if (noProfilePic && avatar != '')
     return (
       <View style={{height: profileHeight ? profileHeight : height * 0.167}}>
         <Image
           source={{
-            uri: user.profile.avatar,
+            uri: avatar,
           }}
           style={{
             height: '100%',
@@ -53,7 +52,7 @@ const ProfilePic = ({user, profileHeight}: ProfilePicProps) => {
             fontWeight: 'bold',
             fontSize: height / 10,
           }}>
-          {user.username.slice(0, 1).toUpperCase()}
+          {username.slice(0, 1).toUpperCase()}
         </Text>
       </View>
     );

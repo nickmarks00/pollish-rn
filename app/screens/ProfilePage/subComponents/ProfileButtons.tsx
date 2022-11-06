@@ -1,10 +1,18 @@
+import {useNavigation} from '@react-navigation/native';
+import {NavProps, SCREEN_NAMES} from '../../../constants/keys';
 import React from 'react';
 import {Dimensions, View} from 'react-native';
 import IconButton from '../../../components/IconButton';
 
 const {height, width} = Dimensions.get('window');
 
-const ProfileButtons = ({navToCommList, navToSettings}) => {
+type ProfileButtonProps = {
+  id: number;
+};
+
+const ProfileButtons = ({id}: ProfileButtonProps) => {
+  const navigation = useNavigation<NavProps>();
+
   return (
     <View
       style={{
@@ -20,14 +28,18 @@ const ProfileButtons = ({navToCommList, navToSettings}) => {
       />
       <IconButton backgroundColor={'#CCCCCC'} />
       <IconButton
-        action={navToCommList}
+        action={() => {
+          navigation.push(SCREEN_NAMES.FOCUS_LIST, {
+            id: id,
+          });
+        }}
         name={'eye'}
         outlineWidth={1}
         outlineColor={'#ECEEEE'}
       />
       <IconButton backgroundColor={'#CCCCCC'} />
       <IconButton
-        action={navToSettings}
+        action={() => navigation.push(SCREEN_NAMES.SETTINGS)}
         name={'settings'}
         outlineWidth={1}
         outlineColor={'#ECEEEE'}

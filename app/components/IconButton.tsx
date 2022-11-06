@@ -5,12 +5,12 @@ import {Ionicons} from '@expo/vector-icons';
 const {height, width} = Dimensions.get('window');
 
 type IconButtonProps = {
-  action: () => any;
-  name: string;
+  action?: () => any;
+  name?: string;
   backgroundColor?: string;
   outlineColor?: string;
   outlineWidth?: number;
-  style: any;
+  style?: any;
   iconFill?: string;
 };
 

@@ -6,14 +6,11 @@ import {
   TouchableOpacity,
   Modal,
   Image,
-  ImageBackground,
 } from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import VoteButton from './subComponents/VoteButton';
-import Media from './subComponents/Media';
 import {getCommuntiy, getPoll, registerVote} from '../../network/lib/pollish';
 import {getUser} from '../../network/lib/core';
-import PollNav from './subComponents/PollNav';
+import {PollNav, Media, VoteButton} from './subComponents';
 import ProfilePic from '../ProfilePic';
 import moment from 'moment';
 import {SCREEN_NAMES} from '../../constants/keys';

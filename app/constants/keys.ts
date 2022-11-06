@@ -35,9 +35,28 @@ export type RootStackParams = {
   Community: {
     comm: any;
   };
+  FocusList: {
+    id: number;
+  };
+  PollList: {
+    id: number;
+  };
+  Poll: {
+    id: number;
+  };
 };
 
 export type NavProps = {
+  push(arg0: SCREEN_NAMES.SETTINGS): unknown;
+  push(
+    arg0: SCREEN_NAMES.FOCUS_LIST,
+    arg1: RootStackParams['FocusList'],
+  ): unknown;
+  push(arg0: SCREEN_NAMES.FOLLOW, arg1: RootStackParams['Followers']): unknown;
+  push(
+    arg0: SCREEN_NAMES.POLL_LIST,
+    arg1: RootStackParams['PollList'],
+  ): unknown;
   push(arg0: SCREEN_NAMES.PROFILE, arg1: RootStackParams['Profile']): unknown;
   push(arg0: SCREEN_NAMES.POLL, arg1: RootStackParams['PollsScreen']): unknown;
   push(arg0: SCREEN_NAMES.NOTIFICATIONS): unknown;
